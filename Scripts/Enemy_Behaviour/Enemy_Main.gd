@@ -12,13 +12,12 @@ func _ready():
 
 func assign_behaviour():
 	var behaviour_paths = {
-		"melee": "res://Scripts/EnemyBehaviours/melee_behaviour.gd",
-		"ranged": "res://Scripts/EnemyBehaviours/ranged_behaviour.gd",
-		"charger": "res://Scripts/EnemyBehaviours/charger_behaviour.gd",
-		"default": "res://Scripts/EnemyBehaviours/default_behaviour.gd"
+		"melee": "res://Scripts/Enemy_Behaviour/melee_behaviour.gd",
+		"ranged": "res://Scripts/Enemy_Behaviour/ranged_behaviour.gd",
+		"charger": "res://Scripts/Enemy_Behaviour/charger_behaviour.gd"
 	}
 
-	var script_path = behaviour_paths.get(behaviour_type, behaviour_paths["default"])
+	var script_path = behaviour_paths.get(behaviour_type, behaviour_paths["ranged"])
 	behaviour = load(script_path).new()
 	behaviour.enemy = self
 

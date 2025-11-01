@@ -1,5 +1,9 @@
 extends Node2D
 
+func _ready():
+	print("Game script ready")
+
+
 func _on_spawn_enemy_button_pressed() -> void:
 	var player = $PlayerContainer/Player
 	var spawner = $EnemySpawner

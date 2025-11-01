@@ -1,12 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=7 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://dytxm3igl8nvq" path="res://Scenes/game.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bjtbfx4gunmwy" path="res://Scripts/UI/Minimap/canvas_control.gd" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scripts/game.gd" id="3_jjvhh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
 shader = ExtResource("1_jjgbg")
 shader_parameter/cam_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gbba"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -23,7 +27,17 @@ size = Vector2i(482, 272)
 render_target_update_mode = 4
 
 [node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_bo1nx")]
-script = null
+script = ExtResource("3_jjvhh")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("3_8gbba")
+
+[node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 108.0
+offset_bottom = 108.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_8gbba")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
