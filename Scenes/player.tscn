@@ -1,3 +1,22 @@
-[gd_scene format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=4 format=3 uid="uid://dcbvpreahnt2f"]
+
+[ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/player.gd" id="1_6t5aa"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="2_cvnsp"]
 
 [node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_6t5aa")
+thrust_accel = 100.0
+max_speed = 100.0
+
+[node name="MinimapTracker" type="Node2D" parent="."]
+script = ExtResource("1_v0iea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+rotation = -1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_cvnsp")
+region_enabled = true
+region_rect = Rect2(224, 4, 96, 172)

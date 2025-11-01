@@ -11,7 +11,22 @@ config_version=5
 [application]
 
 config/name="400 (Durhack)"
+run/main_scene="uid://dwju5ceubg651"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="viewport"
+
+[input]
+
+thrust_mouse={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(773, 27),"global_position":Vector2(792, 123),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
 
 [rendering]
 

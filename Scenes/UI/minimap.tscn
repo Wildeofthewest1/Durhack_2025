@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7vqm8xh0jw8p"]
+
+[ext_resource type="Script" uid="uid://fv630meevy3x" path="res://Scripts/UI/Minimap/minimap.gd" id="1_minimap"]
+[ext_resource type="Script" uid="uid://dx77uasv6hmq3" path="res://Scripts/UI/Minimap/minimap_draw_area.gd" id="2_draw_area"]
+
+[node name="Minimap" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 220.0
+grow_horizontal = 0
+script = ExtResource("1_minimap")
+
+[node name="DrawArea" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_draw_area")
