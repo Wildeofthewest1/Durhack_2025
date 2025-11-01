@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
-[ext_resource type="PackedScene" uid="uid://8eqw2y2go8k3" path="res://Scenes/example_station.tscn" id="2_wrm1d"]
+[ext_resource type="PackedScene" path="res://basic_enemy.tscn" id="2_wrm1d"]
 
 [node name="Game" type="Node2D"]
 
@@ -12,11 +12,11 @@
 
 [node name="Enemies" type="Node2D" parent="."]
 
+[node name="Basic_Enemy" parent="Enemies" instance=ExtResource("2_wrm1d")]
+
 [node name="Environment" type="Node2D" parent="."]
 
 [node name="Bodies" type="Node2D" parent="Environment"]
-
-[node name="ExampleStation" parent="Environment" instance=ExtResource("2_wrm1d")]
 
 [node name="Systems" type="Node2D" parent="."]
 

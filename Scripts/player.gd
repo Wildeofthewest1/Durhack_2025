@@ -24,7 +24,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("thrust_mouse"):
 		var mouse_world: Vector2 = get_global_mouse_position()
 		var to_mouse: Vector2 = mouse_world - global_position
-		var d: float = to_mouse.length()
+		var d: float = to_mouse.length( )
 		if d > deadzone_px:
 			a_total += (to_mouse / d) * thrust_accel
 	
