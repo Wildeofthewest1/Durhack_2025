@@ -21,6 +21,8 @@ max_speed = 300.0
 
 [node name="Bodies" type="Node2D" parent="Environment"]
 
+[node name="ExampleStation" parent="Environment" instance=ExtResource("2_wrm1d")]
+
 [node name="Systems" type="Node2D" parent="."]
 
 [node name="Other" type="Node2D" parent="."]

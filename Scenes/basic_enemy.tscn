@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c6jxij2qsvta0"]
 
-[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/basic_enemy.gd" id="1_naotq"]
+[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_naotq"]
 [ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_fecjr"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_lal1l"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_r4aor"]
