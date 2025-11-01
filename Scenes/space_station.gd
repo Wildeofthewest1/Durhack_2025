@@ -1,28 +1,23 @@
 extends CharacterBody2D
 
+#Custom Intial Conditions
 @export var mass = 100.00
 @export var initial_speed = 0
 @export var initial_direction = Vector2.ZERO 
 
 
-@export var autoorbit = false
-@export var parent_star: CharacterBody2D #Add the host star of the system
 @export var parent_planet: CharacterBody2D #Add planetary moons 
-
+@export var autoorbit = true
 var gravity_scale = 5e2
 
 func _ready():
 	if not autoorbit:
 		velocity = initial_speed * initial_direction
-	if autoorbit and not is_in_group("Star"):
-		#times 60 because of the physics framerate
-		var speed = (60 * parent_star.mass * gravity_scale/(position - parent_star.position).length())**(0.5)
-		var direction = (position - parent_star.position).normalized()
-		velocity = speed * direction.orthogonal()
-		if is_in_group("Moon"):
-			var planet_speed = parent_planet.velocity
-			speed = (60 * parent_planet.mass * gravity_scale/(position - parent_planet.position).length())**(0.5)
-			velocity = speed * direction.orthogonal() + planet_speed
+	if autoorbit:
+		var direction = (position - parent_planet.position)
+		var planet_speed = parent_planet.velocity
+		var speed = (60 * parent_planet.mass * gravity_scale/direction.length())**(0.5)
+		velocity = speed * direction.normalized().orthogonal() + planet_speed
 
 
 func _process(_delta: float) -> void:
