@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=7 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scripts/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
 [ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="2_cvnsp"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="5_fkybt"]
+[ext_resource type="Script" uid="uid://n2xgk21a4sl6" path="res://Scripts/Weapons/weapon_ui_bridge.gd" id="6_x3wgy"]
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1
@@ -31,3 +32,7 @@ body_path = NodePath("..")
 script = ExtResource("5_fkybt")
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
+
+[node name="WeaponUIBridge" type="Node2D" parent="." node_paths=PackedStringArray("weapon_manager")]
+script = ExtResource("6_x3wgy")
+weapon_manager = NodePath("../WeaponManager")

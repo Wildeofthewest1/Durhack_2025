@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://d6a784dh0cys"]
+
+[ext_resource type="Script" uid="uid://boydd01lpw77m" path="res://weapons/pistol_bullet.gd" id="1_x21xw"]
+[ext_resource type="Script" uid="uid://debeo6ppqgysr" path="res://scripts/ReadonlyGravity.gd" id="2_yf44a"]
+[ext_resource type="Texture2D" uid="uid://df7u7t7nql2qh" path="res://square.png" id="3_auscd"]
+
+[node name="twin_bullet" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_x21xw")
+muzzle_speed = 500.0
+damage = 5
+gravity_multiplier = 5.0
+gravity_sensor_path = NodePath("ReadonlyGravity")
+
+[node name="ReadonlyGravity" type="Node" parent="."]
+script = ExtResource("2_yf44a")
+max_contributors = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.04)
+texture = ExtResource("3_auscd")

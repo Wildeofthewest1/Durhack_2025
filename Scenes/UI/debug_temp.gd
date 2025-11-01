@@ -3,12 +3,23 @@ extends Node2D
 
 @onready var player: CharacterBody2D = $Player
 @onready var interaction_ui: InteractionUI = $InteractionUI
+@onready var weapon_bridge: WeaponUIBridge = $Player/WeaponUIBridge
 
+
+	# Player can now see these in the UI and equip them!
 func _ready():
 	# Connect weapon system signals
 	interaction_ui.player_ui.weapon_equipped.connect(_on_weapon_equipped)
 	interaction_ui.player_ui.fleet_ship_equipped.connect(_on_fleet_equipped)
 	interaction_ui.player_ui.shop_item_purchased.connect(_on_item_purchased)
+	   
+	# Load your weapon data resources
+	var pistol_data: WeaponData = load("res://Data/pistol.tres")
+	var rifle_data: WeaponData = load("res://Data/twin_gun.tres")
+	
+	# Add them to the UI
+	weapon_bridge.add_weapon_to_ui(pistol_data, "pistol")
+	weapon_bridge.add_weapon_to_ui(rifle_data, "rifle")
 	
 	# Give player starting weapons
 	_setup_starting_gear()

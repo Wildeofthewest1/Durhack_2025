@@ -1,10 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://h20jduwq8hae"]
+[gd_scene load_steps=12 format=3 uid="uid://h20jduwq8hae"]
 
 [ext_resource type="PackedScene" uid="uid://ck0eonug6qjrp" path="res://Scenes/UI/interaction_ui.tscn" id="1"]
 [ext_resource type="Script" uid="uid://l0fgfkljeenr" path="res://Scenes/UI/debug_temp.gd" id="1_344qe"]
 [ext_resource type="Script" uid="uid://cyqrvayh7wgk0" path="res://Scripts/interaction_manager.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://8eqw2y2go8k3" path="res://Scenes/example_station.tscn" id="3"]
 [ext_resource type="Script" uid="uid://bqygb3r6vageg" path="res://Scripts/example_player.gd" id="4"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="4_bt0ug"]
+[ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="5_3xgk6"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="6_t3r7j"]
+[ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="7_6xkuv"]
+[ext_resource type="Script" uid="uid://n2xgk21a4sl6" path="res://Scripts/Weapons/weapon_ui_bridge.gd" id="8_x6b0l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(40, 60)
@@ -32,6 +37,31 @@ shape = SubResource("RectangleShape2D_1")
 [node name="InteractionManager" type="Node" parent="Player" node_paths=PackedStringArray("player")]
 script = ExtResource("2")
 player = NodePath("..")
+
+[node name="MinimapTracker" type="Node2D" parent="Player" node_paths=PackedStringArray("target_node")]
+script = ExtResource("4_bt0ug")
+target_node = NodePath("")
+
+[node name="Sprite" type="Sprite2D" parent="Player"]
+texture_filter = 1
+rotation = -1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_3xgk6")
+region_enabled = true
+region_rect = Rect2(224, 4, 96, 172)
+
+[node name="Trail" parent="Player" instance=ExtResource("6_t3r7j")]
+body_path = NodePath("..")
+
+[node name="WeaponManager" type="Node2D" parent="Player"]
+script = ExtResource("7_6xkuv")
+
+[node name="WeaponSocket" type="Marker2D" parent="Player/WeaponManager"]
+
+[node name="WeaponUIBridge" type="Node2D" parent="Player" node_paths=PackedStringArray("weapon_manager", "interaction_ui")]
+script = ExtResource("8_x6b0l")
+weapon_manager = NodePath("../WeaponManager")
+interaction_ui = NodePath("../../InteractionUI")
 
 [node name="ExampleStation" parent="." instance=ExtResource("3")]
 position = Vector2(800, 324)

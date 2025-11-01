@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://e1s7n324167h"]
+
+[ext_resource type="Script" uid="uid://cr3x8kp6mxuyw" path="res://twin_gun.gd" id="1_cxk0r"]
+[ext_resource type="Texture2D" uid="uid://df7u7t7nql2qh" path="res://square.png" id="2_706gl"]
+[ext_resource type="PackedScene" uid="uid://cuq01c81cdqcw" path="res://scenes/MuzzleFlash2D.tscn" id="2_njh1v"]
+
+[node name="twin_gun" type="Node2D"]
+z_index = 1
+script = ExtResource("1_cxk0r")
+fire_both_at_once = true
+alternate_start_left = false
+
+[node name="MuzzleL" type="Marker2D" parent="."]
+position = Vector2(8, -2)
+
+[node name="MuzzleFlash" parent="MuzzleL" instance=ExtResource("2_njh1v")]
+scale = Vector2(0.5, 0.5)
+
+[node name="MuzzleR" type="Marker2D" parent="."]
+position = Vector2(8, 2)
+
+[node name="MuzzleFlash" parent="MuzzleR" instance=ExtResource("2_njh1v")]
+scale = Vector2(0.5, 0.5)
+lifetime = 0.1
+interp_to_end = 0.078
+randomness = 0.24
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
+position = Vector2(3, 2)
+scale = Vector2(0.2, 0.05)
+texture = ExtResource("2_706gl")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
+position = Vector2(3, -2)
+scale = Vector2(0.2, 0.05)
+texture = ExtResource("2_706gl")
+
+[node name="Sprite2D6" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
+position = Vector2(-1.7059374, 0)
+scale = Vector2(0.1433789, 0.125)
+texture = ExtResource("2_706gl")
