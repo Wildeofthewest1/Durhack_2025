@@ -10,8 +10,9 @@ script = ExtResource("1_6t5aa")
 thrust_accel = 100.0
 max_speed = 100.0
 
-[node name="MinimapTracker" type="Node2D" parent="."]
+[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("1_v0iea")
+target_node = NodePath("..")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
