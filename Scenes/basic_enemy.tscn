@@ -1,31 +1,45 @@
 [gd_scene load_steps=6 format=3 uid="uid://c6jxij2qsvta0"]
 
-[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_naotq"]
-[ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_fecjr"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_lal1l"]
-[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_r4aor"]
+[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/game.gd" id="1_r4aor"]
+[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="2_6kac6"]
+[ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="3_6cefa"]
+[ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scenes/enemy_spawner.gd" id="4_6pvwk"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_lal1l"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4aor"]
+bg_color = Color(1, 1, 1, 1)
 
-[node name="Basic_Enemy" type="CharacterBody2D"]
-script = ExtResource("1_naotq")
+[node name="Game" type="Node2D"]
+script = ExtResource("1_r4aor")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
-texture = ExtResource("2_fecjr")
-region_enabled = true
-region_rect = Rect2(95.716484, -0.30929852, 39.69651, 23.756992)
+[node name="PlayerContainer" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_lal1l")
+[node name="Player" parent="PlayerContainer" instance=ExtResource("2_6kac6")]
+thrust_accel = 100.0
+max_speed = 300.0
 
-[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
-script = ExtResource("3_lal1l")
-target_node = NodePath("..")
-dot_shape = 2
-dot_color = Color(1, 0.120000005, 0.120000005, 1)
+[node name="Enemies" type="Node2D" parent="."]
 
-[node name="Trail" parent="." instance=ExtResource("4_r4aor")]
-body_path = NodePath("..")
-max_points = 100
-color = Color(0.68, 0.23800002, 0.23800002, 1)
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="Bodies" type="Node2D" parent="Environment"]
+
+[node name="Systems" type="Node2D" parent="."]
+
+[node name="Other" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_6cefa")
+
+[node name="EnemySpawner" type="Node2D" parent="."]
+script = ExtResource("4_6pvwk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 108.0
+offset_bottom = 108.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_r4aor")
+
+[connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="." method="_on_spawn_enemy_button_pressed"]

@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://dytxm3igl8nvq"]
+[gd_scene load_steps=6 format=3 uid="uid://dytxm3igl8nvq"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_ebmjs"]
-[ext_resource type="Script" path="res://Scenes/game.gd" id="1_wowpa"]
+[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
-[ext_resource type="Script" path="res://Scenes/enemy_spawner.gd" id="4_3dryh"]
+[ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scenes/enemy_spawner.gd" id="4_3dryh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3dryh"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wowpa")
@@ -37,5 +40,6 @@ offset_left = 100.0
 offset_top = 100.0
 offset_right = 108.0
 offset_bottom = 108.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3dryh")
 
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="." method="_on_spawn_enemy_button_pressed"]

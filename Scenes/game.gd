@@ -1,6 +1,6 @@
 extends Node2D
 
-func _on_spawn_button_pressed() -> void:
+func _on_spawn_enemy_button_pressed() -> void:
 	var player = $PlayerContainer/Player
 	var spawner = $EnemySpawner
 
@@ -15,4 +15,4 @@ func _on_spawn_button_pressed() -> void:
 	
 	
 	print("button pressed")
-	#spawner.spawn_enemy(spawn_position)
+	spawner.spawn_enemy(spawn_position)
