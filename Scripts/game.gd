@@ -19,4 +19,11 @@ func _on_spawn_enemy_button_pressed() -> void:
 	
 	
 	print("button pressed")
-	spawner.spawn_enemy(spawn_position)
+	spawner.spawn_enemy(
+	"Enemy1",
+	spawn_position,
+	"ranged",
+	["res://Scenes/Enemy_Weapons/pistol.tscn"],
+	150.0,
+	120
+)
