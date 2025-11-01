@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6jxij2qsvta0"]
-
-[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://basic_enemy.gd" id="1_naotq"]
-
-[node name="Basic_Enemy" type="Node2D"]
-script = ExtResource("1_naotq")

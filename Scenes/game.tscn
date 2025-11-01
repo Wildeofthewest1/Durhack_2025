@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dytxm3igl8nvq"]
+[gd_scene load_steps=5 format=3 uid="uid://dytxm3igl8nvq"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_ebmjs"]
+[ext_resource type="PackedScene" uid="uid://c6jxij2qsvta0" path="res://Scenes/basic_enemy.tscn" id="2_3dryh"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
 [ext_resource type="PackedScene" path="res://basic_enemy.tscn" id="2_wrm1d"]
 
@@ -12,7 +13,12 @@
 
 [node name="Enemies" type="Node2D" parent="."]
 
+<<<<<<< HEAD
 [node name="Basic_Enemy" parent="Enemies" instance=ExtResource("2_wrm1d")]
+=======
+[node name="Basic_Enemy" parent="Enemies" instance=ExtResource("2_3dryh")]
+position = Vector2(54, 0)
+>>>>>>> 4c7b62fcaf3e5f44a23cd448d495fa3ec351cbb2
 
 [node name="Environment" type="Node2D" parent="."]
 
