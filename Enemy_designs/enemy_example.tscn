@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5wsbnqmlr7im"]
+
+[ext_resource type="Script" uid="uid://b2aascdi8p3md" path="res://enemy_example.gd" id="1_wnfft"]
+[ext_resource type="Script" uid="uid://debeo6ppqgysr" path="res://scripts/ReadonlyGravity.gd" id="2_pkima"]
+[ext_resource type="Texture2D" uid="uid://bb31qkvvey3yv" path="res://circle-512.png" id="3_pkima"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://scripts/minimap_tracked_object.gd" id="4_nxo0o"]
+
+[node name="Enemy_Example" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_wnfft")
+initial_velocity = Vector2(200, 0)
+thrust_accel = 300.0
+max_speed = 200.0
+detection_radius = 50.0
+far_away_max_speed = 500.0
+randomisation_strength = 100.0
+
+[node name="GravitySensor" type="Node" parent="."]
+script = ExtResource("2_pkima")
+max_contributors = 2
+metadata/_custom_type_script = "uid://debeo6ppqgysr"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.81, 0.29160002, 0.29160002, 1)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("3_pkima")
+
+[node name="minimap_tracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("4_nxo0o")
+target_node = NodePath("..")
+dot_shape = 2
+dot_color = Color(1, 0.18, 0.18, 1)
+blink_enabled = true
