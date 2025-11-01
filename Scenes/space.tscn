@@ -4,15 +4,42 @@
 
 [node name="Space" type="Node"]
 
-[node name="Star" parent="." node_paths=PackedStringArray("orbital_parent") groups=["Star"] instance=ExtResource("1_0ll74")]
-position = Vector2(883, 540)
-orbital_parent = NodePath(".")
+[node name="System" type="Node2D" parent="."]
 
-[node name="Planet2" parent="." node_paths=PackedStringArray("orbital_parent") instance=ExtResource("1_0ll74")]
-position = Vector2(1111, 530)
+[node name="Star" parent="System" node_paths=PackedStringArray("parent_star") groups=["Star"] instance=ExtResource("1_0ll74")]
+modulate = Color(0.9, 0.79499996, 0, 1)
+position = Vector2(883, 540)
+mass = 50.0
+parent_star = NodePath(".")
+
+[node name="Planet" parent="System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0, 0.6222091, 0.7230942, 1)
+position = Vector2(1730, 538.99994)
 scale = Vector2(0.11, 0.11)
 mass = 1.0
 initial_speed = 300
 initial_direction = Vector2(0, -1)
 autoorbit = true
-orbital_parent = NodePath("../Star")
+parent_star = NodePath("../Star")
+
+[node name="Planet2" parent="System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0.74110955, 0.46996802, 0.0071272017, 1)
+position = Vector2(889.00006, 1751)
+scale = Vector2(0.385, 0.385)
+mass = 0.0
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Moon" parent="System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0.8195138, 0.32531074, 0, 1)
+position = Vector2(898, 1851)
+scale = Vector2(0.125, 0.125)
+mass = 0.0
+initial_speed = 300
+initial_direction = Vector2(1, 0)
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(885, 557)
+zoom = Vector2(0.395, 0.395)
