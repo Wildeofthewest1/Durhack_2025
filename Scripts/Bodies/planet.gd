@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var mass: float = 1.0
 @export var radius: float = 10.0
-@export var gravitational_constant: float = 100
+@export var gravitational_constant: float = 10.0
 
 func _ready() -> void:
 	add_to_group("Planets")

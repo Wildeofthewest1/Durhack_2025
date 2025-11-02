@@ -19,6 +19,5 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_r2d2d")
 
 [node name="MinimapMark" type="Node2D" parent="."]
-z_index = -1
 script = ExtResource("3_sy7qc")
 dot_size = 5.0
