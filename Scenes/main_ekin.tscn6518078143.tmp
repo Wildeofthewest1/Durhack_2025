@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://dq6k2o3ltoui2"]
+
+[ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_do1bh"]
+[ext_resource type="PackedScene" uid="uid://cn1v0cxx3hlvo" path="res://game_ekin.tscn" id="2_do1bh"]
+[ext_resource type="Script" uid="uid://bjtbfx4gunmwy" path="res://Scripts/UI/Minimap/canvas_control.gd" id="3_ygx3g"]
+[ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/InteractionUI.tscn" id="4_hjfxt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
+shader = ExtResource("1_do1bh")
+shader_parameter/cam_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gbba"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Main" type="Node2D"]
+texture_filter = 1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+material = SubResource("ShaderMaterial_bo1nx")
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(4, 4)
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(482, 272)
+render_target_update_mode = 4
+
+[node name="game_ekin" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_do1bh")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("3_ygx3g")
+
+[node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 108.0
+offset_bottom = 108.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_8gbba")
+metadata/_edit_use_anchors_ = true
+
+[node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_hjfxt")]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_right = 280.0
+grow_horizontal = 0
+grow_vertical = 2
+rotation = -0.0072907577
+hidden_x = 500.0
+shown_x = -300.0
+panel_bg_color = Color(0.38340002, 0.40167004, 0.54, 1)

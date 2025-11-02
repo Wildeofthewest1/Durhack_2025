@@ -1,5 +1,5 @@
 extends Control
-class_name InteractionUI
+#class_name InteractionUI
 
 @onready var _panel: Control = $Panel
 @onready var _comms_page: Control = $Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage
