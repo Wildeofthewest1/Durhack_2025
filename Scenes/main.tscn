@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=7 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://cuqp3vdnbus2n" path="res://Scenes/game.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bjtbfx4gunmwy" path="res://Scripts/UI/Minimap/canvas_control.gd" id="3_8gbba"]
+[ext_resource type="PackedScene" path="res://Scenes/InteractionUI.tscn" id="4_jjvhh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
 shader = ExtResource("1_jjgbg")
@@ -16,10 +17,8 @@ texture_filter = 1
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 material = SubResource("ShaderMaterial_bo1nx")
-offset_left = 8.0
-offset_top = -10.0
-offset_right = 490.0
-offset_bottom = 262.0
+offset_right = 40.0
+offset_bottom = 40.0
 scale = Vector2(4, 4)
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
@@ -40,16 +39,7 @@ offset_bottom = 108.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_8gbba")
 metadata/_edit_use_anchors_ = true
 
-[node name="InteractionUI" parent="CanvasLayer"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
+[node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -63,6 +53,5 @@ rotation = -0.0072907577
 hidden_x = 500.0
 shown_x = -300.0
 panel_bg_color = Color(0.38340002, 0.40167004, 0.54, 1)
-script = null
 
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
