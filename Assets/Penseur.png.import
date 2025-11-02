@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mpufb18lf87e"
-path="res://.godot/imported/Bald.png-1a1ede2c0d91bb4b85902424d75b56aa.ctex"
+uid="uid://fp22i4d8ix6q"
+path="res://.godot/imported/Penseur.png-991ee08563d17dad8d1106dcb9c69b6b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Data/purple sprites/Bald.png"
-dest_files=["res://.godot/imported/Bald.png-1a1ede2c0d91bb4b85902424d75b56aa.ctex"]
+source_file="res://Assets/Penseur.png"
+dest_files=["res://.godot/imported/Penseur.png-991ee08563d17dad8d1106dcb9c69b6b.ctex"]
 
 [params]
 

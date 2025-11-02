@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fp22i4d8ix6q"
-path="res://.godot/imported/Penseur.png-5bd55161cd0da879c0dc599e51d64237.ctex"
+uid="uid://bkteh4tblo0sb"
+path="res://.godot/imported/Fleet Commander.png-3c890d538f6b710303470220fdb14030.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Data/purple sprites/Penseur.png"
-dest_files=["res://.godot/imported/Penseur.png-5bd55161cd0da879c0dc599e51d64237.ctex"]
+source_file="res://Assets/Fleet Commander.png"
+dest_files=["res://.godot/imported/Fleet Commander.png-3c890d538f6b710303470220fdb14030.ctex"]
 
 [params]
 
