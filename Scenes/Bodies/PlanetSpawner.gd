@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var planet_scene: PackedScene = preload("res://Scenes/Bodies/planet.tscn")
-@onready var bodies_container: Node2D = get_node("../Environment/Bodies") # Adjust path if needede
+@onready var bodies_container: Node2D = get_node("../Environment/Bodies") # Adjust path if needed
 
 func spawn_planet(
 	position: Vector2,

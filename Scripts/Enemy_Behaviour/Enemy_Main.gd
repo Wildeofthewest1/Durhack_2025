@@ -48,8 +48,7 @@ func assign_behaviour() -> void:
 
 func attach_weapons() -> void:
 	var weapon_scenes = [
-		preload("res://Scenes/Enemy_Weapons/pistol.tscn"),
-		preload("res://Scenes/Enemy_Weapons/shotgun.tscn")
+		preload("res://Scenes/Enemy_Weapons/pistol.tscn")
 	]
 
 	if not has_node("WeaponSlots"):
@@ -102,7 +101,7 @@ func _spawn_escort() -> void:
 		escort_type,                            # enemy_type
 		spawn_position,                         # position
 		"ranged",                               # behaviour_type
-		["res://Scenes/Enemy_Weapons/shotgun.tscn"], # weapons
+		["res://Scenes/Enemy_Weapons/Pistol.tscn"], # weapons
 		150.0,                                  # speed
 		120,                                    # health
 		true,                                   # rotate_toward_player

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scripts/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
 [ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scripts/enemy_spawner.gd" id="4_3dryh"]
-[ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/PlanetSpawner.gd" id="5_wowpa"]
+[ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/Bodies/PlanetSpawner.gd" id="4_wowpa"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wowpa")
@@ -24,7 +24,7 @@ script = ExtResource("2_qxrlw")
 script = ExtResource("4_3dryh")
 
 [node name="PlanetSpawner" type="Node2D" parent="."]
-script = ExtResource("5_wowpa")
+script = ExtResource("4_wowpa")
 
 [node name="PlayerContainer" type="Node2D" parent="."]
 

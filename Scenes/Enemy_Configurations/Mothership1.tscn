@@ -56,3 +56,9 @@ dot_color = Color(0.9823325, 0, 0.04619918, 1)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
 position = Vector2(-82, -50)
 polygon = PackedVector2Array(100, -100, 100, 200, -300, 200, -300, -100)
+
+[node name="Minimap2" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_s0htu")
+target_node = NodePath("..")
+dot_shape = 3
+dot_color = Color(0.9823325, 0, 0.04619918, 1)

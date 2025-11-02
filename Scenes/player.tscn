@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=12 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scripts/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -12,6 +12,10 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f1ek2"]
+radius = 4.0
+height = 14.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("thrust") groups=["player"]]
 self_modulate = Color(0.44313726, 0.28235295, 0.39607844, 1)
@@ -55,6 +59,10 @@ script = ExtResource("5_fkybt")
 weapon_scene = ExtResource("6_3smsa")
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["player"]]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_f1ek2")
 
 [connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
 [connection signal="area_exited" from="Area2D" to="Area2D" method="_on_area_exited"]

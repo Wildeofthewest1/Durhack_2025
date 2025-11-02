@@ -8,10 +8,8 @@
 radius = 7.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-
 collision_layer = 0
 collision_mask = 16
-
 script = ExtResource("1_ow0xe")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -33,7 +31,8 @@ position = Vector2(-10, 4)
 
 [node name="Weapons" type="Node2D" parent="."]
 
-[node name="Minimap" type="Node2D" parent="."]
+[node name="Minimap" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("3_nk1mc")
+target_node = NodePath("..")
 dot_shape = 2
 dot_color = Color(0.9823325, 0, 0.04619918, 1)
