@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dytxm3igl8nvq"]
+[gd_scene load_steps=6 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scripts/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
 [ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scripts/enemy_spawner.gd" id="4_3dryh"]
+[ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/node_2d.gd" id="5_wowpa"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wowpa")
@@ -28,3 +29,6 @@ script = ExtResource("2_qxrlw")
 
 [node name="EnemySpawner" type="Node2D" parent="."]
 script = ExtResource("4_3dryh")
+
+[node name="PlanetSpawner" type="Node2D" parent="."]
+script = ExtResource("5_wowpa")
