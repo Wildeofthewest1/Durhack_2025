@@ -20,7 +20,7 @@ script = ExtResource("1_wowpa")
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_qxrlw")
 
-[node name="EnemySpawner" type="Node2D" parent="." groups=["EnemySpawner"]]
+[node name="EnemySpawner" type="Node2D" parent="."]
 script = ExtResource("4_3dryh")
 
 [node name="PlanetSpawner" type="Node2D" parent="."]

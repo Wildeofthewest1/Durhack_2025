@@ -1,21 +1,38 @@
 extends CharacterBody2D
 
+@export var faceplayer: bool = false
 @export var speed: float = 100.0
 @export var health: int = 100
+
+@export var rotation_speed: float = 3.0
+@export var detectionradius: float = 1000
+
+# Escort system (for motherships only)
+@export var escort_type: String = "Enemy1"
+@export var escort_count: int = 2
+@export var escort_offset: float = 150.0
+@export var escort_respawn_delay: float = 3.0
+
 var behaviour_type: String = "default"
 var behaviour: Node = null
 var player: Node2D
+var spawner: Node
+var escorts: int = 0
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
+	spawner = get_tree().get_first_node_in_group("EnemySpawner")
+	
 	assign_behaviour()
 	attach_weapons()
+
 
 func assign_behaviour() -> void:
 	var behaviour_paths = {
 		"melee": "res://Scripts/Enemy_Behaviour/melee_behaviour.gd",
 		"ranged": "res://Scripts/Enemy_Behaviour/ranged_behaviour.gd",
-		"charger": "res://Scripts/Enemy_Behaviour/charger_behaviour.gd"
+		"charger": "res://Scripts/Enemy_Behaviour/charger_behaviour.gd",
+		"mothership": "res://Scripts/Enemy_Behaviour/mothership_behaviour.gd",
 	}
 
 	var script_path: String = behaviour_paths.get(behaviour_type, behaviour_paths["ranged"])
@@ -30,7 +47,6 @@ func assign_behaviour() -> void:
 
 
 func attach_weapons() -> void:
-	# ⚠️ Weapon scenes must be .tscn files, not .gd
 	var weapon_scenes = [
 		preload("res://Scenes/Enemy_Weapons/pistol.tscn"),
 		preload("res://Scenes/Enemy_Weapons/shotgun.tscn")
@@ -42,7 +58,6 @@ func attach_weapons() -> void:
 
 	var weapon_slots = $WeaponSlots.get_children()
 
-	# Create a container if missing
 	if not has_node("Weapons"):
 		var weapons_node = Node2D.new()
 		weapons_node.name = "Weapons"
@@ -58,9 +73,47 @@ func attach_weapons() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if player:
+	if player and faceplayer:
 		var direction: Vector2 = player.global_position - global_position
-		rotation = direction.angle() + deg_to_rad(-90)
+
+		var desired_angle: float = direction.angle() + deg_to_rad(-90)
+		rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
 
 	if behaviour:
 		behaviour.update(delta)
+	
+	if not faceplayer:
+		_check_escort_status()
+
+
+func _spawn_escort() -> void:
+	if not spawner or health <= 0:
+		return
+
+	# Stop if we already have enough escorts
+	if escorts >= escort_count:
+		return
+
+	var angle = TAU / escort_count
+	var offset = Vector2(cos(angle), sin(angle)) * escort_offset
+	var spawn_position = global_position + offset
+
+	var escort = spawner.spawn_enemy(
+		escort_type,                            # enemy_type
+		spawn_position,                         # position
+		"ranged",                               # behaviour_type
+		["res://Scenes/Enemy_Weapons/shotgun.tscn"], # weapons
+		150.0,                                  # speed
+		120,                                    # health
+		true,                                   # rotate_toward_player
+		100                                     # detectionradius
+	)
+
+		
+func _check_escort_status() -> void:
+	# Spawn replacements until we reach escort_count
+	if escorts < escort_count:
+		print(escorts)
+		_spawn_escort()
+		escorts += 1
+		

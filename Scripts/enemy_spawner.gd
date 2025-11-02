@@ -5,7 +5,10 @@ extends Node2D
 @export var enemy_scenes: Dictionary = {
 	"Enemy1": "res://Scenes/Enemy_Configurations/Enemy1.tscn",
 	"Enemy2": "res://Scenes/Enemy_Configurations/Enemy2.tscn",
-	"Enemy3": "res://Scenes/Enemy_Configurations/Enemy3.tscn"
+	"Enemy3": "res://Scenes/Enemy_Configurations/Enemy3.tscn",
+	"Enemy4": "res://Scenes/Enemy_Configurations/Enemy4.tscn",
+	"Mothership1": "res://Scenes/Enemy_Configurations/Mothership1.tscn",
+	"Mothership2": "res://Scenes/Enemy_Configurations/Mothership2.tscn"
 }
 
 func spawn_enemy(
@@ -14,7 +17,9 @@ func spawn_enemy(
 	behaviour_type: String = "ranged",
 	weapons: Array = [],
 	speed: float = 100.0,
-	health: int = 100
+	health: int = 100,
+	faceplayer: bool = true,
+	detectionradius: float = 1000
 ) -> void:
 	# Ensure the type exists
 	if not enemy_scenes.has(enemy_type):
@@ -38,6 +43,10 @@ func spawn_enemy(
 		enemy.speed = speed
 	if "health" in enemy:
 		enemy.health = health
+	if "faceplayer" in enemy:
+		enemy.faceplayer = faceplayer
+	if "detectionradius" in enemy:
+		enemy.detectionradius = detectionradius
 
 	# Add to world
 	enemies_container.add_child(enemy)

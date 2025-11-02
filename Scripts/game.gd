@@ -1,9 +1,13 @@
 extends Node2D
 
-func _ready():
+# Track which enemy to spawn next
+var enemy_types = ["Enemy1", "Enemy2", "Enemy3", "Enemy4", "Mothership1", "Mothership2"]
+var current_enemy_index: int = 0
+
+func _ready() -> void:
 	print("Game script ready")
-<<<<<<< HEAD
 	var spawner = $PlanetSpawner
+	var spawner2 = $EnemySpawner
 	var planets = {
 		"Star": {
 			"position": Vector2(883, 540),
@@ -65,10 +69,63 @@ func _ready():
 			p["radius"],
 			p["colour"]
 		)
-=======
->>>>>>> parent of 8500381 (f)
+	# Example: inside your spawner or game controller
+	var enemies = {
+		"Mothership2": {
+			"type": "Mothership2",
+			"position": Vector2(500, 300),
+			"behaviour": "mothership",
+			"weapons": ["res://Scenes/Enemy_Weapons/shotgun.tscn"],
+			"speed": 20,
+			"health": 1000,
+			"rotate_toward_player": false,
+			"detectionradius": 1000
+		},
+		"Enemy1": {
+			"type": "Enemy1",
+			"position": Vector2(-800, 400),
+			"behaviour": "ranged",
+			"weapons": ["res://Scenes/Enemy_Weapons/pistol.tscn"],
+			"speed": 150,
+			"health": 80,
+			"rotate_toward_player": true,
+			"detectionradius": 500
+		},
+		"Enemy2": {
+			"type": "Enemy2",
+			"position": Vector2(-1000, 200),
+			"behaviour": "ranged",
+			"weapons": ["res://Scenes/Enemy_Weapons/shotgun.tscn"],
+			"speed": 120,
+			"health": 100,
+			"rotate_toward_player": true,
+			"detectionradius": 500
+		},
+		"Enemy3": {
+			"type": "Enemy3",
+			"position": Vector2(-1000, 200),
+			"behaviour": "ranged",
+			"weapons": ["res://Scenes/Enemy_Weapons/pistol.tscn"],
+			"speed": 100,
+			"health": 200,
+			"rotate_toward_player": true,
+			"detectionradius": 500
+		}
+	}
+	for name2 in enemies.keys():
+		var e = enemies[name2]
+		spawner2.spawn_enemy(
+			e["type"],
+			e["position"],
+			e["behaviour"],
+			e["weapons"],
+			e["speed"],
+			e["health"],
+			e["rotate_toward_player"],
+			e["detectionradius"]
+		)
 
-
+	
 func _on_spawn_enemy_button_pressed() -> void:
 	var player = $PlayerContainer/Player
 	var spawner = $EnemySpawner
@@ -78,17 +135,24 @@ func _on_spawn_enemy_button_pressed() -> void:
 
 	var angle: float = randf() * TAU
 	var distance: float = randf_range(min_distance, max_distance)
-
 	var offset: Vector2 = Vector2(cos(angle), sin(angle)) * distance
-	var spawn_position: Vector2 = player.global_position + offset  # <-- typed
-	
-	
-	print("button pressed")
+	var spawn_position: Vector2 = player.global_position + offset
+
+	# Pick the next enemy type in the cycle
+	var enemy_type = enemy_types[current_enemy_index]
+	print("Spawning:", enemy_type)
+
+	# Call your spawner
 	spawner.spawn_enemy(
-	"Enemy1",
-	spawn_position,
-	"ranged",
-	["res://Scenes/Enemy_Weapons/pistol.tscn"],
-	150.0,
-	120
-)
+		enemy_type,
+		spawn_position,
+		"ranged",
+		["res://Scenes/Enemy_Weapons/shotgun.tscn"],
+		150.0,
+		120,
+		false,
+		100
+	)
+
+	# Move to the next enemy type, wrapping around
+	current_enemy_index = (current_enemy_index + 1) % enemy_types.size()
