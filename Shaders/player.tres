@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cynyba7yprm84"]
+
+[ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Scenes/playerGlow.gdshader" id="1_habbc"]
+
+[resource]
+shader = ExtResource("1_habbc")
+shader_parameter/base_color = Color(0.6392157, 0.40784314, 0.57254905, 1)
+shader_parameter/intensity = 1.5
+shader_parameter/spread = 1.0
+shader_parameter/pulse_speed = 5.0000002375

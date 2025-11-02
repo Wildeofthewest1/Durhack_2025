@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://86i1caic40vk"]
+
+[ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="1_qm23y"]
+[ext_resource type="Script" uid="uid://c1m0xop4tgopj" path="res://Scenes/particles/thrust.gd" id="2_jvplp"]
+
+[sub_resource type="Gradient" id="Gradient_qm23y"]
+offsets = PackedFloat32Array(0, 0.07067138, 0.19081272, 0.39929327, 0.81272084)
+colors = PackedColorArray(0.44313726, 0.28235295, 0.39607844, 1, 0.44313726, 0.28235295, 0.39607844, 1, 0.6784314, 1, 0.9411765, 1, 0.68, 1, 0.9413333, 1, 1, 0.30650002, 0.26999998, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jvplp"]
+gradient = SubResource("Gradient_qm23y")
+
+[sub_resource type="Curve" id="Curve_qm23y"]
+_data = [Vector2(0, 0.5134042), 0.0, 0.0, 0, 0, Vector2(1, 0.18133539), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jvplp"]
+curve = SubResource("Curve_qm23y")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jvplp"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-10, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+inherit_velocity_ratio = 1.0
+direction = Vector3(-1, 0, 0)
+spread = 2.0
+flatness = 0.096
+initial_velocity_min = 200.0
+initial_velocity_max = 250.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.01
+scale_max = 0.01
+scale_curve = SubResource("CurveTexture_jvplp")
+color_ramp = SubResource("GradientTexture1D_jvplp")
+turbulence_enabled = true
+turbulence_noise_strength = 0.5
+turbulence_noise_scale = 7.0
+
+[node name="thrust" type="GPUParticles2D"]
+z_index = -1
+amount = 100
+texture = ExtResource("1_qm23y")
+lifetime = 0.25
+explosiveness = 0.16
+process_material = SubResource("ParticleProcessMaterial_jvplp")
+script = ExtResource("2_jvplp")

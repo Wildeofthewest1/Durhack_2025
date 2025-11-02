@@ -1,0 +1,171 @@
+[gd_scene load_steps=2 format=3 uid="uid://rp1733dafbo0"]
+
+[ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scripts/UI/InteractionUI.gd" id="1_dekh7"]
+
+[node name="InteractionUI" type="Control" groups=["InteractUI"]]
+texture_filter = 1
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 3
+anchors_preset = 0
+size_flags_vertical = 3
+script = ExtResource("1_dekh7")
+panel_bg_color = Color(0.35380003, 0.49044, 0.61, 1)
+
+[node name="PortraitPanel" type="Control" parent="."]
+custom_minimum_size = Vector2(1000, 1000)
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -1300.0
+offset_top = 600.0
+offset_right = -300.0
+offset_bottom = 1600.0
+grow_vertical = 2
+scale = Vector2(5, 5)
+
+[node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
+layout_mode = 0
+
+[node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+offset_left = 800.0
+offset_right = 1400.0
+
+[node name="MainVBox" type="VBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(300, 500)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="HBoxContainer" parent="Panel/MainVBox/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="CommsTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Comms"
+
+[node name="FleetTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fleet"
+
+[node name="ShopTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Shop"
+
+[node name="CloseButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "X (E)"
+
+[node name="ContentMarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="TabContainer" type="Control" parent="Panel/MainVBox/ContentMarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CommsPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 0
+
+[node name="CommsVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+offset_right = 500.0
+offset_bottom = 434.0
+theme_override_constants/separation = 12
+
+[node name="PlanetNameLabel" type="Label" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Planet Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(500, 250)
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Dialogue will appear here..."
+
+[node name="ReplyButtonsHolder" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="FleetPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 0
+
+[node name="FleetVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+theme_override_constants/separation = 12
+
+[node name="FleetList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AssignSelectedButton" type="Button" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Assign To Planet"
+
+[node name="ShopPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 0
+
+[node name="ShopVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+theme_override_constants/separation = 12
+
+[node name="ShopList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BuyButton" type="Button" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Buy Item"
+
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/CommsTabButton" to="." method="show_comms_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/FleetTabButton" to="." method="show_fleet_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/ShopTabButton" to="." method="show_shop_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/CloseButton" to="." method="close_button_pressed"]

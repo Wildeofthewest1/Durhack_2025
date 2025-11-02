@@ -1,191 +1,141 @@
 extends Control
 class_name PlayerUI
 
-signal upgrade_selected(upgrade_id: String)
-signal fleet_ship_selected(ship_index: int)
-signal item_used(slot_index: int)
+signal weapon_equipped(slot_index: int, weapon_id: String)
+signal fleet_ship_equipped(slot_index: int, ship_id: String)
+signal shop_item_purchased(item_id: String, item_type: String)
+signal upgrade_purchased(upgrade_id: String)
 
 # Player stats
 var player_name: String = "Commander"
 var player_level: int = 1
-var player_credits: int = 1000
+var player_credits: int = 10000
 
-# Upgrades data structure:
-# {
-#   "id": "upgrade_name",
-#   "name": "Display Name",
-#   "description": "What it does",
-#   "level": 0,
-#   "max_level": 5,
-#   "cost": 100,
-#   "icon": Texture2D
-# }
-var upgrades: Array[Dictionary] = []
+# Weapon system - 2 slots (melee + ranged)
+var equipped_weapons: Array[Dictionary] = [{}, {}]  # [melee_slot, ranged_slot]
+var available_weapons: Array[Dictionary] = []  # All weapons player owns
 
-# Fleet data structure:
-# {
-#   "name": "Ship Name",
-#   "type": "Fighter/Cruiser/etc",
-#   "icon": Texture2D,
-#   "stats": {"health": 100, "damage": 25, "speed": 300}
-# }
-var fleet: Array[Dictionary] = []
+# Fleet system - Player's fleet slots
+var player_fleet_slots: Array[Dictionary] = []  # Ships player can deploy
+var max_fleet_size: int = 3
 
-# Inventory (same as before)
+# NPC/Planet fleet (when interacting)
+var npc_fleet_slots: Array[Dictionary] = []  # Shown when talking to someone
+
+# Shop system (context-dependent)
+var shop_weapons: Array[Dictionary] = []
+var shop_ships: Array[Dictionary] = []
+var shop_upgrades: Array[Dictionary] = []
+
+# Upgrades (player and planet-based)
+var player_upgrades: Array[Dictionary] = []
+var planet_upgrades: Array[Dictionary] = []
+
+# Inventory (simplified - mainly for resources/consumables)
 var inventory_data: Array[Dictionary] = []
-var hotbar_data: Array[Dictionary] = []
-@export var hotbar_slots: int = 10
 
-# UI Nodes
+# UI Sections
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var main_vbox: VBoxContainer = $ScrollContainer/MainVBox
 
-# Section containers (created dynamically)
 var stats_section: VBoxContainer
-var upgrades_section: VBoxContainer
+var weapons_section: VBoxContainer
 var fleet_section: VBoxContainer
+var npc_fleet_section: VBoxContainer  # Only shows when interacting
+var shop_section: VBoxContainer
+var upgrades_section: VBoxContainer
 var inventory_section: VBoxContainer
 
 func _ready() -> void:
+	# Initialize weapon slots
+	equipped_weapons.resize(2)
+	player_fleet_slots.resize(max_fleet_size)
+	
 	_build_ui()
-	_populate_example_data()
 	_refresh_all()
 
 func _build_ui() -> void:
 	if not main_vbox:
 		return
 	
-	# Clear existing children
-	for child: Node in main_vbox.get_children():
+	# Clear existing
+	for child in main_vbox.get_children():
 		child.queue_free()
 	
-	# Build Player Stats Section
-	stats_section = _create_section("PLAYER STATUS")
+	# Build sections
+	stats_section = _create_section("⚔️ PLAYER STATUS")
 	main_vbox.add_child(stats_section)
 	
-	# Build Upgrades Section
-	upgrades_section = _create_section("UPGRADES")
-	main_vbox.add_child(upgrades_section)
+	weapons_section = _create_section("🔫 WEAPONS (2 SLOTS)")
+	main_vbox.add_child(weapons_section)
 	
-	# Build Fleet Section
-	fleet_section = _create_section("FLEET")
+	fleet_section = _create_section("🚀 YOUR FLEET")
 	main_vbox.add_child(fleet_section)
 	
-	# Build Inventory Section
-	inventory_section = _create_section("INVENTORY")
+	npc_fleet_section = _create_section("🛸 THEIR FLEET")
+	npc_fleet_section.visible = false  # Hidden by default
+	main_vbox.add_child(npc_fleet_section)
+	
+	shop_section = _create_section("🛒 SHOP")
+	main_vbox.add_child(shop_section)
+	
+	upgrades_section = _create_section("⬆️ UPGRADES")
+	main_vbox.add_child(upgrades_section)
+	
+	inventory_section = _create_section("📦 INVENTORY")
 	main_vbox.add_child(inventory_section)
 
 func _create_section(title: String) -> VBoxContainer:
 	var section: VBoxContainer = VBoxContainer.new()
 	section.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	
-	# Title
 	var title_label: Label = Label.new()
 	title_label.text = title
-	title_label.add_theme_font_size_override("font_size", 16)
+	title_label.add_theme_font_size_override("font_size", 14)
 	section.add_child(title_label)
 	
-	# Separator
 	var separator: HSeparator = HSeparator.new()
 	section.add_child(separator)
 	
-	# Content container
 	var content: VBoxContainer = VBoxContainer.new()
 	content.name = "Content"
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	section.add_child(content)
 	
-	# Spacer
 	var spacer: Control = Control.new()
 	spacer.custom_minimum_size.y = 10
 	section.add_child(spacer)
 	
 	return section
 
-func _populate_example_data() -> void:
-	# Example upgrades
-	upgrades = [
-		{
-			"id": "engine",
-			"name": "Engine Upgrade",
-			"description": "Increases ship speed",
-			"level": 2,
-			"max_level": 5,
-			"cost": 250,
-			"icon": null
-		},
-		{
-			"id": "shields",
-			"name": "Shield Generator",
-			"description": "Increases shield capacity",
-			"level": 1,
-			"max_level": 5,
-			"cost": 300,
-			"icon": null
-		},
-		{
-			"id": "weapons",
-			"name": "Weapon System",
-			"description": "Increases weapon damage",
-			"level": 3,
-			"max_level": 5,
-			"cost": 400,
-			"icon": null
-		}
-	]
-	
-	# Example fleet
-	fleet = [
-		{
-			"name": "Vanguard",
-			"type": "Fighter",
-			"icon": null,
-			"stats": {"health": 100, "damage": 25, "speed": 350}
-		},
-		{
-			"name": "Sentinel",
-			"type": "Cruiser",
-			"icon": null,
-			"stats": {"health": 250, "damage": 50, "speed": 200}
-		}
-	]
-	
-	# Initialize hotbar
-	hotbar_data.resize(hotbar_slots)
-
 func _refresh_all() -> void:
 	_refresh_stats()
-	_refresh_upgrades()
+	_refresh_weapons()
 	_refresh_fleet()
+	_refresh_npc_fleet()
+	_refresh_shop()
+	_refresh_upgrades()
 	_refresh_inventory()
 
-# === STATS SECTION ===
-
+# === STATS ===
 func _refresh_stats() -> void:
-	if not stats_section:
-		return
-	
-	var content: VBoxContainer = stats_section.get_node("Content") as VBoxContainer
+	var content: VBoxContainer = stats_section.get_node("Content")
 	if not content:
 		return
 	
-	# Clear existing
-	for child: Node in content.get_children():
+	for child in content.get_children():
 		child.queue_free()
 	
-	# Player name
 	var name_label: Label = Label.new()
-	name_label.text = "Name: " + player_name
+	name_label.text = "👤 " + player_name
 	content.add_child(name_label)
 	
-	# Level
 	var level_label: Label = Label.new()
-	level_label.text = "Level: " + str(player_level)
+	level_label.text = "⭐ Level: " + str(player_level)
 	content.add_child(level_label)
 	
-	# Credits
 	var credits_label: Label = Label.new()
-	credits_label.text = "Credits: " + str(player_credits)
+	credits_label.text = "💰 Credits: " + str(player_credits)
 	content.add_child(credits_label)
 
 func set_player_stats(name: String, level: int, credits: int) -> void:
@@ -194,412 +144,423 @@ func set_player_stats(name: String, level: int, credits: int) -> void:
 	player_credits = credits
 	_refresh_stats()
 
-# === UPGRADES SECTION ===
-
-func _refresh_upgrades() -> void:
-	if not upgrades_section:
-		return
-	
-	var content: VBoxContainer = upgrades_section.get_node("Content") as VBoxContainer
+# === WEAPONS ===
+func _refresh_weapons() -> void:
+	var content: VBoxContainer = weapons_section.get_node("Content")
 	if not content:
 		return
 	
-	# Clear existing
-	for child: Node in content.get_children():
+	for child in content.get_children():
 		child.queue_free()
 	
-	# Create upgrade entries
-	for upgrade: Dictionary in upgrades:
-		var upgrade_panel: PanelContainer = _create_upgrade_panel(upgrade)
-		content.add_child(upgrade_panel)
-
-func _create_upgrade_panel(upgrade: Dictionary) -> PanelContainer:
-	var panel: PanelContainer = PanelContainer.new()
-	panel.custom_minimum_size.y = 60
+	# Show 2 equipment slots
+	var slots_label: Label = Label.new()
+	slots_label.text = "Equipment Slots:"
+	slots_label.add_theme_font_size_override("font_size", 12)
+	content.add_child(slots_label)
 	
+	# Melee slot
+	var melee_slot: HBoxContainer = _create_weapon_slot(0, "⚔️ MELEE", equipped_weapons[0])
+	content.add_child(melee_slot)
+	
+	# Ranged slot
+	var ranged_slot: HBoxContainer = _create_weapon_slot(1, "🔫 RANGED", equipped_weapons[1])
+	content.add_child(ranged_slot)
+	
+	# Available weapons list
+	if not available_weapons.is_empty():
+		var available_label: Label = Label.new()
+		available_label.text = "\nAvailable Weapons:"
+		available_label.add_theme_font_size_override("font_size", 12)
+		content.add_child(available_label)
+		
+		for weapon in available_weapons:
+			var weapon_panel: PanelContainer = _create_weapon_item(weapon)
+			content.add_child(weapon_panel)
+	else:
+		var empty_label: Label = Label.new()
+		empty_label.text = "\nNo weapons owned. Buy from shop!"
+		empty_label.add_theme_font_size_override("font_size", 10)
+		content.add_child(empty_label)
+
+func _create_weapon_slot(slot_index: int, slot_name: String, equipped_weapon: Dictionary) -> HBoxContainer:
+	var hbox: HBoxContainer = HBoxContainer.new()
+	hbox.custom_minimum_size.y = 50
+	
+	var slot_label: Label = Label.new()
+	slot_label.text = slot_name + ": "
+	slot_label.custom_minimum_size.x = 100
+	hbox.add_child(slot_label)
+	
+	if equipped_weapon.is_empty():
+		var empty_label: Label = Label.new()
+		empty_label.text = "[Empty Slot]"
+		empty_label.modulate = Color(0.6, 0.6, 0.6)
+		hbox.add_child(empty_label)
+	else:
+		var weapon_name: Label = Label.new()
+		weapon_name.text = equipped_weapon.get("name", "Unknown")
+		weapon_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(weapon_name)
+		
+		var unequip_btn: Button = Button.new()
+		unequip_btn.text = "Unequip"
+		unequip_btn.pressed.connect(_on_unequip_weapon.bind(slot_index))
+		hbox.add_child(unequip_btn)
+	
+	return hbox
+
+func _create_weapon_item(weapon: Dictionary) -> PanelContainer:
+	var panel: PanelContainer = PanelContainer.new()
 	var hbox: HBoxContainer = HBoxContainer.new()
 	panel.add_child(hbox)
 	
-	# Icon (placeholder)
-	var icon_rect: TextureRect = TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(48, 48)
-	icon_rect.texture = upgrade.get("icon", null)
-	icon_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	hbox.add_child(icon_rect)
-	
-	# Info
-	var info_vbox: VBoxContainer = VBoxContainer.new()
-	info_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hbox.add_child(info_vbox)
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(vbox)
 	
 	var name_label: Label = Label.new()
-	name_label.text = upgrade.get("name", "Unknown")
-	info_vbox.add_child(name_label)
+	name_label.text = weapon.get("name", "Unknown")
+	vbox.add_child(name_label)
 	
-	var desc_label: Label = Label.new()
-	desc_label.text = upgrade.get("description", "")
-	desc_label.add_theme_font_size_override("font_size", 10)
-	info_vbox.add_child(desc_label)
+	var type_label: Label = Label.new()
+	var weapon_type: String = weapon.get("type", "melee")
+	type_label.text = "Type: " + weapon_type.capitalize() + " | DMG: " + str(weapon.get("damage", 0))
+	type_label.add_theme_font_size_override("font_size", 10)
+	vbox.add_child(type_label)
 	
-	var level_label: Label = Label.new()
-	var current_level: int = upgrade.get("level", 0)
-	var max_level: int = upgrade.get("max_level", 5)
-	level_label.text = "Level: %d/%d" % [current_level, max_level]
-	info_vbox.add_child(level_label)
-	
-	# Upgrade button
-	if current_level < max_level:
-		var upgrade_button: Button = Button.new()
-		upgrade_button.text = "Upgrade (%d)" % upgrade.get("cost", 0)
-		upgrade_button.custom_minimum_size.x = 100
-		upgrade_button.pressed.connect(_on_upgrade_button_pressed.bind(upgrade.get("id", "")))
-		hbox.add_child(upgrade_button)
-	else:
-		var max_label: Label = Label.new()
-		max_label.text = "MAX"
-		max_label.custom_minimum_size.x = 100
-		max_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		hbox.add_child(max_label)
+	# Equip button
+	var slot_index: int = 0 if weapon_type == "melee" else 1
+	var equip_btn: Button = Button.new()
+	equip_btn.text = "Equip"
+	equip_btn.pressed.connect(_on_equip_weapon.bind(slot_index, weapon.get("id", "")))
+	hbox.add_child(equip_btn)
 	
 	return panel
 
-func _on_upgrade_button_pressed(upgrade_id: String) -> void:
-	upgrade_selected.emit(upgrade_id)
-	
-	# Find and upgrade
-	for upgrade: Dictionary in upgrades:
-		if upgrade.get("id", "") == upgrade_id:
-			var cost: int = upgrade.get("cost", 0)
-			if player_credits >= cost:
-				player_credits -= cost
-				upgrade["level"] = upgrade.get("level", 0) + 1
-				upgrade["cost"] = int(upgrade["cost"] * 1.5)  # Increase cost for next level
-				_refresh_upgrades()
-				_refresh_stats()
-			break
+func _on_equip_weapon(slot_index: int, weapon_id: String) -> void:
+	# Find weapon
+	for weapon in available_weapons:
+		if weapon.get("id", "") == weapon_id:
+			equipped_weapons[slot_index] = weapon.duplicate()
+			weapon_equipped.emit(slot_index, weapon_id)
+			_refresh_weapons()
+			return
 
-func add_upgrade(upgrade: Dictionary) -> void:
-	upgrades.append(upgrade)
-	_refresh_upgrades()
+func _on_unequip_weapon(slot_index: int) -> void:
+	equipped_weapons[slot_index] = {}
+	_refresh_weapons()
 
-# === FLEET SECTION ===
+func add_weapon(weapon: Dictionary) -> void:
+	available_weapons.append(weapon)
+	_refresh_weapons()
 
+# === FLEET ===
 func _refresh_fleet() -> void:
-	if not fleet_section:
-		return
-	
-	var content: VBoxContainer = fleet_section.get_node("Content") as VBoxContainer
+	var content: VBoxContainer = fleet_section.get_node("Content")
 	if not content:
 		return
 	
-	# Clear existing
-	for child: Node in content.get_children():
+	for child in content.get_children():
 		child.queue_free()
 	
-	if fleet.is_empty():
-		var empty_label: Label = Label.new()
-		empty_label.text = "No ships in fleet"
-		content.add_child(empty_label)
-		return
+	var slots_label: Label = Label.new()
+	slots_label.text = "Fleet Deployment Slots (" + str(max_fleet_size) + " max):"
+	slots_label.add_theme_font_size_override("font_size", 12)
+	content.add_child(slots_label)
 	
-	# Create fleet entries
-	for i: int in range(fleet.size()):
-		var ship: Dictionary = fleet[i]
-		var ship_panel: PanelContainer = _create_fleet_panel(ship, i)
-		content.add_child(ship_panel)
+	# Show fleet slots
+	for i in range(max_fleet_size):
+		var slot_panel: PanelContainer = _create_fleet_slot(i, player_fleet_slots[i] if i < player_fleet_slots.size() else {})
+		content.add_child(slot_panel)
 
-func _create_fleet_panel(ship: Dictionary, index: int) -> PanelContainer:
+func _create_fleet_slot(slot_index: int, ship: Dictionary) -> PanelContainer:
 	var panel: PanelContainer = PanelContainer.new()
-	panel.custom_minimum_size.y = 80
-	
 	var hbox: HBoxContainer = HBoxContainer.new()
 	panel.add_child(hbox)
 	
-	# Icon
-	var icon_rect: TextureRect = TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(64, 64)
-	icon_rect.texture = ship.get("icon", null)
-	icon_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	hbox.add_child(icon_rect)
+	var slot_label: Label = Label.new()
+	slot_label.text = "Slot " + str(slot_index + 1) + ": "
+	slot_label.custom_minimum_size.x = 80
+	hbox.add_child(slot_label)
 	
-	# Info
-	var info_vbox: VBoxContainer = VBoxContainer.new()
-	info_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hbox.add_child(info_vbox)
+	if ship.is_empty():
+		var empty_label: Label = Label.new()
+		empty_label.text = "[Empty - No ship assigned]"
+		empty_label.modulate = Color(0.6, 0.6, 0.6)
+		hbox.add_child(empty_label)
+	else:
+		var vbox: VBoxContainer = VBoxContainer.new()
+		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(vbox)
+		
+		var name_label: Label = Label.new()
+		name_label.text = ship.get("name", "Unknown")
+		vbox.add_child(name_label)
+		
+		var stats: Dictionary = ship.get("stats", {})
+		var stats_label: Label = Label.new()
+		stats_label.text = "HP:%d | DMG:%d | SPD:%d" % [stats.get("health", 0), stats.get("damage", 0), stats.get("speed", 0)]
+		stats_label.add_theme_font_size_override("font_size", 9)
+		vbox.add_child(stats_label)
+		
+		var remove_btn: Button = Button.new()
+		remove_btn.text = "Remove"
+		remove_btn.pressed.connect(_on_remove_fleet_ship.bind(slot_index))
+		hbox.add_child(remove_btn)
+	
+	return panel
+
+func _on_remove_fleet_ship(slot_index: int) -> void:
+	if slot_index < player_fleet_slots.size():
+		player_fleet_slots[slot_index] = {}
+		_refresh_fleet()
+
+func add_fleet_ship_to_slot(ship: Dictionary, slot_index: int) -> void:
+	if slot_index >= 0 and slot_index < max_fleet_size:
+		while player_fleet_slots.size() <= slot_index:
+			player_fleet_slots.append({})
+		player_fleet_slots[slot_index] = ship.duplicate()
+		fleet_ship_equipped.emit(slot_index, ship.get("id", ""))
+		_refresh_fleet()
+
+# === NPC FLEET (shown during interactions) ===
+func _refresh_npc_fleet() -> void:
+	var content: VBoxContainer = npc_fleet_section.get_node("Content")
+	if not content:
+		return
+	
+	for child in content.get_children():
+		child.queue_free()
+	
+	if npc_fleet_slots.is_empty():
+		npc_fleet_section.visible = false
+		return
+	
+	npc_fleet_section.visible = true
+	
+	for i in range(npc_fleet_slots.size()):
+		var ship: Dictionary = npc_fleet_slots[i]
+		if not ship.is_empty():
+			var ship_panel: PanelContainer = _create_npc_fleet_display(ship)
+			content.add_child(ship_panel)
+
+func _create_npc_fleet_display(ship: Dictionary) -> PanelContainer:
+	var panel: PanelContainer = PanelContainer.new()
+	var vbox: VBoxContainer = VBoxContainer.new()
+	panel.add_child(vbox)
 	
 	var name_label: Label = Label.new()
 	name_label.text = ship.get("name", "Unknown Ship")
-	info_vbox.add_child(name_label)
+	vbox.add_child(name_label)
 	
 	var type_label: Label = Label.new()
 	type_label.text = ship.get("type", "Unknown Type")
 	type_label.add_theme_font_size_override("font_size", 10)
-	info_vbox.add_child(type_label)
+	vbox.add_child(type_label)
 	
-	# Stats
 	var stats: Dictionary = ship.get("stats", {})
 	var stats_label: Label = Label.new()
-	stats_label.text = "HP: %d | DMG: %d | SPD: %d" % [
-		stats.get("health", 0),
-		stats.get("damage", 0),
-		stats.get("speed", 0)
-	]
+	stats_label.text = "HP:%d | DMG:%d | SPD:%d" % [stats.get("health", 0), stats.get("damage", 0), stats.get("speed", 0)]
 	stats_label.add_theme_font_size_override("font_size", 9)
-	info_vbox.add_child(stats_label)
-	
-	# Select button
-	var select_button: Button = Button.new()
-	select_button.text = "Select"
-	select_button.custom_minimum_size.x = 80
-	select_button.pressed.connect(_on_fleet_ship_selected.bind(index))
-	hbox.add_child(select_button)
+	vbox.add_child(stats_label)
 	
 	return panel
 
-func _on_fleet_ship_selected(index: int) -> void:
-	fleet_ship_selected.emit(index)
+func set_npc_fleet(fleet: Array[Dictionary]) -> void:
+	npc_fleet_slots = fleet.duplicate(true)
+	_refresh_npc_fleet()
 
-func add_fleet_ship(ship: Dictionary) -> void:
-	fleet.append(ship)
-	_refresh_fleet()
+func clear_npc_fleet() -> void:
+	npc_fleet_slots.clear()
+	_refresh_npc_fleet()
 
-func remove_fleet_ship(index: int) -> void:
-	if index >= 0 and index < fleet.size():
-		fleet.remove_at(index)
-		_refresh_fleet()
+# === SHOP ===
+func _refresh_shop() -> void:
+	var content: VBoxContainer = shop_section.get_node("Content")
+	if not content:
+		return
+	
+	for child in content.get_children():
+		child.queue_free()
+	
+	var total_items: int = shop_weapons.size() + shop_ships.size() + shop_upgrades.size()
+	
+	if total_items == 0:
+		var empty_label: Label = Label.new()
+		empty_label.text = "No items for sale (interact with stations to shop)"
+		content.add_child(empty_label)
+		return
+	
+	# Weapons for sale
+	if not shop_weapons.is_empty():
+		var weapons_header: Label = Label.new()
+		weapons_header.text = "🔫 WEAPONS:"
+		weapons_header.add_theme_font_size_override("font_size", 12)
+		content.add_child(weapons_header)
+		
+		for weapon in shop_weapons:
+			var item_panel: PanelContainer = _create_shop_item(weapon, "weapon")
+			content.add_child(item_panel)
+	
+	# Ships for sale
+	if not shop_ships.is_empty():
+		var ships_header: Label = Label.new()
+		ships_header.text = "\n🚀 SHIPS:"
+		ships_header.add_theme_font_size_override("font_size", 12)
+		content.add_child(ships_header)
+		
+		for ship in shop_ships:
+			var item_panel: PanelContainer = _create_shop_item(ship, "ship")
+			content.add_child(item_panel)
+	
+	# Upgrades for sale
+	if not shop_upgrades.is_empty():
+		var upgrades_header: Label = Label.new()
+		upgrades_header.text = "\n⬆️ UPGRADES:"
+		upgrades_header.add_theme_font_size_override("font_size", 12)
+		content.add_child(upgrades_header)
+		
+		for upgrade in shop_upgrades:
+			var item_panel: PanelContainer = _create_shop_item(upgrade, "upgrade")
+			content.add_child(item_panel)
 
-# === INVENTORY SECTION ===
+func _create_shop_item(item: Dictionary, item_type: String) -> PanelContainer:
+	var panel: PanelContainer = PanelContainer.new()
+	var hbox: HBoxContainer = HBoxContainer.new()
+	panel.add_child(hbox)
+	
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(vbox)
+	
+	var name_label: Label = Label.new()
+	name_label.text = item.get("name", "Unknown")
+	vbox.add_child(name_label)
+	
+	var desc_label: Label = Label.new()
+	desc_label.text = item.get("description", "")
+	desc_label.add_theme_font_size_override("font_size", 10)
+	vbox.add_child(desc_label)
+	
+	var price: int = item.get("price", 0)
+	var can_afford: bool = player_credits >= price
+	
+	var buy_btn: Button = Button.new()
+	buy_btn.text = str(price) + " CR"
+	buy_btn.disabled = not can_afford
+	buy_btn.pressed.connect(_on_buy_shop_item.bind(item.get("id", ""), item_type))
+	hbox.add_child(buy_btn)
+	
+	return panel
 
+func _on_buy_shop_item(item_id: String, item_type: String) -> void:
+	var item_array: Array[Dictionary] = []
+	match item_type:
+		"weapon": item_array = shop_weapons
+		"ship": item_array = shop_ships
+		"upgrade": item_array = shop_upgrades
+	
+	for item in item_array:
+		if item.get("id", "") == item_id:
+			var price: int = item.get("price", 0)
+			if player_credits >= price:
+				player_credits -= price
+				
+				# Add to player's inventory based on type
+				match item_type:
+					"weapon":
+						add_weapon(item.duplicate())
+					"ship":
+						# Find empty slot and add
+						for i in range(max_fleet_size):
+							if i >= player_fleet_slots.size() or player_fleet_slots[i].is_empty():
+								add_fleet_ship_to_slot(item.duplicate(), i)
+								break
+					"upgrade":
+						player_upgrades.append(item.duplicate())
+						_refresh_upgrades()
+				
+				shop_item_purchased.emit(item_id, item_type)
+				_refresh_stats()
+				_refresh_shop()
+			return
+
+func add_shop_weapon(weapon: Dictionary) -> void:
+	shop_weapons.append(weapon)
+	_refresh_shop()
+
+func add_shop_ship(ship: Dictionary) -> void:
+	shop_ships.append(ship)
+	_refresh_shop()
+
+func add_shop_upgrade(upgrade: Dictionary) -> void:
+	shop_upgrades.append(upgrade)
+	_refresh_shop()
+
+func clear_shop() -> void:
+	shop_weapons.clear()
+	shop_ships.clear()
+	shop_upgrades.clear()
+	_refresh_shop()
+
+# === UPGRADES ===
+func _refresh_upgrades() -> void:
+	var content: VBoxContainer = upgrades_section.get_node("Content")
+	if not content:
+		return
+	
+	for child in content.get_children():
+		child.queue_free()
+	
+	if player_upgrades.is_empty() and planet_upgrades.is_empty():
+		var empty_label: Label = Label.new()
+		empty_label.text = "No upgrades installed"
+		content.add_child(empty_label)
+		return
+	
+	if not player_upgrades.is_empty():
+		var player_header: Label = Label.new()
+		player_header.text = "🧑 Player Upgrades:"
+		player_header.add_theme_font_size_override("font_size", 12)
+		content.add_child(player_header)
+		
+		for upgrade in player_upgrades:
+			var upgrade_label: Label = Label.new()
+			upgrade_label.text = "• " + upgrade.get("name", "Unknown")
+			content.add_child(upgrade_label)
+	
+	if not planet_upgrades.is_empty():
+		var planet_header: Label = Label.new()
+		planet_header.text = "\n🌍 Planet Upgrades:"
+		planet_header.add_theme_font_size_override("font_size", 12)
+		content.add_child(planet_header)
+		
+		for upgrade in planet_upgrades:
+			var upgrade_label: Label = Label.new()
+			upgrade_label.text = "• " + upgrade.get("name", "Unknown")
+			content.add_child(upgrade_label)
+
+# === INVENTORY ===
 func _refresh_inventory() -> void:
-	if not inventory_section:
-		return
-	
-	var content: VBoxContainer = inventory_section.get_node("Content") as VBoxContainer
+	var content: VBoxContainer = inventory_section.get_node("Content")
 	if not content:
 		return
 	
-	# Clear existing
-	for child: Node in content.get_children():
+	for child in content.get_children():
 		child.queue_free()
 	
-	# Hotbar label
-	var hotbar_label: Label = Label.new()
-	hotbar_label.text = "HOTBAR (1-0 to use)"
-	hotbar_label.add_theme_font_size_override("font_size", 12)
-	content.add_child(hotbar_label)
-	
-	# Hotbar container
-	var hotbar_container: HBoxContainer = HBoxContainer.new()
-	hotbar_container.alignment = BoxContainer.ALIGNMENT_CENTER
-	content.add_child(hotbar_container)
-	
-	# Create hotbar slots
-	for i: int in range(hotbar_slots):
-		var slot_button: Button = Button.new()
-		slot_button.custom_minimum_size = Vector2(40, 40)
-		slot_button.name = "HotbarSlot" + str(i)
-		
-		# Icon
-		var icon: TextureRect = TextureRect.new()
-		icon.name = "Icon"
-		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		icon.anchors_preset = Control.PRESET_FULL_RECT
-		slot_button.add_child(icon)
-		
-		# Quantity
-		var quantity: Label = Label.new()
-		quantity.name = "Quantity"
-		quantity.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		quantity.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		quantity.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		quantity.anchors_preset = Control.PRESET_FULL_RECT
-		slot_button.add_child(quantity)
-		
-		slot_button.pressed.connect(_on_hotbar_slot_pressed.bind(i))
-		hotbar_container.add_child(slot_button)
-	
-	# Separator
-	var separator: HSeparator = HSeparator.new()
-	content.add_child(separator)
-	
-	# Inventory label
-	var inv_label: Label = Label.new()
-	inv_label.text = "STORAGE"
-	inv_label.add_theme_font_size_override("font_size", 12)
-	content.add_child(inv_label)
-	
-	# Inventory grid
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.custom_minimum_size.y = 150
-	content.add_child(scroll)
-	
-	var grid: GridContainer = GridContainer.new()
-	grid.name = "InventoryGrid"
-	grid.columns = 5
-	grid.add_theme_constant_override("h_separation", 4)
-	grid.add_theme_constant_override("v_separation", 4)
-	scroll.add_child(grid)
-	
-	_refresh_hotbar_display()
-	_refresh_inventory_grid()
-
-func _refresh_hotbar_display() -> void:
-	if not inventory_section:
+	if inventory_data.is_empty():
+		var empty_label: Label = Label.new()
+		empty_label.text = "Empty inventory"
+		content.add_child(empty_label)
 		return
 	
-	var content: VBoxContainer = inventory_section.get_node("Content") as VBoxContainer
-	if not content:
-		return
-	
-	for i: int in range(hotbar_slots):
-		var slot: Button = content.find_child("HotbarSlot" + str(i), true, false) as Button
-		if not slot:
-			continue
-		
-		var icon: TextureRect = slot.get_node_or_null("Icon") as TextureRect
-		var quantity_label: Label = slot.get_node_or_null("Quantity") as Label
-		
-		if i >= hotbar_data.size() or hotbar_data[i].is_empty():
-			if icon:
-				icon.texture = null
-			if quantity_label:
-				quantity_label.text = ""
-		else:
-			var item: Dictionary = hotbar_data[i]
-			if icon:
-				icon.texture = item.get("icon", null)
-			if quantity_label:
-				var qty: int = item.get("quantity", 1)
-				quantity_label.text = str(qty) if qty > 1 else ""
+	for item in inventory_data:
+		var item_label: Label = Label.new()
+		item_label.text = "• " + item.get("name", "Unknown") + " x" + str(item.get("quantity", 1))
+		content.add_child(item_label)
 
-func _refresh_inventory_grid() -> void:
-	if not inventory_section:
-		return
-	
-	var grid: GridContainer = inventory_section.find_child("InventoryGrid", true, false) as GridContainer
-	if not grid:
-		return
-	
-	# Clear grid
-	for child: Node in grid.get_children():
-		child.queue_free()
-	
-	# Add items
-	for i: int in range(inventory_data.size()):
-		var item: Dictionary = inventory_data[i]
-		var slot: Button = Button.new()
-		slot.custom_minimum_size = Vector2(50, 50)
-		
-		var icon: TextureRect = TextureRect.new()
-		icon.texture = item.get("icon", null)
-		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		icon.anchors_preset = Control.PRESET_FULL_RECT
-		slot.add_child(icon)
-		
-		var quantity_label: Label = Label.new()
-		quantity_label.text = str(item.get("quantity", 1))
-		quantity_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		quantity_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		quantity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		quantity_label.anchors_preset = Control.PRESET_FULL_RECT
-		slot.add_child(quantity_label)
-		
-		slot.pressed.connect(_on_inventory_slot_pressed.bind(i))
-		grid.add_child(slot)
-
-func _on_hotbar_slot_pressed(slot_index: int) -> void:
-	use_hotbar_item(slot_index)
-
-func _on_inventory_slot_pressed(_slot_index: int) -> void:
-	# Could implement drag to hotbar here
-	pass
-
-func use_hotbar_item(hotbar_index: int) -> void:
-	if hotbar_index < 0 or hotbar_index >= hotbar_slots:
-		return
-	
-	var item: Dictionary = hotbar_data[hotbar_index]
-	if item.is_empty():
-		return
-	
-	item_used.emit(hotbar_index)
-	
-	# Decrease quantity
-	var quantity: int = item.get("quantity", 1)
-	if quantity > 1:
-		item["quantity"] = quantity - 1
-		_refresh_hotbar_display()
-	else:
-		remove_from_hotbar(hotbar_index)
-
-func add_item(item: Dictionary) -> bool:
-	# Try to stack
-	for i: int in range(inventory_data.size()):
-		if _can_stack(inventory_data[i], item):
-			inventory_data[i]["quantity"] = inventory_data[i].get("quantity", 1) + item.get("quantity", 1)
-			_refresh_inventory_grid()
-			return true
-	
-	# Add new
-	inventory_data.append(item.duplicate())
-	_refresh_inventory_grid()
-	return true
-
-func remove_item(slot_index: int, quantity: int = 1) -> bool:
-	if slot_index < 0 or slot_index >= inventory_data.size():
-		return false
-	
-	var item: Dictionary = inventory_data[slot_index]
-	var current_quantity: int = item.get("quantity", 1)
-	
-	if current_quantity <= quantity:
-		inventory_data.remove_at(slot_index)
-	else:
-		item["quantity"] = current_quantity - quantity
-	
-	_refresh_inventory_grid()
-	return true
-
-func add_to_hotbar(item: Dictionary, hotbar_index: int) -> bool:
-	if hotbar_index < 0 or hotbar_index >= hotbar_slots:
-		return false
-	
-	hotbar_data[hotbar_index] = item.duplicate()
-	_refresh_hotbar_display()
-	return true
-
-func remove_from_hotbar(hotbar_index: int) -> bool:
-	if hotbar_index < 0 or hotbar_index >= hotbar_slots:
-		return false
-	
-	hotbar_data[hotbar_index] = {}
-	_refresh_hotbar_display()
-	return true
-
-func _can_stack(item1: Dictionary, item2: Dictionary) -> bool:
-	if item1.is_empty() or item2.is_empty():
-		return false
-	return item1.get("name", "") == item2.get("name", "") and \
-		   item1.get("type", "") == item2.get("type", "")
-
-func _input(event: InputEvent) -> void:
-	if not visible:
-		return
-	
-	if event is InputEventKey:
-		var key_event: InputEventKey = event as InputEventKey
-		if key_event.pressed:
-			var key_code: int = key_event.keycode
-			if key_code >= KEY_1 and key_code <= KEY_9:
-				var slot: int = key_code - KEY_1
-				if slot < hotbar_slots:
-					use_hotbar_item(slot)
-			elif key_code == KEY_0:
-				if hotbar_slots > 9:
-					use_hotbar_item(9)
+func add_inventory_item(item: Dictionary) -> void:
+	inventory_data.append(item)
+	_refresh_inventory()

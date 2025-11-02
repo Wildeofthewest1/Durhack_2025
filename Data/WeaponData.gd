@@ -1,7 +1,7 @@
 # Godot 4.x
 @tool
-extends Resource
 class_name WeaponData
+extends Resource
 
 
 @export var display_name: String = "Pistol"

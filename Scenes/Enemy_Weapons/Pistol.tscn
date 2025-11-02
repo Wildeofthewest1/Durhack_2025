@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://kl0qubvyote6"]
+
+[ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="2_ybfki"]
+
+[node name="Pistol" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_ybfki")

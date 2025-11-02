@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://dcbvpreahnt2f"]
+
+[ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scripts/player.gd" id="1_6t5aa"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="2_cvnsp"]
+[ext_resource type="Material" uid="uid://cynyba7yprm84" path="res://Shaders/player.tres" id="3_f1ek2"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_vgqql"]
+[ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="5_fkybt"]
+[ext_resource type="PackedScene" uid="uid://l7t5l70jepnw" path="res://Scenes/Weapons/pistol.tscn" id="6_3smsa"]
+[ext_resource type="Script" path="res://Scripts/PlayerInteraction.gd" id="7_3smsa"]
+[ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
+radius = 100.0
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("thrust") groups=["player"]]
+self_modulate = Color(0.44313726, 0.28235295, 0.39607844, 1)
+motion_mode = 1
+script = ExtResource("1_6t5aa")
+thrust_accel = 200.0
+max_speed = 300.0
+thrust = NodePath("thrust")
+
+[node name="thrust" parent="." instance=ExtResource("8_f1ek2")]
+
+[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("1_v0iea")
+target_node = NodePath("..")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+material = ExtResource("3_f1ek2")
+rotation = -1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_cvnsp")
+region_enabled = true
+region_rect = Rect2(224, 4, 96, 172)
+
+[node name="Trail" parent="." instance=ExtResource("4_vgqql")]
+material = ExtResource("3_f1ek2")
+body_path = NodePath("..")
+color = Color(1, 1, 1, 1)
+
+[node name="WeaponManager" type="Node2D" parent="."]
+script = ExtResource("5_fkybt")
+weapon_scene = ExtResource("6_3smsa")
+
+[node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("7_3smsa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_3smsa")

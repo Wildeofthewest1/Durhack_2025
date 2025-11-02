@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://l7t5l70jepnw"]
+
+[ext_resource type="Script" uid="uid://ceyinrly14k5j" path="res://Scripts/Weapons/pistol.gd" id="1_aq3ds"]
+[ext_resource type="Resource" uid="uid://bi01ro1j5gj7h" path="res://Data/pistol.tres" id="2_0qusy"]
+[ext_resource type="PackedScene" uid="uid://cgav1qmt2iach" path="res://Scenes/Weapons/pistol_bullet.tscn" id="2_olife"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_njh1v"]
+
+[node name="pistol" type="Node2D"]
+position = Vector2(1, 0)
+script = ExtResource("1_aq3ds")
+bullet_scene = ExtResource("2_olife")
+muzzle_velocity = null
+damage = null
+data = ExtResource("2_0qusy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+material = SubResource("ShaderMaterial_njh1v")
+position = Vector2(7, 0)
+scale = Vector2(0.5, 0.1)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(12, 0)

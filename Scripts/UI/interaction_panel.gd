@@ -84,8 +84,14 @@ func collapse_panel() -> void:
 	if panel_container:
 		panel_container.visible = false
 	panel_closed.emit()
+	
+	# Notify parent that panel was closed (for cleanup)
+	var parent_ui: Node = get_parent()
+	if parent_ui and parent_ui.has_method("_on_panel_closed"):
+		parent_ui._on_panel_closed()
 
 func switch_to_tab(tab: PanelTab) -> void:
+	print("InteractionPanel: Switching to tab ", tab)
 	current_tab = tab
 	_update_tab_visibility()
 	
@@ -98,6 +104,7 @@ func switch_to_tab(tab: PanelTab) -> void:
 		PanelTab.INFO:
 			tab_name = "info"
 	
+	print("  Tab name: ", tab_name)
 	tab_changed.emit(tab_name)
 	
 	# Auto-expand when switching tabs
@@ -105,12 +112,16 @@ func switch_to_tab(tab: PanelTab) -> void:
 		expand_panel()
 
 func _update_tab_visibility() -> void:
+	print("InteractionPanel: Updating tab visibility for tab ", current_tab)
 	if player_content:
 		player_content.visible = current_tab == PanelTab.PLAYER
+		print("  player_content.visible = ", player_content.visible)
 	if talk_content:
 		talk_content.visible = current_tab == PanelTab.TALK
+		print("  talk_content.visible = ", talk_content.visible)
 	if info_content:
 		info_content.visible = current_tab == PanelTab.INFO
+		print("  info_content.visible = ", info_content.visible)
 
 func _on_player_tab_pressed() -> void:
 	switch_to_tab(PanelTab.PLAYER)

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://n1jhbwdhyp73"]
+
+[node name="twin_bullet" type="CharacterBody2D"]
+motion_mode = 1
+
+[node name="ReadonlyGravity" type="Node" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.04)

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://blelx7tsviryj"]
+
+[ext_resource type="Script" uid="uid://b0c14765wnqhs" path="res://Scripts/Fleet/FleetModel.gd" id="1_kfh47"]
+[ext_resource type="Texture2D" uid="uid://0v6ehb2vbp27" path="res://Assets/Drones.png" id="2_ygpg6"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_ib72j"]
+
+[node name="Fleet_2" type="CharacterBody2D"]
+script = ExtResource("1_kfh47")
+orbit_radius = 50.0
+tangent_mode = false
+rotation_speed = 20.0
+drone_name = "Mosquito"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+rotation = 1.572919
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_ygpg6")
+region_enabled = true
+region_rect = Rect2(16, 160, 367, 96)
+
+[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_ib72j")
+target_node = NodePath("..")
+dot_shape = 1
+dot_color = Color(0.2376, 0.72, 0.34212002, 1)

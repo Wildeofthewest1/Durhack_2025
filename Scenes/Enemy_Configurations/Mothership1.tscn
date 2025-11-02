@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8n0xpaa8r6v5"]
+
+[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_phqtb"]
+[ext_resource type="Texture2D" uid="uid://c41kwkdfvri6t" path="res://Assets/Mothership.png" id="2_phqtb"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_s0htu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ahgkp"]
+radius = 42.0
+height = 206.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_phqtb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_phqtb")
+region_enabled = true
+region_rect = Rect2(254.8359, 61.73094, 572.239, 132.42213)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-178, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_ahgkp")
+
+[node name="WeaponSlots" type="Node2D" parent="."]
+
+[node name="Slot1" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-140, 35)
+
+[node name="Slot2" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-175, 35)
+
+[node name="Slot3" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-217, 35)
+
+[node name="Slot4" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-142, -35)
+
+[node name="Slot5" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-172, -35)
+
+[node name="Slot6" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-217, -35)
+
+[node name="Weapons" type="Node2D" parent="."]
+
+[node name="Minimap" type="Node2D" parent="."]
+script = ExtResource("3_s0htu")
+dot_shape = 2
+dot_color = Color(0.9823325, 0, 0.04619918, 1)
+
+[node name="VisionCone" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
+position = Vector2(-82, -50)
+polygon = PackedVector2Array(100, -100, 100, 200, -300, 200, -300, -100)
+
+[node name="Minimap2" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_s0htu")
+target_node = NodePath("..")
+dot_shape = 3
+dot_color = Color(0.9823325, 0, 0.04619918, 1)

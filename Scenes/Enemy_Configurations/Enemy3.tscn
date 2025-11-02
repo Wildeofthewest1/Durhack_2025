@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3qxxlia265bv"]
+
+[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_n0yk8"]
+[ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_ahgkp"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_ahgkp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iyo2w"]
+radius = 7.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("1_n0yk8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_ahgkp")
+region_enabled = true
+region_rect = Rect2(138.90848, 5.918166, 23.164536, 13.175374)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_iyo2w")
+
+[node name="WeaponSlots" type="Node2D" parent="."]
+
+[node name="Slot1" type="Node2D" parent="WeaponSlots"]
+position = Vector2(10, 4)
+
+[node name="Slot2" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-10, 4)
+
+[node name="Weapons" type="Node2D" parent="."]
+
+[node name="Minimap" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_ahgkp")
+target_node = NodePath("..")
+dot_shape = 2
+dot_color = Color(0.9823325, 0, 0.04619918, 1)

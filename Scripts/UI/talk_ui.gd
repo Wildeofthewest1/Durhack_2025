@@ -4,12 +4,10 @@ class_name TalkUI
 signal option_selected(option_index: int)
 
 @export var typing_speed: float = 0.05  # Time between characters
-@export var show_speaker_sprite: bool = true
 
-@onready var speaker_sprite: TextureRect = $MarginContainer/MainContainer/SpriteContainer/SpeakerSprite
-@onready var speaker_name_label: Label = $MarginContainer/MainContainer/DialogueContainer/SpeakerName
-@onready var dialogue_label: RichTextLabel = $MarginContainer/MainContainer/DialogueContainer/DialogueText
-@onready var options_container: VBoxContainer = $MarginContainer/MainContainer/DialogueContainer/OptionsContainer
+@onready var speaker_name_label: Label = $MarginContainer/DialogueContainer/SpeakerName
+@onready var dialogue_label: RichTextLabel = $MarginContainer/DialogueContainer/DialogueText
+@onready var options_container: VBoxContainer = $MarginContainer/DialogueContainer/OptionsContainer
 
 var dialogue_system: DialogueSystem
 var is_typing: bool = false
@@ -18,6 +16,9 @@ var visible_characters: int = 0
 var typing_timer: float = 0.0
 
 func _ready() -> void:
+	# Allow mouse interaction with this control
+	mouse_filter = Control.MOUSE_FILTER_PASS
+	
 	if not dialogue_system:
 		dialogue_system = DialogueSystem.new()
 		add_child(dialogue_system)
@@ -25,8 +26,6 @@ func _ready() -> void:
 	dialogue_system.dialogue_started.connect(_on_dialogue_started)
 	dialogue_system.dialogue_ended.connect(_on_dialogue_ended)
 	dialogue_system.node_changed.connect(_on_node_changed)
-	
-	visible = false
 
 func _process(delta: float) -> void:
 	if is_typing:
@@ -42,24 +41,40 @@ func _process_typing(delta: float) -> void:
 		if dialogue_label:
 			dialogue_label.visible_characters = visible_characters
 		
+		# Check if finished typing
 		if visible_characters >= current_text.length():
 			is_typing = false
+			if dialogue_label:
+				dialogue_label.visible_characters = -1  # Show all
 
-func start_dialogue(dialogue_data: Dictionary, start_node: String = "start", speaker_texture: Texture2D = null) -> void:
+func start_dialogue(dialogue_data: Dictionary, start_node: String = "start", _speaker_texture: Texture2D = null) -> void:
 	dialogue_system.load_dialogue(dialogue_data)
 	dialogue_system.start_dialogue(start_node)
 	
-	if speaker_sprite and speaker_texture:
-		speaker_sprite.texture = speaker_texture
-		speaker_sprite.visible = true
-	elif speaker_sprite:
-		speaker_sprite.visible = false
-	
-	visible = true
+	# Make sure we're visible
+	if speaker_name_label:
+		speaker_name_label.visible = true
+	if dialogue_label:
+		dialogue_label.visible = true
+	if options_container:
+		options_container.visible = true
 
 func end_dialogue() -> void:
 	dialogue_system.end_dialogue()
-	visible = false
+	# Don't hide the whole UI, just clear the dialogue content
+	_clear_dialogue_display()
+	
+	# Notify parent UI to hide speaker portrait
+	var interaction_ui: Node = get_tree().get_first_node_in_group("interaction_ui")
+	if interaction_ui and "speaker_portrait" in interaction_ui:
+		interaction_ui.speaker_portrait.visible = false
+
+func _clear_dialogue_display() -> void:
+	if dialogue_label:
+		dialogue_label.text = ""
+	if speaker_name_label:
+		speaker_name_label.text = ""
+	_clear_options()
 
 func skip_typing() -> void:
 	if is_typing and dialogue_label:
@@ -85,10 +100,23 @@ func _display_current_node() -> void:
 	if dialogue_label:
 		dialogue_label.text = text
 		dialogue_label.visible_characters = 0
+		dialogue_label.visible = true
 	
-	# Clear and create option buttons
+	# Clear and create option buttons IMMEDIATELY (not after typing)
 	_clear_options()
 	_create_option_buttons(options)
+	
+	# Make options visible and interactable right away
+	if options_container:
+		options_container.visible = true
+		options_container.mouse_filter = Control.MOUSE_FILTER_PASS
+		
+		# Ensure all buttons are enabled and can receive mouse input
+		for child in options_container.get_children():
+			if child is Button:
+				var btn: Button = child as Button
+				btn.disabled = false
+				btn.mouse_filter = Control.MOUSE_FILTER_STOP  # Capture clicks
 
 func _clear_options() -> void:
 	if not options_container:
@@ -118,13 +146,20 @@ func _on_dialogue_started() -> void:
 	_display_current_node()
 
 func _on_dialogue_ended() -> void:
-	visible = false
+	# Don't hide the UI, just clear the content
+	_clear_dialogue_display()
+	
+	# Notify parent UI to hide speaker portrait
+	var interaction_ui: Node = get_tree().get_first_node_in_group("interaction_ui")
+	if interaction_ui and "speaker_portrait" in interaction_ui:
+		interaction_ui.speaker_portrait.visible = false
 
 func _on_node_changed(_node_id: String) -> void:
 	_display_current_node()
 
 func _input(event: InputEvent) -> void:
-	if not visible:
+	# Only process input if dialogue is actually active
+	if not dialogue_system or not dialogue_system.is_dialogue_active():
 		return
 	
 	if event is InputEventKey:
@@ -150,8 +185,3 @@ func get_dialogue_system() -> DialogueSystem:
 
 func is_dialogue_active() -> bool:
 	return dialogue_system.is_dialogue_active() if dialogue_system else false
-
-func set_speaker_sprite(texture: Texture2D) -> void:
-	if speaker_sprite:
-		speaker_sprite.texture = texture
-		speaker_sprite.visible = texture != null

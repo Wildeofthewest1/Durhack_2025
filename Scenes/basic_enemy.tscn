@@ -1,31 +1,25 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6jxij2qsvta0"]
+[gd_scene load_steps=5 format=3 uid="uid://c6jxij2qsvta0"]
 
-[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_naotq"]
+[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_mbxfi"]
 [ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_fecjr"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_lal1l"]
-[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_r4aor"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lal1l"]
 
 [node name="Basic_Enemy" type="CharacterBody2D"]
-script = ExtResource("1_naotq")
+script = ExtResource("1_mbxfi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_fecjr")
 region_enabled = true
-region_rect = Rect2(95.716484, -0.30929852, 39.69651, 23.756992)
+region_rect = Rect2(94.91571, 0, 41.432587, 24.34489)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_lal1l")
 
-[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("3_lal1l")
 target_node = NodePath("..")
 dot_shape = 2
-dot_color = Color(1, 0.120000005, 0.120000005, 1)
-
-[node name="Trail" parent="." instance=ExtResource("4_r4aor")]
-body_path = NodePath("..")
-max_points = 100
-color = Color(0.68, 0.23800002, 0.23800002, 1)
+dot_color = Color(0.8912906, 4.1873755e-06, 8.663535e-07, 1)

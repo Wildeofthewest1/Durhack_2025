@@ -1,88 +1,74 @@
+# trading_station.gd
 extends Interactable
 
-func _ready() -> void:
+func _ready():
 	super._ready()
 	
-	# Configure this station
-	interaction_name = "Deep Space Station Alpha"
-	interactable_type = "Station"
+	interaction_name = "Weapons Depot"
+	#interaction_sprite = preload("res://Assets/weapons_depot.png")
 	has_dialogue = true
-	dialogue_start_node = "start"
 	
-	# Set up example dialogue
-	var dialogue_data: Dictionary = {
+	set_dialogue_data({
 		"start": {
-			"text": "Welcome to Deep Space Station Alpha. The alien invasion is coming in 400 years. We must prepare!",
-			"speaker": "Station Commander",
+			"text": "Welcome to the Weapons Depot! Check the shop in the Player tab.",
+			"speaker": "Arms Dealer",
 			"options": [
-				{"text": "What can I do to help?", "next": "help", "id": "ask_help"},
-				{"text": "Tell me about the station.", "next": "station_info", "id": "ask_info"},
-				{"text": "I need supplies.", "next": "supplies", "id": "ask_supplies"},
-				{"text": "Goodbye.", "next": "end", "id": "goodbye"}
+				{"text": "Show me your weapons", "next": "weapons"},
+				{"text": "Goodbye", "next": "end"}
 			]
 		},
-		"help": {
-			"text": "We need resources to build defensive structures. Mining operations in the asteroid belt would be invaluable.",
-			"speaker": "Station Commander",
+		"weapons": {
+			"text": "Press Tab and check the Shop section!",
+			"speaker": "Arms Dealer",
 			"options": [
-				{"text": "I'll start mining operations.", "next": "mining", "id": "accept_mining"},
-				{"text": "What else can I do?", "next": "other_tasks", "id": "ask_more"},
-				{"text": "Let me think about it.", "next": "end", "id": "maybe"}
-			]
-		},
-		"station_info": {
-			"text": "This station serves as a forward outpost. We conduct research and coordinate defense preparations across the system.",
-			"speaker": "Station Commander",
-			"options": [
-				{"text": "Impressive. How can I help?", "next": "help", "id": "offer_help"},
-				{"text": "Goodbye.", "next": "end", "id": "goodbye"}
-			]
-		},
-		"supplies": {
-			"text": "Our trading bay is on deck 3. You'll find fuel, ammunition, and ship parts there.",
-			"speaker": "Station Commander",
-			"options": [
-				{"text": "Thanks. Anything else?", "next": "start", "id": "back"},
-				{"text": "That's all I needed.", "next": "end", "id": "goodbye"}
-			]
-		},
-		"mining": {
-			"text": "Excellent! Head to the asteroid belt coordinates I'm uploading to your ship. Every ton of ore helps.",
-			"speaker": "Station Commander",
-			"options": [
-				{"text": "I'm on it!", "next": "end", "id": "accept"},
-				{"text": "Actually, let me reconsider.", "next": "help", "id": "back"}
-			]
-		},
-		"other_tasks": {
-			"text": "We also need scouts to survey distant sectors and engineers to maintain our defense grid.",
-			"speaker": "Station Commander",
-			"options": [
-				{"text": "I can scout.", "next": "scout", "id": "accept_scout"},
-				{"text": "I'll help with engineering.", "next": "engineer", "id": "accept_engineer"},
-				{"text": "Let me think.", "next": "end", "id": "maybe"}
-			]
-		},
-		"scout": {
-			"text": "Perfect. Check sectors 7-12 for any anomalies. Report back with your findings.",
-			"speaker": "Station Commander",
-			"options": [
-				{"text": "Understood.", "next": "end", "id": "accept"}
-			]
-		},
-		"engineer": {
-			"text": "We need someone to calibrate the defense satellites. It's delicate work but crucial.",
-			"speaker": "Station Commander",
-			"options": [
-				{"text": "I'll get started.", "next": "end", "id": "accept"},
-				{"text": "Maybe another time.", "next": "end", "id": "decline"}
+				{"text": "Thanks!", "next": "end"}
 			]
 		}
-	}
+	})
+
+func on_interact(player: Node):
+	super.on_interact(player)
 	
-	set_dialogue_data(dialogue_data)
+	# Setup shop
+	var ui: InteractionUI = get_node("/root/Main/InteractionUI")
+	ui.player_ui.clear_shop()
 	
-	# Add custom data
-	custom_data["population"] = 1247
-	custom_data["defense_level"] = "Medium"
-	custom_data["services"] = ["Trading Bay", "Repair Dock", "Fuel Station"]
+	# Add weapons for sale
+	ui.player_ui.add_shop_weapon({
+		"id": "plasma_rifle",
+		"name": "Plasma Rifle",
+		"type": "ranged",
+		"damage": 50,
+		"fire_rate": 0.5,
+		"description": "High-energy plasma weapon",
+		"price": 500
+	})
+	
+	ui.player_ui.add_shop_weapon({
+		"id": "energy_blade",
+		"name": "Energy Blade",
+		"type": "melee",
+		"damage": 60,
+		"range": 75,
+		"description": "Superheated cutting edge",
+		"price": 350
+	})
+	
+	# Add ships
+	ui.player_ui.add_shop_ship({
+		"id": "interceptor",
+		"name": "Interceptor",
+		"type": "Fighter",
+		"stats": {"health": 150, "damage": 40, "speed": 500},
+		"description": "Fast attack fighter",
+		"price": 1500
+	})
+	
+	# Add upgrades
+	ui.player_ui.add_shop_upgrade({
+		"id": "damage_boost",
+		"name": "Weapon Amplifier",
+		"description": "+25% weapon damage",
+		"price": 750,
+		"upgrade_type": "player"
+	})

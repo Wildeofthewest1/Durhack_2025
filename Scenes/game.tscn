@@ -1,21 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://dytxm3igl8nvq"]
+[gd_scene load_steps=6 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_ebmjs"]
-[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/game.gd" id="1_wowpa"]
+[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scripts/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
-[ext_resource type="PackedScene" uid="uid://8eqw2y2go8k3" path="res://Scenes/example_station.tscn" id="2_wrm1d"]
-[ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scenes/enemy_spawner.gd" id="4_3dryh"]
+[ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scripts/enemy_spawner.gd" id="4_3dryh"]
+[ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/Bodies/PlanetSpawner.gd" id="4_wowpa"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wowpa")
-
-[node name="PlayerContainer" type="Node2D" parent="."]
-
-[node name="Player" parent="PlayerContainer" instance=ExtResource("1_ebmjs")]
-thrust_accel = 100.0
-max_speed = 300.0
-
-[node name="Enemies" type="Node2D" parent="."]
 
 [node name="Environment" type="Node2D" parent="."]
 
@@ -28,15 +20,15 @@ max_speed = 300.0
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_qxrlw")
 
-[node name="EnemySpawner" type="Node2D" parent="."]
+[node name="EnemySpawner" type="Node2D" parent="." groups=["EnemySpawner"]]
 script = ExtResource("4_3dryh")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="PlanetSpawner" type="Node2D" parent="."]
+script = ExtResource("4_wowpa")
 
-[node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
-offset_left = 100.0
-offset_top = 100.0
-offset_right = 108.0
-offset_bottom = 108.0
+[node name="PlayerContainer" type="Node2D" parent="."]
 
-[connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="." method="_on_spawn_enemy_button_pressed"]
+[node name="Player" parent="PlayerContainer" instance=ExtResource("1_ebmjs")]
+thrust_accel = 100.0
+
+[node name="Enemies" type="Node2D" parent="."]

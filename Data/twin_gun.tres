@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://ci280xfpyvw6c"]
+
+[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Data/WeaponData.gd" id="1_yvqru"]
+
+[resource]
+script = ExtResource("1_yvqru")
+display_name = "Twin"
+slot_hint = 1

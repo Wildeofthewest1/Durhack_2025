@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://lyol4qhr8xkl"]
+
+[ext_resource type="Script" uid="uid://b0c14765wnqhs" path="res://Scripts/Fleet/FleetModel.gd" id="1_qlk4x"]
+[ext_resource type="Texture2D" uid="uid://0v6ehb2vbp27" path="res://Assets/Drones.png" id="2_ggydx"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_ggydx"]
+
+[node name="Fleet_1" type="CharacterBody2D"]
+script = ExtResource("1_qlk4x")
+orbit_radius = 90.0
+orbit_speed = 2.0
+rotation_speed = 20.0
+drone_name = "Defender"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_ggydx")
+region_enabled = true
+region_rect = Rect2(32, 0, 128, 32)
+
+[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_ggydx")
+target_node = NodePath("..")
+dot_shape = 1
+dot_color = Color(0.2376, 0.72, 0.34212002, 1)

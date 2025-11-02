@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://h20jduwq8hae"]
+
+[ext_resource type="PackedScene" uid="uid://ck0eonug6qjrp" path="res://Scenes/UI/interaction_ui.tscn" id="1"]
+[ext_resource type="Script" uid="uid://l0fgfkljeenr" path="res://Scenes/UI/debug_temp.gd" id="1_344qe"]
+[ext_resource type="Script" uid="uid://cyqrvayh7wgk0" path="res://Scripts/interaction_manager.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://8eqw2y2go8k3" path="res://Scenes/example_station.tscn" id="3"]
+[ext_resource type="Script" uid="uid://bqygb3r6vageg" path="res://Scripts/example_player.gd" id="4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(40, 60)
+
+[node name="Main" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_344qe")
+
+[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+position = Vector2(576, 324)
+script = ExtResource("4")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+offset_left = -20.0
+offset_top = -30.0
+offset_right = 20.0
+offset_bottom = 30.0
+color = Color(0, 1, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="InteractionManager" type="Node" parent="Player" node_paths=PackedStringArray("player")]
+script = ExtResource("2")
+player = NodePath("..")
+
+[node name="ExampleStation" parent="." instance=ExtResource("3")]
+position = Vector2(800, 324)
+
+[node name="InteractionUI" parent="." node_paths=PackedStringArray("interaction_manager") instance=ExtResource("1")]
+interaction_manager = NodePath("../Player/InteractionManager")

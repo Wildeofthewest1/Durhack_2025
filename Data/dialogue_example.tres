@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://bsxi8j8ww1igw"]
+
+[ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_1ndxf"]
+[ext_resource type="Texture2D" uid="uid://cpgjghhm5e25" path="res://Assets/girl_2.png" id="1_e8lka"]
+
+[resource]
+script = ExtResource("1_1ndxf")
+planet_name = "Example Wasian Planet"
+portrait_texture = ExtResource("1_e8lka")
+metadata/_custom_type_script = "uid://droqswt3u80yn"

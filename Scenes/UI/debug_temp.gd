@@ -1,49 +1,76 @@
-# DEBUG SCRIPT - Attach this to your Main node temporarily
+# main.gd or game.gd
 extends Node2D
 
-@onready var interaction_manager: InteractionManager = $Player/InteractionManager
 @onready var player: CharacterBody2D = $Player
+@onready var interaction_ui: InteractionUI = $InteractionUI
+@onready var weapon_bridge: WeaponUIBridge = $Player/WeaponUIBridge
 
-func _ready() -> void:
-	print("=== INTERACTION SYSTEM DEBUG ===")
-	print("Player node: ", player)
-	print("InteractionManager node: ", interaction_manager)
-	
-	if interaction_manager:
-		print("InteractionManager.player: ", interaction_manager.player)
-		print("Detection radius: ", interaction_manager.detection_radius)
-	
-	# Check for interactables in scene
-	var interactables: Array[Node] = get_tree().get_nodes_in_group("interactables")
-	print("Interactables in scene: ", interactables.size())
-	for interactable: Node in interactables:
-		print("  - ", interactable.name, " at ", interactable.global_position)
 
-func _process(_delta: float) -> void:
-	if not player or not interaction_manager:
-		return
+	# Player can now see these in the UI and equip them!
+func _ready():
+	# Connect weapon system signals
+	interaction_ui.player_ui.weapon_equipped.connect(_on_weapon_equipped)
+	interaction_ui.player_ui.fleet_ship_equipped.connect(_on_fleet_equipped)
+	interaction_ui.player_ui.shop_item_purchased.connect(_on_item_purchased)
+	   
+	# Load your weapon data resources
+	var pistol_data: WeaponData = load("res://Data/pistol.tres")
+	var rifle_data: WeaponData = load("res://Data/twin_gun.tres")
 	
-	# Show distance to interactables
-	var interactables: Array[Node] = get_tree().get_nodes_in_group("interactables")
-	for node: Node in interactables:
-		if node is Interactable:
-			var interactable: Interactable = node as Interactable
-			var distance: float = player.global_position.distance_to(interactable.global_position)
-			
-			# Only print when nearby
-			if distance < 250:
-				print("Distance to ", interactable.interaction_name, ": ", distance)
-				print("  Can interact: ", interactable.can_be_interacted())
-				print("  In detection range: ", distance <= interaction_manager.detection_radius)
+	# Add them to the UI
+	weapon_bridge.add_weapon_to_ui(pistol_data, "pistol")
+	weapon_bridge.add_weapon_to_ui(rifle_data, "rifle")
+	
+	# Give player starting weapons
+	_setup_starting_gear()
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		var key_event: InputEventKey = event as InputEventKey
-		if key_event.pressed and key_event.keycode == KEY_E:
-			print("E key pressed!")
-			if interaction_manager:
-				var closest: Interactable = interaction_manager.get_closest_interactable()
-				print("  Closest interactable: ", closest)
-				if closest:
-					print("  Name: ", closest.interaction_name)
-					print("  Distance: ", player.global_position.distance_to(closest.global_position))
+func _on_weapon_equipped(slot_index: int, weapon_id: String):
+	# Called when player equips a weapon in the UI
+	print("Weapon equipped in slot ", slot_index, ": ", weapon_id)
+	
+	# Update player's active weapon
+	match slot_index:
+		0:  # Melee slot
+			player.equip_melee_weapon(weapon_id)
+		1:  # Ranged slot
+			player.equip_ranged_weapon(weapon_id)
+
+func _on_fleet_equipped(slot_index: int, ship_id: String):
+	# Called when player assigns ship to fleet slot
+	print("Fleet slot ", slot_index, " assigned: ", ship_id)
+	player.update_fleet_slot(slot_index, ship_id)
+
+func _on_item_purchased(item_id: String, item_type: String):
+	# Called when player buys something
+	print("Purchased: ", item_id, " (", item_type, ")")
+	
+	# Apply special effects for certain items
+	if item_type == "upgrade":
+		_apply_upgrade(item_id)
+
+func _setup_starting_gear():
+	# Give player starting weapons
+	interaction_ui.player_ui.add_weapon({
+		"id": "basic_laser",
+		"name": "Basic Laser Pistol",
+		"type": "ranged",
+		"damage": 20,
+		"fire_rate": 1.0
+	})
+	
+	interaction_ui.player_ui.add_weapon({
+		"id": "combat_knife",
+		"name": "Combat Knife",
+		"type": "melee",
+		"damage": 15,
+		"range": 50
+	})
+
+func _apply_upgrade(upgrade_id: String):
+	match upgrade_id:
+		"shield_boost":
+			player.max_shields += 50
+		"engine_upgrade":
+			player.max_speed += 100
+		"damage_boost":
+			player.damage_multiplier += 0.25
