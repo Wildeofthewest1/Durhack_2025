@@ -1,6 +1,6 @@
 extends Node
 var enemy
-var cooldown = 0.0
+#var cooldown = 0.0
 
 func update(delta):
 	if not enemy.player:
@@ -11,11 +11,11 @@ func update(delta):
 		enemy.velocity = dir * enemy.speed
 	else:
 		enemy.velocity = Vector2.ZERO
-		cooldown -= delta
-		if cooldown <= 0.0:
-			shoot()
-			cooldown = 2.0
+		#cooldown -= delta
+		#if cooldown <= 0.0:
+			#shoot()
+			#cooldown = 2.0
 	enemy.move_and_slide()
 
-func shoot():
-	print("Ranged enemy shooting at player")
+#func shoot():
+	#print("Ranged enemy shooting at player")

@@ -2,8 +2,6 @@ extends CharacterBody2D
 
 @export var speed: float = 100.0
 @export var health: int = 100
-@export var rotation_speed: float = 3.0  # 🔹 controls how quickly the enemy turns
-
 var behaviour_type: String = "default"
 var behaviour: Node = null
 var player: Node2D
@@ -34,7 +32,8 @@ func assign_behaviour() -> void:
 func attach_weapons() -> void:
 	# ⚠️ Weapon scenes must be .tscn files, not .gd
 	var weapon_scenes = [
-		preload("res://Scenes/Enemy_Weapons/pistol.tscn")
+		preload("res://Scenes/Enemy_Weapons/pistol.tscn"),
+		preload("res://Scenes/Enemy_Weapons/shotgun.tscn")
 	]
 
 	if not has_node("WeaponSlots"):
@@ -52,17 +51,16 @@ func attach_weapons() -> void:
 	for i in range(weapon_slots.size()):
 		var weapon_scene = weapon_scenes[i % weapon_scenes.size()]
 		var weapon = weapon_scene.instantiate()
+
 		weapon.global_position = weapon_slots[i].global_position
+		#weapon.owner_enemy = self
 		$Weapons.add_child(weapon)
 
 
 func _physics_process(delta: float) -> void:
 	if player:
 		var direction: Vector2 = player.global_position - global_position
-		var desired_angle: float = direction.angle() + deg_to_rad(-90)
-		
-		# 🔹 Smoothly rotate toward the player using lerp_angle
-		rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
+		rotation = direction.angle() + deg_to_rad(-90)
 
 	if behaviour:
 		behaviour.update(delta)

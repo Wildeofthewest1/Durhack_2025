@@ -1,14 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1i002v31ah7y"]
+[gd_scene load_steps=2 format=3 uid="uid://c1i002v31ah7y"]
 
 [ext_resource type="Script" uid="uid://bhl3umovm0leu" path="res://Scripts/Bodies/planet.gd" id="1_yq3du"]
-[ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="2_r2d2d"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_sy7qc"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_sy7qc"]
-radius = 26.019224
 
 [node name="Planet" type="CharacterBody2D" groups=["Planets"]]
 script = ExtResource("1_yq3du")
+<<<<<<< HEAD
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_sy7qc")
@@ -19,5 +15,8 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_r2d2d")
 
 [node name="MinimapMark" type="Node2D" parent="."]
+z_index = -1
 script = ExtResource("3_sy7qc")
 dot_size = 5.0
+=======
+>>>>>>> parent of 8500381 (f)

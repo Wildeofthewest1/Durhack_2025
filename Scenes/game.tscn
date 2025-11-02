@@ -1,19 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://dytxm3igl8nvq"]
+<<<<<<< HEAD
+<<<<<<< HEAD
+[gd_scene load_steps=6 format=3 uid="uid://cuqp3vdnbus2n"]
+=======
+[gd_scene load_steps=8 format=3 uid="uid://cuqp3vdnbus2n"]
+>>>>>>> parent of 8500381 (f)
+=======
+[gd_scene load_steps=6 format=3 uid="uid://cuqp3vdnbus2n"]
+>>>>>>> 15498c7293cc9b5afc02c30a3e2b122836fb40f8
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scripts/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
 [ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scripts/enemy_spawner.gd" id="4_3dryh"]
+<<<<<<< HEAD
+<<<<<<< HEAD
+[ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/PlanetSpawner.gd" id="5_wowpa"]
+=======
+[ext_resource type="PackedScene" uid="uid://lyol4qhr8xkl" path="res://Scenes/Fleet/fleet_1.tscn" id="6_i6g32"]
+[ext_resource type="PackedScene" uid="uid://blelx7tsviryj" path="res://Scenes/Fleet/fleet_2.tscn" id="7_1l0tm"]
+>>>>>>> parent of 8500381 (f)
+=======
+[ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/node_2d.gd" id="5_wowpa"]
+>>>>>>> 15498c7293cc9b5afc02c30a3e2b122836fb40f8
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wowpa")
-
-[node name="PlayerContainer" type="Node2D" parent="."]
-
-[node name="Player" parent="PlayerContainer" instance=ExtResource("1_ebmjs")]
-thrust_accel = 100.0
-
-[node name="Enemies" type="Node2D" parent="."]
 
 [node name="Environment" type="Node2D" parent="."]
 
@@ -28,3 +39,28 @@ script = ExtResource("2_qxrlw")
 
 [node name="EnemySpawner" type="Node2D" parent="."]
 script = ExtResource("4_3dryh")
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+[node name="PlanetSpawner" type="Node2D" parent="."]
+script = ExtResource("5_wowpa")
+
+[node name="PlayerContainer" type="Node2D" parent="."]
+
+[node name="Player" parent="PlayerContainer" instance=ExtResource("1_ebmjs")]
+thrust_accel = 100.0
+
+[node name="Enemies" type="Node2D" parent="."]
+=======
+[node name="Fleet_1" parent="." node_paths=PackedStringArray("follow_body") instance=ExtResource("6_i6g32")]
+position = Vector2(-64, -106)
+follow_body = NodePath("../PlayerContainer/Player")
+
+[node name="Fleet_2" parent="." node_paths=PackedStringArray("follow_body") instance=ExtResource("7_1l0tm")]
+position = Vector2(116, -129)
+follow_body = NodePath("../PlayerContainer/Player")
+>>>>>>> parent of 8500381 (f)
+=======
+[node name="PlanetSpawner" type="Node2D" parent="."]
+script = ExtResource("5_wowpa")
+>>>>>>> 15498c7293cc9b5afc02c30a3e2b122836fb40f8

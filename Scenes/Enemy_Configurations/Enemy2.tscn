@@ -1,22 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://dspbkdkmvmmyb"]
+[gd_scene load_steps=4 format=3 uid="uid://dspbkdkmvmmyb"]
 
 [ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scripts/Enemy_Behaviour/Enemy_Main.gd" id="1_4ncoq"]
 [ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_cld2s"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_cld2s"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iyo2w"]
-radius = 5.0
+radius = 7.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-collision_layer = 2
-collision_mask = 2
 script = ExtResource("1_4ncoq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_cld2s")
 region_enabled = true
-region_rect = Rect2(165.92229, 5.894499, 12.154007, 13.21413)
+region_rect = Rect2(138.90848, 5.918166, 23.164536, 13.175374)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_iyo2w")
@@ -24,15 +21,9 @@ shape = SubResource("CircleShape2D_iyo2w")
 [node name="WeaponSlots" type="Node2D" parent="."]
 
 [node name="Slot1" type="Node2D" parent="WeaponSlots"]
+position = Vector2(10, 4)
+
+[node name="Slot2" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-10, 4)
 
 [node name="Weapons" type="Node2D" parent="."]
-
-[node name="Minimap" type="Node2D" parent="."]
-script = ExtResource("3_cld2s")
-dot_shape = 2
-dot_color = Color(0.9823325, 0, 0.04619918, 1)
-
-[node name="VisionCone" type="Area2D" parent="."]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
-polygon = PackedVector2Array(0, 0, 100, 200, -100, 200)

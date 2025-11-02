@@ -5,14 +5,13 @@ extends Node2D
 @export var enemy_scenes: Dictionary = {
 	"Enemy1": "res://Scenes/Enemy_Configurations/Enemy1.tscn",
 	"Enemy2": "res://Scenes/Enemy_Configurations/Enemy2.tscn",
-	"Enemy3": "res://Scenes/Enemy_Configurations/Enemy3.tscn",
-	"Enemy4": "res://Scenes/Enemy_Configurations/Enemy4.tscn"
+	"Enemy3": "res://Scenes/Enemy_Configurations/Enemy3.tscn"
 }
 
 func spawn_enemy(
 	enemy_type: String,
 	position: Vector2,
-	behaviour_type: String = "default",
+	behaviour_type: String = "ranged",
 	weapons: Array = [],
 	speed: float = 100.0,
 	health: int = 100

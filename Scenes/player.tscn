@@ -1,14 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=9 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scripts/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
 [ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="2_cvnsp"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="5_fkybt"]
-[ext_resource type="Script" uid="uid://cr4xhgffbxb0j" path="res://Scripts/PlayerInteraction.gd" id="7_3smsa"]
+<<<<<<< HEAD
+=======
+[ext_resource type="PackedScene" uid="uid://l7t5l70jepnw" path="res://Scenes/Weapons/pistol.tscn" id="6_3smsa"]
+>>>>>>> 15498c7293cc9b5afc02c30a3e2b122836fb40f8
+[ext_resource type="Script" path="res://Scripts/PlayerInteraction.gd" id="7_3smsa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x3wgy"]
+radius = 6.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1
@@ -33,6 +40,7 @@ body_path = NodePath("..")
 
 [node name="WeaponManager" type="Node2D" parent="."]
 script = ExtResource("5_fkybt")
+weapon_scene = ExtResource("6_3smsa")
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
 
@@ -43,3 +51,6 @@ script = ExtResource("7_3smsa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_3smsa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_x3wgy")

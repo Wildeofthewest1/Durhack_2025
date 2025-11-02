@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn1v0cxx3hlvo"]
+
+[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_3rxta"]
+[ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="1_c6ddn"]
+
+[node name="game_ekin" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("1_c6ddn")
+
+[node name="PlayerContainer" type="Node2D" parent="."]
+
+[node name="Player" parent="PlayerContainer" instance=ExtResource("1_3rxta")]
