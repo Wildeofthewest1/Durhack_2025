@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var mass: float = 1.0
 @export var radius: float = 10.0
-@export var gravitational_constant: float = 1000.0
+@export var gravitational_constant: float = 10.0
 
 func _ready() -> void:
 	add_to_group("Planets")
@@ -21,7 +21,11 @@ func _apply_gravity_to_other_planets(delta):
 		var distance = to_other.length()
 		if distance == 0:
 			continue
-
+		
+		var min_distance = radius + other.radius
+		if distance < min_distance:
+			continue
+		
 		var direction = to_other / distance
 		var force = gravitational_constant * (mass * other.mass) / pow(distance, 2)
 		var acceleration = force / mass
