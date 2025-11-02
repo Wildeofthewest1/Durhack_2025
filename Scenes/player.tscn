@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=10 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scripts/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="5_fkybt"]
 [ext_resource type="Script" path="res://Scripts/PlayerInteraction.gd" id="7_3smsa"]
+[ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
@@ -13,11 +14,12 @@ radius = 100.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_x3wgy"]
 radius = 6.0
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("thrust") groups=["player"]]
 motion_mode = 1
 script = ExtResource("1_6t5aa")
 thrust_accel = 200.0
 max_speed = 300.0
+thrust = NodePath("thrust")
 
 [node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("1_v0iea")
@@ -49,3 +51,5 @@ shape = SubResource("CircleShape2D_3smsa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_x3wgy")
+
+[node name="thrust" parent="." instance=ExtResource("8_f1ek2")]

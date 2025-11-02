@@ -11,6 +11,7 @@ extends CharacterBody2D
 
 var a_total: Vector2 = Vector2.ZERO
 
+@export var thrust: GPUParticles2D
 
 func _ready() -> void:
 	print("[Player] ready")
@@ -49,6 +50,9 @@ func _physics_process(delta: float) -> void:
 		var d: float = to_mouse.length()
 		if d > deadzone_px:
 			a_total += (to_mouse / d) * thrust_accel
+		thrust.emitting = true
+	else:
+		thrust.emitting = false
 
 	# 2) Integrate velocity
 	velocity += a_total * delta
