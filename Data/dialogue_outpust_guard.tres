@@ -1,9 +1,7 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://d0w6updp68tea"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3 uid="uid://bhiv3uk0fn2ks"]
 
-[ext_resource type="Texture2D" uid="uid://bxevcr0cd6i31" path="res://Assets/Archivist.png" id="1_vw864"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_xwny2"]
 
 [resource]
 script = ExtResource("1_xwny2")
-portrait_texture = ExtResource("1_vw864")
 metadata/_custom_type_script = "uid://droqswt3u80yn"
