@@ -11,6 +11,7 @@ height = 10.0
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_26nlb")
+life_time = 0.2
 
 [node name="ReadonlyGravity" type="Node" parent="."]
 

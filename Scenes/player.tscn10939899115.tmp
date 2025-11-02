@@ -22,8 +22,6 @@ max_speed = 300.0
 thrust = NodePath("thrust")
 
 [node name="thrust" parent="." instance=ExtResource("8_f1ek2")]
-position = Vector2(-2, 0)
-rotation = 3.1415927
 
 [node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("1_v0iea")

@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name PlayerShip
 
 @export var initial_velocity: Vector2 = Vector2.ZERO
 @export var gravity_multiplier: float = 1.0
@@ -9,20 +10,32 @@ extends CharacterBody2D
 @export var rotate_offset_deg: float = 0.0
 @export var gravitational_constant: float = 10000
 
+@export var thrust : GPUParticles2D
 var a_total: Vector2 = Vector2.ZERO
+
+@export var stats: PlayerStats
+
+func _on_stat_changed(stat_name: String, new_value: float) -> void:
+	print("[Player] ", stat_name, " -> ", str(new_value))
 
 
 func _ready() -> void:
 	print("[Player] ready")
+	if stats == null:
+		stats = PlayerStats.new()  # fallback if not assigned
+
+	# Example: connect to stat updates (HUD, etc.)
+	stats.connect("stat_changed", _on_stat_changed)
+
 	velocity = initial_velocity
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	up_direction = Vector2.ZERO
-
+	thrust.emitting = false
+	
 
 func _physics_process(delta: float) -> void:
 	# 1) Build total acceleration
 	var a_total = Vector2.ZERO
-
 	# --- Gravity toward all planets ---
 	for planet in get_tree().get_nodes_in_group("Planets"):
 		if not "mass" in planet or not "radius" in planet:
@@ -49,6 +62,10 @@ func _physics_process(delta: float) -> void:
 		var d: float = to_mouse.length()
 		if d > deadzone_px:
 			a_total += (to_mouse / d) * thrust_accel
+			thrust.emitting = true
+	else:
+		thrust.emitting = false
+			
 
 	# 2) Integrate velocity
 	velocity += a_total * delta

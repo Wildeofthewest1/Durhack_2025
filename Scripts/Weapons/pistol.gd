@@ -11,8 +11,8 @@ var _aim_dir: Vector2 = Vector2.RIGHT  # direction toward mouse, normalized
 
 func _process(delta: float) -> void:
 	# keep WeaponBase cooldown ticking
+	look_at(get_global_mouse_position())
 	super._process(delta)
-
 	_update_aim()
 
 func _update_aim() -> void:
@@ -28,7 +28,7 @@ func _update_aim() -> void:
 	# 3. rotate weapon to face that direction
 	# IMPORTANT:
 	# if your pistol art is drawn facing right (+X), use this:
-	rotation = _aim_dir.angle()
+	#rotation = _aim_dir.angle()
 
 	# if your pistol sprite is drawn facing UP (+Y), then use this instead:
 	# rotation = _aim_dir.angle() + PI / 2.0
@@ -58,12 +58,12 @@ func _fire_projectile(dir: Vector2) -> void:
 
 	# 3. set bullet position and orientation
 	proj.global_position = muzzle.global_position
-	proj.global_rotation = dir.angle()
-
+	proj.look_at(get_global_mouse_position())
 	# 4. initialize bullet
 	# Your ProjectileBasic expects exactly 3 args:
 	#     dir, speed, dmg
 	# So we call it with exactly that.
+	dir = Vector2(get_global_mouse_position() - proj.global_position)
 	if proj.has_method("initialize_projectile"):
 		proj.call(
 			"initialize_projectile",
