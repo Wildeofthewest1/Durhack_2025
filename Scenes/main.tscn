@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=6 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
-[ext_resource type="PackedScene" uid="uid://cuqp3vdnbus2n" path="res://Scenes/game.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bjtbfx4gunmwy" path="res://Scripts/UI/Minimap/canvas_control.gd" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/InteractionUI.tscn" id="4_jjvhh"]
 
@@ -26,8 +25,6 @@ handle_input_locally = false
 size = Vector2i(482, 272)
 render_target_update_mode = 4
 
-[node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_bo1nx")]
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("3_8gbba")
 
@@ -49,8 +46,7 @@ offset_left = -320.0
 offset_right = 280.0
 grow_horizontal = 0
 grow_vertical = 2
+rotation = -0.0072907577
 hidden_x = 500.0
 shown_x = -300.0
 panel_bg_color = Color(0.38340002, 0.40167004, 0.54, 1)
-
-[connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
