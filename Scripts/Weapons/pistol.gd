@@ -1,35 +1,73 @@
-# res://weapons/WeaponPistol.gd
 extends WeaponBase
+class_name WeaponPistol
 
-@export var bullet_scene: PackedScene = preload("res://Scenes/weapons/pistol_bullet.tscn")
-@onready var muzzle: Node2D = $Muzzle  # <-- drag the marker in the scene
+@export var bullet_scene: PackedScene
+@export var muzzle_velocity: float = 800.0
+@export var damage: float = 10.0
+
+@onready var muzzle: Node2D = $Muzzle
+
+var _aim_dir: Vector2 = Vector2.RIGHT  # direction toward mouse, normalized
 
 func _process(delta: float) -> void:
-	super._process(delta) # keeps cooldown UI ticking
-	# Point the weapon toward the mouse in world space
-	look_at(get_global_mouse_position())
+	# keep WeaponBase cooldown ticking
+	super._process(delta)
 
-func _on_fire_effects() -> void:
-	if not bullet_scene:
-		push_error("[Pistol] bullet_scene not set")
+	_update_aim()
+
+func _update_aim() -> void:
+	# 1. get mouse position in world space
+	var mouse_world: Vector2 = get_global_mouse_position()
+
+	# 2. compute direction from this weapon to the mouse
+	var to_mouse: Vector2 = mouse_world - global_position
+	var dist: float = to_mouse.length()
+	if dist > 0.0:
+		_aim_dir = to_mouse / dist  # normalized
+
+	# 3. rotate weapon to face that direction
+	# IMPORTANT:
+	# if your pistol art is drawn facing right (+X), use this:
+	rotation = _aim_dir.angle()
+
+	# if your pistol sprite is drawn facing UP (+Y), then use this instead:
+	# rotation = _aim_dir.angle() + PI / 2.0
+
+func request_fire() -> void:
+	# WeaponManager will call this every frame while fire is held
+	# We reuse WeaponBase.try_fire() so cooldown applies
+	try_fire(_aim_dir)
+
+func _fire_projectile(dir: Vector2) -> void:
+	# This gets called by WeaponBase.try_fire(dir) once cooldown is clear
+
+	if bullet_scene == null:
+		push_error("[WeaponPistol] bullet_scene is not set")
 		return
 
-	# Choose a transform source (Muzzle if present, otherwise the weapon node)
-	var xform_src := muzzle if is_instance_valid(muzzle) else self
-	var spawn_pos := muzzle.global_position
-	var dir := Vector2.RIGHT.rotated(xform_src.global_rotation)
+	if muzzle == null:
+		push_error("[WeaponPistol] muzzle is missing")
+		return
 
-	# Instance bullet into the same world as the player/weapon
-	var b := bullet_scene.instantiate()
-	if(get_parent()):
-		get_parent().get_parent().get_parent().add_child(b)  # world/root, not UI CanvasLayer
-	b.global_position = spawn_pos
-	b.global_rotation = muzzle.global_rotation
+	# 1. instance bullet
+	var proj: Node2D = bullet_scene.instantiate() as Node2D
 
-	# Inherit player's velocity if available
-	var shooter_vel := Vector2.ZERO
-	if owner and "velocity" in owner:
-		shooter_vel = owner.velocity
+	# 2. add bullet to world root (current scene), not as a child of the gun
+	var world_root: Node = get_parent().get_parent().get_parent()
+	world_root.add_child(proj)
 
-	if b.has_method("setup"):
-		b.setup(dir, shooter_vel)
+	# 3. set bullet position and orientation
+	proj.global_position = muzzle.global_position
+	proj.global_rotation = dir.angle()
+
+	# 4. initialize bullet
+	# Your ProjectileBasic expects exactly 3 args:
+	#     dir, speed, dmg
+	# So we call it with exactly that.
+	if proj.has_method("initialize_projectile"):
+		proj.call(
+			"initialize_projectile",
+			dir,
+			muzzle_velocity,
+			damage
+		)

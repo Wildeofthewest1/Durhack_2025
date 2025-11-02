@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="400 (Durhack)"
-run/main_scene="uid://dwju5ceubg651"
+run/main_scene="uid://dq6k2o3ltoui2"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 
 [autoload]
@@ -65,6 +65,11 @@ down={
 weapon_fire={
 "deadzone": 0.2,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(623, 41),"global_position":Vector2(642, 137),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+fire={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(728, 19),"global_position":Vector2(747, 115),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 
