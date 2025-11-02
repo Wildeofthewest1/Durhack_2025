@@ -12,11 +12,7 @@ shader_parameter/cam_offset = Vector2(0, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gbba"]
 bg_color = Color(1, 1, 1, 1)
 
-<<<<<<< HEAD
-[node name="Main2" type="Node2D"]
-=======
 [node name="Main" type="Node2D"]
->>>>>>> 15498c7293cc9b5afc02c30a3e2b122836fb40f8
 texture_filter = 1
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
