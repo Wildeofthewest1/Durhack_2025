@@ -6,7 +6,6 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_njh1v"]
 
 [node name="pistol" type="Node2D"]
-position = Vector2(1, 0)
 script = ExtResource("1_aq3ds")
 bullet_scene = ExtResource("2_olife")
 
