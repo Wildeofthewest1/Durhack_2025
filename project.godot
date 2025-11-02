@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="400 (Durhack)"
-run/main_scene="uid://dq6k2o3ltoui2"
+run/main_scene="uid://dwju5ceubg651"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 
 [autoload]
