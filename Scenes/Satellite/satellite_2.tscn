@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cu2xh3q6htkyi"]
+[gd_scene load_steps=8 format=3 uid="uid://cu2xh3q6htkyi"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_f0y5c"]
+[ext_resource type="Resource" uid="uid://brtujxc7eu2e5" path="res://Data/dialogue_archivist.tres" id="2_38ith"]
 [ext_resource type="Material" uid="uid://coy5kyae7r1x7" path="res://Shaders/satellite.tres" id="2_cy3wu"]
 [ext_resource type="Texture2D" uid="uid://c0irrhg6s42tf" path="res://Assets/sattelites.png" id="3_38ith"]
 [ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="4_cy3wu"]
@@ -12,6 +13,7 @@ radius = 50.0
 [node name="Satellite_1" type="CharacterBody2D"]
 texture_filter = 1
 script = ExtResource("1_f0y5c")
+dialogue_data = ExtResource("2_38ith")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 material = ExtResource("2_cy3wu")

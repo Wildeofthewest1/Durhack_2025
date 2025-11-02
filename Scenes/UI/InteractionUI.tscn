@@ -23,7 +23,6 @@ offset_top = 600.0
 offset_right = -300.0
 offset_bottom = 1600.0
 grow_vertical = 2
-scale = Vector2(5, 5)
 
 [node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
 layout_mode = 0
