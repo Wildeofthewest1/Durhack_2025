@@ -7,6 +7,8 @@ class_name DialogueData
 	"Our orbit is stable. How can we assist you?"
 ]
 
+@export var portrait_texture: Texture2D = null
+
 # Optional simple reply buttons. Each reply is text only.
 # You can later extend with branching if you want.
 @export var replies: Array[String] = [

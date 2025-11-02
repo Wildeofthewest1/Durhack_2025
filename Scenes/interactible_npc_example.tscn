@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://clohd2wj4g0jq"]
+[gd_scene load_steps=8 format=3 uid="uid://clohd2wj4g0jq"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_a0cv1"]
 [ext_resource type="Resource" uid="uid://bsxi8j8ww1igw" path="res://Data/dialogue_example.tres" id="2_vewma"]
@@ -9,22 +9,30 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_vasjd"]
 radius = 100.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_6hxmd"]
+
 [node name="InteractibleNPCExample" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_a0cv1")
 dialogue_data = ExtResource("2_vewma")
 shop_data = ExtResource("3_1cx8a")
 
+[node name="TalkArea" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
+shape = SubResource("CircleShape2D_vasjd")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("4_vasjd")
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_vasjd")
 
 [node name="MinimapTraceker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("5_6hxmd")
 target_node = NodePath("..")
 dot_size = 5.0
 dot_color = Color(0.4117647, 0.75686276, 0.81960785, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6hxmd")

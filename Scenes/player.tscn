@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="5_fkybt"]
 [ext_resource type="PackedScene" uid="uid://l7t5l70jepnw" path="res://Scenes/Weapons/pistol.tscn" id="6_3smsa"]
-[ext_resource type="Script" path="res://Scripts/PlayerInteraction.gd" id="7_3smsa"]
+[ext_resource type="Script" uid="uid://cr4xhgffbxb0j" path="res://Scripts/PlayerInteraction.gd" id="7_3smsa"]
 [ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
@@ -20,6 +20,13 @@ script = ExtResource("1_6t5aa")
 thrust_accel = 200.0
 max_speed = 300.0
 thrust = NodePath("thrust")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 3
+script = ExtResource("7_3smsa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_3smsa")
 
 [node name="thrust" parent="." instance=ExtResource("8_f1ek2")]
 position = Vector2(-2, 0)
@@ -49,10 +56,5 @@ weapon_scene = ExtResource("6_3smsa")
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 3
-script = ExtResource("7_3smsa")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_3smsa")
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
+[connection signal="area_exited" from="Area2D" to="Area2D" method="_on_area_exited"]
