@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjvl00i8b302p"]
+
+[ext_resource type="PackedScene" uid="uid://btocrrilwnlyi" path="res://Scenes/planet.tscn" id="1_ygln2"]
+[ext_resource type="PackedScene" uid="uid://dy4pte6he5678" path="res://Scenes/player_owen.tscn" id="2_y24bc"]
+
+[node name="Space" type="Node"]
+
+[node name="Bodies" type="Node2D" parent="."]
+
+[node name="Star" parent="Bodies" instance=ExtResource("1_ygln2")]
+modulate = Color(0.80498195, 0.4356578, 7.70092e-07, 1)
+position = Vector2(992, 517)
+collision_layer = 0
+
+[node name="Planet" parent="Bodies" instance=ExtResource("1_ygln2")]
+position = Vector2(442, 540)
+scale = Vector2(0.29, 0.29)
+mass = 0.01
+initial_velocity = 100.0
+initial_direction = Vector2(0, -1)
+
+[node name="User" type="Node2D" parent="."]
+
+[node name="Player" parent="User" instance=ExtResource("2_y24bc")]

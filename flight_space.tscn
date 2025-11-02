@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmvd6w5pg0gl0"]
+
+[ext_resource type="PackedScene" uid="uid://dxn1fw8iaskrw" path="res://Scenes/planet.tscn" id="1_1wiwn"]
+[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="2_2sgmh"]
+[ext_resource type="Script" uid="uid://bqwocjokj8s4b" path="res://Scenes/camera_2d_debug.gd" id="3_2sgmh"]
+
+[node name="FlightSpace" type="Node"]
+
+[node name="Planet" parent="." instance=ExtResource("1_1wiwn")]
+position = Vector2(609, 398)
+
+[node name="Player" parent="." instance=ExtResource("2_2sgmh")]
+position = Vector2(317, 521)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+script = ExtResource("3_2sgmh")

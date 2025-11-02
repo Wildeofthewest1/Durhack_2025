@@ -17,37 +17,16 @@ func _ready() -> void:
 	up_direction = Vector2.ZERO
 
 
-func _physics_process(delta: float) -> void:
-	# 1) Build total acceleration
-	var a_total = Vector2(0,0)
-	# Thrust toward mouse while RMB held
+func _physics_process(_delta: float) -> void:
+	
+	var player_dir = (get_global_mouse_position() - position).normalized()
 	if Input.is_action_pressed("thrust_mouse"):
-		var mouse_world: Vector2 = get_global_mouse_position()
-		var to_mouse: Vector2 = mouse_world - global_position
-		var d: float = to_mouse.length( )
-		if d > deadzone_px:
-			a_total += (to_mouse / d) * thrust_accel
-			
+		velocity = 200 * player_dir
 	if Input.is_action_pressed("kill_velocity"):
 		velocity = Vector2.ZERO
-	
-	# 2) Integrate once using total acceleration
-	velocity += a_total * delta
-	
-	# 3) Post-integration cap: keep direction, cap magnitude
-	var speed: float = velocity.length()
-	if speed > max_speed and speed > 0.0:
-		velocity = (velocity / speed) * max_speed
-	
-	# 5) Move
+		
 	move_and_slide()
-	
-	# 6) Snap to pixel grid to prevent ghosting
-	
-	# 7) Face velocity
-	if rotate_with_motion and velocity.length() > 0.001:
-		rotation = velocity.angle() + deg_to_rad(rotate_offset_deg)
-	force_g()
+	#force_g()
 
 @onready var planets = get_tree().get_nodes_in_group("Planets") #calls the group with planets
 func force_g():

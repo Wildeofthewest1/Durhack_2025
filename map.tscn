@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://b88nfkimgjf5n"]
+
+[ext_resource type="PackedScene" uid="uid://btocrrilwnlyi" path="res://Scenes/planet.tscn" id="1_c7s6e"]
+
+[node name="Map" type="Node"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1, 0)
+zoom = Vector2(0.1, 0.1)
+
+[node name="StarSystem" type="Node2D" parent="."]
+
+[node name="Star" parent="StarSystem" instance=ExtResource("1_c7s6e")]
+modulate = Color(0.9, 0.79499996, 0, 1)
+scale = Vector2(5, 5)
+
+[node name="Planet" parent="StarSystem" node_paths=PackedStringArray("orbital_parent") instance=ExtResource("1_c7s6e")]
+position = Vector2(1447, 35)
+mass = 1
+initial_velocity = 400.0
+initial_direction = Vector2(0, -1)
+orbital_parent = NodePath("../Star")

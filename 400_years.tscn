@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dibs8io4xu6dn"]
+
+[ext_resource type="FontFile" uid="uid://bvjb5at85mx05" path="res://Fonts/ithaca-font/Ithaca-LVB75.ttf" id="1_06saf"]
+[ext_resource type="Script" uid="uid://bn3pcygov4nit" path="res://400_years.gd" id="1_nw066"]
+
+[node name="400Years" type="Label"]
+offset_right = 218.0
+offset_bottom = 63.0
+theme_override_colors/font_color = Color(0.74658525, 2.0094587e-06, 8.663535e-07, 1)
+theme_override_fonts/font = ExtResource("1_06saf")
+theme_override_font_sizes/font_size = 40
+text = "Placeholder"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_nw066")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

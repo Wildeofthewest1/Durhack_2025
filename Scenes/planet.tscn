@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://btocrrilwnlyi"]
+
+[ext_resource type="Script" uid="uid://codpxmvabskh" path="res://Scenes/planet.gd" id="1_mtr83"]
+[ext_resource type="Texture2D" uid="uid://d08dick15vb5n" path="res://Assets/Planet_2.png" id="2_a75xc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x6khl"]
+radius = 103.00485
+
+[node name="Planet" type="CharacterBody2D" groups=["Planets"]]
+collision_mask = 0
+script = ExtResource("1_mtr83")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.68, 0.68)
+texture = ExtResource("2_a75xc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_x6khl")

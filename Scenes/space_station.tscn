@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dp671k4hbthh5"]
+
+[ext_resource type="Script" uid="uid://bmp8352hwf0o6" path="res://Scenes/space_station.gd" id="1_gajh3"]
+
+[node name="Space Station" type="CharacterBody2D" node_paths=PackedStringArray("parent_planet")]
+script = ExtResource("1_gajh3")
+parent_planet = NodePath("insert_planet")
+
+[node name="insert_planet" type="CharacterBody2D" parent="."]

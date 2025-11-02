@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3 uid="uid://brtujxc7eu2e5"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://brtujxc7eu2e5"]
 
+[ext_resource type="Texture2D" uid="uid://doyhe8tmuovo7" path="res://Assets/Archivist.png" id="1_foum2"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_yeshv"]
 
 [resource]
 script = ExtResource("1_yeshv")
+planet_name = "ARCHIVIST"
+lines = Array[String](["Ah finally! I was worried the day our protector returned would never come!", "...", "Without you, the system’s legacy is at risk.", "...", "Here, we keep track of the past: events, generations – our system’s history. If you are interested, we have kept note of everyone aboard your ship in the last 200 years!", "...", "All our knowledge is etched not in memories but bound to the archived here. We entirely rely on your oath: oath to protect the planets…", "...", "I forget my manners! Welcome to the archives. Here, you will find everything there is to now about the past."])
+portrait_texture = ExtResource("1_foum2")
 metadata/_custom_type_script = "uid://droqswt3u80yn"

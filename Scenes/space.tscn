@@ -1,0 +1,92 @@
+[gd_scene load_steps=6 format=3 uid="uid://i4hxnr3vdbch"]
+
+[ext_resource type="PackedScene" uid="uid://dxn1fw8iaskrw" path="res://Scenes/planet.tscn" id="1_0ll74"]
+[ext_resource type="PackedScene" uid="uid://dp671k4hbthh5" path="res://Scenes/space_station.tscn" id="2_p3ued"]
+[ext_resource type="Script" uid="uid://bqwocjokj8s4b" path="res://Scenes/camera_2d_debug.gd" id="2_wnfdr"]
+[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="3_2fo43"]
+[ext_resource type="Texture2D" uid="uid://dcfgkv70danjw" path="res://Assets/spacestation.png" id="5_bj3u6"]
+
+[node name="Space" type="Node"]
+
+[node name="Star System" type="Node2D" parent="."]
+position = Vector2(-906, -541)
+
+[node name="Star" parent="Star System" node_paths=PackedStringArray("parent_star") groups=["Star"] instance=ExtResource("1_0ll74")]
+modulate = Color(0.9, 0.79499996, 0, 1)
+position = Vector2(883, 540)
+scale = Vector2(1, 1)
+mass = 100.0
+parent_star = NodePath(".")
+
+[node name="Planet" parent="Star System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0, 0.6222091, 0.7230942, 1)
+position = Vector2(1250, 565)
+mass = 0.5
+radius = 0.3
+initial_direction = Vector2(0, -1)
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Planet2" parent="Star System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0.74110955, 0.46996802, 0.0071272017, 1)
+position = Vector2(3013, -1200.9998)
+radius = 1.5
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Planet2Moon" parent="Star System" node_paths=PackedStringArray("parent_star", "parent_planet") groups=["Moon"] instance=ExtResource("1_0ll74")]
+modulate = Color(0.8195138, 0.32531074, 0, 1)
+position = Vector2(3114, -1262)
+mass = 0.0
+radius = 0.2
+initial_speed = 300
+initial_direction = Vector2(1, 0)
+autoorbit = true
+parent_star = NodePath("../Star")
+parent_planet = NodePath("../Planet2")
+
+[node name="Planet3" parent="Star System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(7.2196127e-07, 0.6905073, 0.30647963, 1)
+position = Vector2(-1072, 1681.9999)
+mass = 4.0
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Planet4" parent="Star System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0.5733334, 0.19999999, 1, 1)
+position = Vector2(2205, 1030)
+mass = 7.0
+radius = 1.2
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Planet5" parent="Star System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0.81310487, 0.4070109, 0.27311918, 1)
+position = Vector2(851, 751)
+mass = 1.0
+radius = 0.4
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Planet6" parent="Star System" node_paths=PackedStringArray("parent_star") instance=ExtResource("1_0ll74")]
+modulate = Color(0.93972844, 0.30559063, 0.5679616, 1)
+position = Vector2(-133, -694)
+mass = 4.5
+radius = 1.1
+autoorbit = true
+parent_star = NodePath("../Star")
+
+[node name="Player" parent="." instance=ExtResource("3_2fo43")]
+position = Vector2(457, 639)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1365, 408)
+zoom = Vector2(0.54, 0.54)
+script = ExtResource("2_wnfdr")
+
+[node name="Space Station" parent="." node_paths=PackedStringArray("parent_planet") instance=ExtResource("2_p3ued")]
+position = Vector2(1447, 488)
+parent_planet = NodePath("../Star System/Planet4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Space Station"]
+texture = ExtResource("5_bj3u6")
