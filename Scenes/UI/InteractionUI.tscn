@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scripts/UI/InteractionUI.gd" id="1_dekh7"]
 
 [node name="InteractionUI" type="Control" groups=["InteractUI"]]
+texture_filter = 1
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 3
 anchors_preset = 0
@@ -11,21 +12,21 @@ script = ExtResource("1_dekh7")
 panel_bg_color = Color(0.35380003, 0.49044, 0.61, 1)
 
 [node name="PortraitPanel" type="Control" parent="."]
-custom_minimum_size = Vector2(500, 500)
+custom_minimum_size = Vector2(1000, 1000)
 layout_direction = 2
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = 300.0
-offset_bottom = 600.0
+offset_left = -1300.0
+offset_top = 600.0
+offset_right = -300.0
+offset_bottom = 1600.0
 grow_vertical = 2
+scale = Vector2(5, 5)
 
 [node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
 layout_mode = 1

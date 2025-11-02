@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cn1v0cxx3hlvo"]
+[gd_scene load_steps=7 format=3 uid="uid://cn1v0cxx3hlvo"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="1_3rxta"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="1_c6ddn"]
 [ext_resource type="Script" uid="uid://d02bug0ybgu0a" path="res://Scripts/PlayerStats.gd" id="3_5x78k"]
 [ext_resource type="PackedScene" uid="uid://clohd2wj4g0jq" path="res://Scenes/interactible_npc_example.tscn" id="4_j31pt"]
+[ext_resource type="PackedScene" uid="uid://dvdupc2fvp8lg" path="res://Scenes/Satellite/satellite_1.tscn" id="5_5x78k"]
 
 [sub_resource type="Resource" id="Resource_uvlpi"]
 script = ExtResource("3_5x78k")
@@ -21,3 +22,5 @@ collision_mask = 3
 stats = SubResource("Resource_uvlpi")
 
 [node name="InteractibleNPCExample" parent="." instance=ExtResource("4_j31pt")]
+
+[node name="Satellite_1" parent="." instance=ExtResource("5_5x78k")]
