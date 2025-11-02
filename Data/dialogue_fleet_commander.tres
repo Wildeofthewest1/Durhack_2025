@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3 uid="uid://cvuswfovetpbb"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://cvuswfovetpbb"]
 
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_af5gb"]
+[ext_resource type="Texture2D" uid="uid://bkteh4tblo0sb" path="res://Assets/Fleet Commander.png" id="1_u78u1"]
 
 [resource]
 script = ExtResource("1_af5gb")
+planet_name = "FLEET COMMANDER"
+lines = Array[String](["Captain, welcome. I had been expecting you for a status meeting. My own fleet has nothing to declare: what news of yours?", "...", "I see. The Internal turmoil is indeed intensifying… the pirates  are growing bolder, the opponents fiercer. Continue fighting back but do not forget our main goal: preparing for and fending off the ultimate invasion", "...", "Until next time, captain. Do not forget who the real enemy is."])
+portrait_texture = ExtResource("1_u78u1")
 metadata/_custom_type_script = "uid://droqswt3u80yn"

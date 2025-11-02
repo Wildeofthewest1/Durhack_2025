@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3 uid="uid://c54v8ky7u47vn"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://c54v8ky7u47vn"]
 
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_3ck1q"]
+[ext_resource type="Texture2D" uid="uid://mpufb18lf87e" path="res://Assets/Bald.png" id="1_okf4k"]
 
 [resource]
 script = ExtResource("1_3ck1q")
+planet_name = "CRAZY CHAP"
+lines = Array[String](["aaAAAH! We’re all going to die!", "...", "Or I could use this button around my neck to blow us all up first…", "...", "Mutual Assured Destruction. Sounds familiar?", "...", "Save us! Or I will. "])
+portrait_texture = ExtResource("1_okf4k")
 metadata/_custom_type_script = "uid://droqswt3u80yn"

@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3 uid="uid://c1algbfbjgo5w"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://c1algbfbjgo5w"]
 
+[ext_resource type="Texture2D" uid="uid://5ghtbpom3cy2" path="res://Assets/RebellionNerd.png" id="1_exrcc"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_r3scy"]
 
 [resource]
 script = ExtResource("1_r3scy")
+planet_name = "REBELLION"
+lines = Array[String](["Oh captain, my captain! Long time no see! I was starting to get worried for you – glad to see you in once piece. It really is getting rough out there!", "...", "How the rebellion organisation is going? Well we are all ready to go! ", "...", "… you do have a point, I am still unsure about a lot of things. But matters not! Good will is all that matters! Would you still not like to join us? We could do with an experienced multi-generational crew like your own. ", "...", "Ah I thought so. I’ll have to convince you another time! By them, we’ll be professionals: our intelligence will be setup, our numbers up, our organisation… organised. Maybe I’ll finally have a name for us too!"])
+portrait_texture = ExtResource("1_exrcc")
 metadata/_custom_type_script = "uid://droqswt3u80yn"

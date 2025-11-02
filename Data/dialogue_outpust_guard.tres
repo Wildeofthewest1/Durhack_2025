@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=2 format=3 uid="uid://bhiv3uk0fn2ks"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=3 format=3 uid="uid://bhiv3uk0fn2ks"]
 
+[ext_resource type="Texture2D" uid="uid://fp22i4d8ix6q" path="res://Assets/Penseur.png" id="1_vw864"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_xwny2"]
 
 [resource]
 script = ExtResource("1_xwny2")
+planet_name = "OUTPOST GUARD"
+lines = Array[String](["Welcome, commander, I hope that the star paths have favoured you recently. I heard from my supervisor that you required intra-planetary news.", "...", "The recent static silence has come to an end and our worst fears have been confirmed: the aliens’ fleet has been spotted and is ravaging everything on its path.", "...", "Indeed, they are not deviating their path. They are still coming. And fast.", "...", "The distress calls are incessant. But there really is nothing we can do to help them… it’s too far, we would be too late…", "...", "Yes of course you are right, it isn’t my position to make such calls regardless. Yes, I will continue keeping watch. It’s awful. Sitting here, watching…"])
+portrait_texture = ExtResource("1_vw864")
 metadata/_custom_type_script = "uid://droqswt3u80yn"
