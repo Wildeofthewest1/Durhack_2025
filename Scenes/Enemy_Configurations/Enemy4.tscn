@@ -44,6 +44,7 @@ position = Vector2(-26, 37)
 script = ExtResource("3_ov1hc")
 target_node = NodePath("..")
 dot_shape = 2
+dot_size = 5.0
 dot_color = Color(0.9823325, 0, 0.04619918, 1)
 
 [node name="VisionCone" type="Area2D" parent="."]

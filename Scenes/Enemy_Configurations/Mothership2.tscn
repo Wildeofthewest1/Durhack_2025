@@ -8,7 +8,7 @@
 radius = 42.0
 height = 364.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
+[node name="CharacterBody2D2" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("1_tmy0x")
@@ -49,7 +49,8 @@ position = Vector2(93, 0)
 [node name="Minimap" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("3_b0dsf")
 target_node = NodePath("..")
-dot_shape = 2
+dot_shape = 3
+dot_size = 10.0
 dot_color = Color(0.9823325, 0, 0.04619918, 1)
 
 [node name="VisionCone" type="Area2D" parent="."]
