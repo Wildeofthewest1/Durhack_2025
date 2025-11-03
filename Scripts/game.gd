@@ -70,14 +70,14 @@ func _ready() -> void:
 			p["radius"],
 			p["colour"]
 		)
-	# Example: inside your spawner or game controller
+	# Example: inside your spa	fffffffwner or game controller
 	var enemies = {
 		"Mothership2": {
 			"type": "Mothership2",
 			"position": Vector2(500, 300),
-			"behaviour": "mothership",
+			"behaviour": "charger",
 			"weapons": ["res://Scenes/Enemy_Weapons/Pistol.tscn"],
-			"speed": 20,
+			"speed": 200,
 			"health": 1000,
 			"rotate_toward_player": false,
 			"detectionradius": 1000

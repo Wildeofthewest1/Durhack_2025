@@ -7,6 +7,8 @@ texture_filter = 1
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 3
 anchors_preset = 0
+offset_right = 400.0
+size_flags_horizontal = 4
 size_flags_vertical = 3
 script = ExtResource("1_dekh7")
 panel_bg_color = Color(0.35380003, 0.49044, 0.61, 1)
@@ -37,10 +39,11 @@ grow_vertical = 0
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 1
 offset_left = 800.0
-offset_right = 1400.0
+offset_right = 1350.0
+offset_bottom = 500.0
 
 [node name="MainVBox" type="VBoxContainer" parent="Panel"]
 custom_minimum_size = Vector2(300, 500)
@@ -83,7 +86,7 @@ size_flags_horizontal = 0
 text = "X (E)"
 
 [node name="ContentMarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 16

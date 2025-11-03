@@ -304,7 +304,7 @@ func _on_assign_pressed() -> void:
 	if _current_planet == null:
 		return
 
-	var selected_items: Array[int] = _fleet_list.get_selected_items()
+	var selected_items = _fleet_list.get_selected_items()
 	if selected_items.is_empty():
 		return
 

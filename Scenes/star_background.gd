@@ -9,6 +9,8 @@ extends Node2D
 ]
 
 # Parallax parameters
+@export var trackObject: Node2D
+var playerPath: NodePath = "../PlayerContainer/Player"
 @export var num_layers: int = 3
 @export var layer_1_speed: float = 0.0   # Farthest - stationary
 @export var layer_2_speed: float = 0.05  # Middle - moves slightly
@@ -21,12 +23,14 @@ var layer_speeds: Array[float] = []
 var last_camera_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	trackObject = get_node(playerPath)
 	generate_particle_layers()
 
 func generate_particle_layers() -> void:
 	for layer_index in range(num_layers):
 		var particles: CPUParticles2D = CPUParticles2D.new()
 		add_child(particles)
+		if trackObject: particles.global_position = trackObject.global_position
 		particle_layers.append(particles)
 		
 		# Calculate depth factor (0 = far, 1 = close)
