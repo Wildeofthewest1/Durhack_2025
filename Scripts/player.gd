@@ -20,7 +20,7 @@ var a_total: Vector2 = Vector2.ZERO
 
 @export var thrust: GPUParticles2D
 
-@export var health: int = 100
+@export var health: int = 10000
 
 func _ready() -> void:
 	print("[Player] ready")

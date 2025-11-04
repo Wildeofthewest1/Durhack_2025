@@ -12,8 +12,10 @@ extends CharacterBody2D
 
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 
+@export var health: float = 1.0
+
 var direction: Vector2 = Vector2.UP
-var team: String = ""   # "Enemy", "Fleet", or "player"
+@export var team: String = ""   # "Enemy", "Fleet", or "player"
 
 func _ready() -> void:
 	velocity = direction.normalized() * initial_speed
@@ -22,6 +24,16 @@ func _ready() -> void:
 	await get_tree().create_timer(lifetime).timeout
 	queue_free()
 
+func take_damage(amount: int) -> void:
+	health -= amount
+	#print("%s took %d damage, remaining health: %d" % [name, amount, health])
+	if health <= 0:
+		die()
+
+func die() -> void:
+	#print("%s has died" % name)
+	#_spawn_explosion()
+	queue_free()
 
 func _physics_process(delta: float) -> void:
 	# --- Apply gravitational pull from all planets ---

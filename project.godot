@@ -32,6 +32,7 @@ interactables=""
 Planets=""
 Enemy=""
 Fleet=""
+Bullet=""
 
 [input]
 
