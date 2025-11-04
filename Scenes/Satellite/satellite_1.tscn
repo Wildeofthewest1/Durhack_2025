@@ -10,6 +10,8 @@ radius = 50.0
 
 [node name="Satellite_1" type="CharacterBody2D"]
 texture_filter = 1
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("3_acni4")
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -20,7 +22,7 @@ region_rect = Rect2(261.46884, 21.15136, 152.74667, 140.16104)
 
 [node name="TalkArea" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 3
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
 shape = SubResource("CircleShape2D_mamsb")

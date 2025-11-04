@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bfbuaqyoyv2x1"]
+[gd_scene load_steps=5 format=3 uid="uid://bfbuaqyoyv2x1"]
 
 [ext_resource type="Script" uid="uid://qqehsbdap2wg" path="res://Scenes/Enemy_Weapons/bullet.gd" id="1_rpwrj"]
 [ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="2_fpflf"]
@@ -6,14 +6,24 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_fpflf"]
 radius = 3.0
 
-[node name="Bullet" type="Area2D"]
-collision_layer = 2
-collision_mask = 4
+[sub_resource type="CircleShape2D" id="CircleShape2D_uadox"]
+radius = 3.0
+
+[node name="Bullet" type="CharacterBody2D" groups=["Bullet"]]
+collision_layer = 16
+collision_mask = 0
 script = ExtResource("1_rpwrj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_fpflf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.011, 0.011)
+scale = Vector2(0.012, 0.012)
 texture = ExtResource("2_fpflf")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_uadox")

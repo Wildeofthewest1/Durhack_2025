@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cuqp3vdnbus2n" path="res://Scenes/game.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://bjtbfx4gunmwy" path="res://Scripts/UI/Minimap/canvas_control.gd" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/InteractionUI.tscn" id="4_jjvhh"]
-[ext_resource type="PackedScene" path="res://400_years.tscn" id="5_kry3j"]
+[ext_resource type="PackedScene" uid="uid://dibs8io4xu6dn" path="res://400_years.tscn" id="5_kry3j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
 shader = ExtResource("1_jjgbg")

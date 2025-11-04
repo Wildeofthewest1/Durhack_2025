@@ -8,9 +8,9 @@
 radius = 42.0
 height = 206.0
 
-[node name="CharacterBody2D2" type="CharacterBody2D" groups=["Enemy"]]
-collision_layer = 2
-collision_mask = 4
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_phqtb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -27,22 +27,46 @@ shape = SubResource("CapsuleShape2D_ahgkp")
 [node name="WeaponSlots" type="Node2D" parent="."]
 
 [node name="Slot1" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-140, 35)
+position = Vector2(234, 1)
 
 [node name="Slot2" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-175, 35)
+position = Vector2(168, 0)
 
 [node name="Slot3" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-217, 35)
+position = Vector2(105, 0)
 
 [node name="Slot4" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-142, -35)
+position = Vector2(35, 0)
 
 [node name="Slot5" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-172, -35)
+position = Vector2(-39, 0)
 
 [node name="Slot6" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-217, -35)
+position = Vector2(-88, 0)
+
+[node name="Slot7" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-141, -35)
+
+[node name="Slot8" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-172, -35)
+
+[node name="Slot9" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-206, -35)
+
+[node name="Slot10" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-207, 36)
+
+[node name="Slot11" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-172, 36)
+
+[node name="Slot12" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-136, 37)
+
+[node name="Slot13" type="Node2D" parent="WeaponSlots"]
+position = Vector2(253, 61)
+
+[node name="Slot14" type="Node2D" parent="WeaponSlots"]
+position = Vector2(253, -61)
 
 [node name="Weapons" type="Node2D" parent="."]
 
@@ -53,7 +77,8 @@ dot_size = 10.0
 dot_color = Color(0.9823325, 0, 0.04619918, 1)
 
 [node name="VisionCone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 13
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
-position = Vector2(-82, -50)
-polygon = PackedVector2Array(100, -100, 100, 200, -300, 200, -300, -100)
+polygon = PackedVector2Array(600, -300, 600, 300, -600, 300, -600, -300)

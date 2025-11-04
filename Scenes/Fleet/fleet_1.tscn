@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://lyol4qhr8xkl"]
+[gd_scene load_steps=5 format=3 uid="uid://lyol4qhr8xkl"]
 
 [ext_resource type="Script" uid="uid://b0c14765wnqhs" path="res://Scripts/Fleet/FleetModel.gd" id="1_qlk4x"]
 [ext_resource type="Texture2D" uid="uid://0v6ehb2vbp27" path="res://Assets/Drones.png" id="2_ggydx"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_ggydx"]
 
-[node name="Fleet_1" type="CharacterBody2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ggydx"]
+size = Vector2(20, 6)
+
+[node name="Fleet_1" type="CharacterBody2D" groups=["Fleet"]]
+collision_layer = 8
+collision_mask = 0
 script = ExtResource("1_qlk4x")
 orbit_radius = 90.0
 orbit_speed = 2.0
@@ -13,6 +18,7 @@ drone_name = "Defender"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+rotation = 3.1415927
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_ggydx")
 region_enabled = true
@@ -23,3 +29,20 @@ script = ExtResource("3_ggydx")
 target_node = NodePath("..")
 dot_shape = 1
 dot_color = Color(0.2376, 0.72, 0.34212002, 1)
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ggydx")
+
+[node name="VisionCone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
+polygon = PackedVector2Array(200, 200, 200, -200, -200, -200, -200, 200)
+
+[node name="WeaponSlots" type="Node2D" parent="."]
+
+[node name="Slot1" type="Node2D" parent="WeaponSlots"]
+position = Vector2(0, 2)
+
+[node name="Weapons" type="Node2D" parent="."]

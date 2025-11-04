@@ -8,6 +8,8 @@
 radius = 26.019224
 
 [node name="Planet" type="CharacterBody2D" groups=["Planets"]]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_yq3du")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

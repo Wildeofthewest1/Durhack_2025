@@ -87,7 +87,7 @@ func attach_weapons() -> void:
 		var weapon_scene = weapon_scenes[i % weapon_scenes.size()]
 		var weapon = weapon_scene.instantiate()
 
-		weapon.global_position = weapon_slots[i].global_position
+		weapon.position = weapon_slots[i].position
 		#weapon.owner_enemy = self
 		$Weapons.add_child(weapon)
 

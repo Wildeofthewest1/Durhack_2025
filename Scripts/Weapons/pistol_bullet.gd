@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 	
 	if collision:
 		var target = collision.get_collider()
-		if target and target.is_in_group("Enemy"):
+		if target and (target.is_in_group("Enemy") or target.team == "Enemy"):
 			if target.has_method("take_damage"):
 				target.take_damage(_damage)
 		_spawn_explosion()

@@ -23,6 +23,7 @@ PlayerVariables="*res://Scripts/PlayerVariables.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/stretch/mode="viewport"
 
 [global_group]
@@ -30,6 +31,8 @@ window/stretch/mode="viewport"
 interactables=""
 Planets=""
 Enemy=""
+Fleet=""
+Bullet=""
 
 [input]
 

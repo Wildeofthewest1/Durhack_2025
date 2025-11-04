@@ -20,12 +20,35 @@ var a_total: Vector2 = Vector2.ZERO
 
 @export var thrust: GPUParticles2D
 
+@export var health: int = 200
+
 func _ready() -> void:
 	print("[Player] ready")
 	velocity = initial_velocity
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
-	up_direction = Vector2.ZERO
+	up_direction = Vector2.RIGHT
 
+func take_damage(amount: int) -> void:
+	health -= amount
+	print("%s took %d damage, remaining health: %d" % [name, amount, health])
+
+	if has_node("Sprite2D"):
+		var sprite: Sprite2D = $Sprite2D
+		_flash_red(sprite)
+
+	if health <= 0:
+		die()
+
+func _flash_red(sprite: Sprite2D) -> void:
+	var tween = create_tween()
+	tween.tween_property(sprite, "modulate", Color(1, 0, 0), 0.05)
+	tween.tween_property(sprite, "modulate", Color(1, 1, 1), 0.1)
+
+func die() -> void:
+	print("%s has died" % name)
+	health = 100
+	global_position = Vector2(0, 0)
+	velocity = Vector2.ZERO  # stop movement so it doesn't drift away
 
 func _physics_process(delta: float) -> void:
 	# 1) Build total acceleration

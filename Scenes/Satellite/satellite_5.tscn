@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cbwgac5vnc7eu"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_duvik"]
-[ext_resource type="Resource" path="res://Data/dialogue_random_chap.tres" id="2_duvik"]
+[ext_resource type="Resource" uid="uid://c54v8ky7u47vn" path="res://Data/dialogue_random_chap.tres" id="2_duvik"]
 [ext_resource type="Material" uid="uid://coy5kyae7r1x7" path="res://Shaders/satellite.tres" id="3_0h6tv"]
 [ext_resource type="Texture2D" uid="uid://c0irrhg6s42tf" path="res://Assets/sattelites.png" id="4_wkfu7"]
 [ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="5_8nqk8"]
@@ -12,6 +12,8 @@ radius = 50.0
 
 [node name="Satellite_1" type="CharacterBody2D"]
 texture_filter = 1
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_duvik")
 dialogue_data = ExtResource("2_duvik")
 
@@ -25,7 +27,7 @@ rot = 0.5
 
 [node name="TalkArea" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 3
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
 shape = SubResource("CircleShape2D_mamsb")
