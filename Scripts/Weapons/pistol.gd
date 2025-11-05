@@ -11,7 +11,6 @@ var _aim_dir: Vector2 = Vector2.RIGHT  # direction toward mouse, normalized
 
 func _process(delta: float) -> void:
 	# keep WeaponBase cooldown ticking
-	look_at(get_global_mouse_position())
 	super._process(delta)
 	_update_aim()
 
@@ -67,7 +66,7 @@ func _fire_projectile(dir: Vector2) -> void:
 	if proj.has_method("initialize_projectile"):
 		proj.call(
 			"initialize_projectile",
-			dir,
+			get_global_mouse_position()-global_position,
 			muzzle_velocity,
 			damage
 		)

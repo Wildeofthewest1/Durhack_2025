@@ -18,7 +18,7 @@ drone_name = "Mosquito"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-rotation = 3.1415927
+rotation = 1.5707964
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_ygpg6")
 region_enabled = true

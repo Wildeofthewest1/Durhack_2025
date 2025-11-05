@@ -12,9 +12,12 @@ extends CharacterBody2D
 @export var health: int = 200
 
 # --- Fuel settings ---
-@export var fuel_max: float = 100.0         # maximum fuel
-@export var fuel_use_rate: float = 20.0     # fuel per second while thrusting
+@export var fuel_max: float = 100.0          # maximum fuel
+@export var fuel_use_rate: float = 20.0      # fuel per second while thrusting
 @export var fuel_recharge_rate: float = 15.0 # fuel per second while not thrusting
+# After fully draining fuel, how much of the tank (0.0–1.0) must be refilled
+# before thrust can be used again.
+@export var fuel_fulluse_recharge: float = 0.05
 
 # --- Dynamic speed limit settings ---
 # max_speed is your "cruise" cap; you can push above it a bit while thrusting
@@ -25,6 +28,7 @@ extends CharacterBody2D
 var a_total: Vector2 = Vector2.ZERO
 var fuel: float = 0.0
 var current_speed_limit: float = 0.0
+var was_fully_depleted: bool = false
 
 @onready var planets: Array = get_tree().get_nodes_in_group("Planets")
 
@@ -49,7 +53,7 @@ func _ready() -> void:
 
 func take_damage(amount: int) -> void:
 	health -= amount
-	print("%s took %d damage, remaining health: %d" % [name, amount, health])
+	print(name + " took " + str(amount) + " damage, remaining health: " + str(health))
 
 	if has_node("Sprite2D"):
 		var sprite: Sprite2D = $Sprite2D
@@ -66,7 +70,7 @@ func _flash_red(sprite: Sprite2D) -> void:
 
 
 func die() -> void:
-	print("%s has died" % name)
+	print(name + " has died")
 	health = 100
 	global_position = Vector2(0.0, 0.0)
 	velocity = Vector2.ZERO
@@ -96,11 +100,26 @@ func _physics_process(delta: float) -> void:
 		a_total_local += direction * force
 	# -----------------------------------
 
-	# --- Thrust toward mouse while RMB held, with fuel ---
+	# --- Thrust toward mouse while RMB held, with fuel and depletion lockout ---
 	var is_thrusting: bool = Input.is_action_pressed("thrust_mouse")
 	var applied_thrust: bool = false
 
-	if is_thrusting and fuel > 0.0:
+	# Clamp the recharge fraction to [0, 1]
+	var recharge_fraction: float = fuel_fulluse_recharge
+	if recharge_fraction < 0.0:
+		recharge_fraction = 0.0
+	if recharge_fraction > 1.0:
+		recharge_fraction = 1.0
+	var recharge_threshold: float = fuel_max * recharge_fraction
+
+	# If we have recharged enough after full depletion, clear the lock
+	if was_fully_depleted and fuel >= recharge_threshold:
+		was_fully_depleted = false
+
+	# Can we currently use thrust?
+	var can_use_thrust: bool = not was_fully_depleted
+
+	if is_thrusting and fuel > 0.0 and can_use_thrust:
 		var mouse_world: Vector2 = get_global_mouse_position()
 		var to_mouse: Vector2 = mouse_world - global_position
 		var d: float = to_mouse.length()
@@ -114,11 +133,15 @@ func _physics_process(delta: float) -> void:
 		fuel -= fuel_use_rate * delta
 		if fuel < 0.0:
 			fuel = 0.0
+
+		# if we just fully depleted, set lockout flag
+		if fuel == 0.0:
+			was_fully_depleted = true
 	else:
 		applied_thrust = false
 
-	# recharge fuel when not thrusting (or out of fuel)
-	if not applied_thrust and not is_thrusting:
+	# recharge fuel only when not pressing thrust
+	if not is_thrusting:
 		fuel += fuel_recharge_rate * delta
 		if fuel > fuel_max:
 			fuel = fuel_max
@@ -158,6 +181,7 @@ func _physics_process(delta: float) -> void:
 		rotation = velocity.angle() + deg_to_rad(rotate_offset_deg)
 	else:
 		look_at(get_global_mouse_position())
+
 
 func get_fuel_ratio() -> float:
 	if fuel_max <= 0.0:

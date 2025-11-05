@@ -24,10 +24,11 @@ motion_mode = 1
 script = ExtResource("1_6t5aa")
 initial_velocity = Vector2(100, 0)
 gravity_multiplier = 5.0
-thrust_accel = 1000.0
+thrust_accel = 500.0
 max_speed = 300.0
 rotate_with_motion = false
 thrust = NodePath("thrust")
+fuel_fulluse_recharge = 0.01
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
