@@ -1,12 +1,12 @@
 extends CharacterBody2D
 class_name ProjectileBasic
 
-@export var life_time: float = 2.0
+@export var life_time: float = 2
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 
 var _velocity_vec: Vector2 = Vector2.ZERO
 var _damage: float = 0.0
-var _life_timer: float = 0.0
+var _life_timer: float = life_time
 
 func initialize_projectile(dir: Vector2, speed: float, dmg: float) -> void:
 	# dir is world-space direction from the weapon toward the mouse
@@ -39,7 +39,8 @@ func _physics_process(delta: float) -> void:
 		global_rotation = _velocity_vec.angle()
 
 	# lifetime countdown
-	_life_timer -= delta
+	if _life_timer >=0:
+		_life_timer -= delta
 	if _life_timer <= 0.0:
 		_spawn_explosion()
 		queue_free()

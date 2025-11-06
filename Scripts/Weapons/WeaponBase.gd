@@ -1,7 +1,7 @@
 extends Node2D
 class_name WeaponBase
 
-@export var fire_cooldown: float = 0.15   # seconds between shots
+@export var fire_cooldown: float = 1   # seconds between shots
 var _cooldown_timer: float = 0.0
 
 func _process(delta: float) -> void:
