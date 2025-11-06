@@ -74,6 +74,15 @@ theme_override_font_sizes/font_size = 80
 
 [node name="ThrustUI" parent="CanvasLayer" instance=ExtResource("6_21xkr")]
 
+[node name="Instructions" type="Label" parent="."]
+offset_left = 1554.0
+offset_top = 324.0
+offset_right = 1847.0
+offset_bottom = 399.0
+text = "Press E to interact with space stations
+Right-Click to boost
+Left-Click to shoot"
+
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
 [connection signal="invasion_started_signal" from="CanvasLayer/400Years" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
 [connection signal="invasion_started_signal" from="CanvasLayer/400Years" to="SubViewportContainer/SubViewport/Game" method="_on_years_invasion_started_signal"]
