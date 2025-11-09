@@ -17,7 +17,7 @@ func _ready() -> void:
 	_body = get_node_or_null(body_path)
 	set_process(true)
 
-func _process(dt: float) -> void:
+func _physics_process(dt: float) -> void:
 	if _body == null: return
 	_accum += dt
 	if sample_every <= 0.0 or _accum >= sample_every:

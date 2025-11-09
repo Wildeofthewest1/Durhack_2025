@@ -21,14 +21,15 @@ anim_speed_min = 10.0
 anim_speed_max = 10.0
 
 [node name="explosion" type="GPUParticles2D"]
+z_index = 10
 texture_filter = 1
 material = SubResource("CanvasItemMaterial_m7uvj")
 position = Vector2(75, -6)
 emitting = false
-amount = 3
+amount = 2
 texture = ExtResource("1_60hq2")
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.86
+explosiveness = 0.95
 randomness = 0.25
 process_material = SubResource("ParticleProcessMaterial_i18c1")

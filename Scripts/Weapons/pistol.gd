@@ -66,7 +66,7 @@ func _fire_projectile(dir: Vector2) -> void:
 	if proj.has_method("initialize_projectile"):
 		proj.call(
 			"initialize_projectile",
-			get_global_mouse_position()-global_position,
+			(get_global_mouse_position()-global_position).rotated(randf_range(-0.1,0.1)),
 			muzzle_velocity,
 			damage
 		)
