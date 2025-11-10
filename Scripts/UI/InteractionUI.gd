@@ -35,7 +35,7 @@ class_name InteractionUI
 @export var tween_time: float = 0.18
 
 @export var fast_scale: =1.0
-@export var slow_scale: =0.2
+@export var slow_scale: =0.0
 var _target:float = 0.2
 
 # portrait anim settings

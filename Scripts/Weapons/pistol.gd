@@ -4,6 +4,7 @@ class_name WeaponPistol
 @export var bullet_scene: PackedScene
 @export var muzzle_velocity: float = 800.0
 @export var damage: float = 10.0
+@export var flash: PackedScene
 
 @onready var muzzle: Node2D = $Muzzle
 
@@ -39,7 +40,7 @@ func request_fire() -> void:
 
 func _fire_projectile(dir: Vector2) -> void:
 	# This gets called by WeaponBase.try_fire(dir) once cooldown is clear
-
+	
 	if bullet_scene == null:
 		push_error("[WeaponPistol] bullet_scene is not set")
 		return
@@ -50,13 +51,17 @@ func _fire_projectile(dir: Vector2) -> void:
 
 	# 1. instance bullet
 	var proj: Node2D = bullet_scene.instantiate() as Node2D
+	var mflash: Node2D = flash.instantiate() as Node2D
 
 	# 2. add bullet to world root (current scene), not as a child of the gun
 	var world_root: Node = get_parent().get_parent().get_parent().get_parent()
 	world_root.add_child(proj)
-
+	muzzle.add_child(mflash)
+	mflash.global_position = muzzle.global_position 
+	mflash.global_rotation = muzzle.global_rotation
+	mflash.scale = Vector2(1,1)
 	# 3. set bullet position and orientation
-	proj.global_position = muzzle.global_position
+	proj.global_position = muzzle.global_position+ Vector2(20,0).rotated(muzzle.global_rotation)
 	proj.look_at(get_global_mouse_position())
 	# 4. initialize bullet
 	# Your ProjectileBasic expects exactly 3 args:
