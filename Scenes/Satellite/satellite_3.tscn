@@ -1,14 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://b48kj3f1ysx00"]
+[gd_scene load_steps=9 format=3 uid="uid://b48kj3f1ysx00"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_4fb8u"]
 [ext_resource type="Resource" uid="uid://cnrc64sortms1" path="res://Data/dialogue_fleet_commander.tres" id="2_4fb8u"]
 [ext_resource type="Material" uid="uid://coy5kyae7r1x7" path="res://Shaders/satellite.tres" id="3_mg2bt"]
+[ext_resource type="Texture2D" uid="uid://gonc1utpupqy" path="res://Assets/ArtStyle Concept.png" id="3_o0rdh"]
 [ext_resource type="Texture2D" uid="uid://c0irrhg6s42tf" path="res://Assets/sattelites.png" id="4_wpam3"]
 [ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="5_5y0e1"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="6_klxb1"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_mamsb"]
-radius = 50.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o0rdh"]
+radius = 43.0
+height = 206.0
 
 [node name="Satellite_1" type="CharacterBody2D"]
 texture_filter = 1
@@ -17,8 +19,25 @@ collision_mask = 0
 script = ExtResource("1_4fb8u")
 dialogue_data = ExtResource("2_4fb8u")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = ExtResource("3_mg2bt")
+texture = ExtResource("3_o0rdh")
+region_enabled = true
+region_rect = Rect2(369, 16, 68, 163)
+script = ExtResource("5_5y0e1")
+rot = 0.01
+
+[node name="TalkArea" type="Area2D" parent="Sprite2D"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/TalkArea"]
+shape = SubResource("CapsuleShape2D_o0rdh")
+
 [node name="Sprite" type="Sprite2D" parent="."]
 material = ExtResource("3_mg2bt")
+position = Vector2(-87, -147)
 texture = ExtResource("4_wpam3")
 region_enabled = true
 region_rect = Rect2(11, 7, 74, 80)
@@ -58,13 +77,6 @@ rotation = -0.18613647
 texture = ExtResource("4_wpam3")
 region_enabled = true
 region_rect = Rect2(191, 179, 210, 65)
-
-[node name="TalkArea" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
-shape = SubResource("CircleShape2D_mamsb")
 
 [node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 script = ExtResource("6_klxb1")

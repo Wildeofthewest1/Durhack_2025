@@ -103,7 +103,9 @@ func _on_fire_timer_timeout() -> void:
 func _fire_bullet() -> void:
 	if bullet_scene == null:
 		return
-	
+		
+		
+
 	var spawn_origin: Vector2 = global_position
 	var spawn_rotation: float = global_rotation
 	
