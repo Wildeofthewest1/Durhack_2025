@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dgp5bovlv0m1x" path="res://Scenes/particles/muzzle_flash_1.gd" id="1_kvfyu"]
 
 [sub_resource type="Curve" id="Curve_kvfyu"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.47619048, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.26788437), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7946429, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.26788437), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_ya83i"]
