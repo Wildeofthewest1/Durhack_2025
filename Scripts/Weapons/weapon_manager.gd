@@ -18,7 +18,7 @@ func _ready() -> void:
 	if _slots.size() > 0:
 		_equip_slot(0)
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if _equipped_instance == null:
 		return
 

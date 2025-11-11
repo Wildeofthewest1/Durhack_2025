@@ -24,7 +24,7 @@ func _ready() -> void:
 		draw_area.custom_minimum_size = minimap_size
 		draw_area.size = minimap_size
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if draw_area:
 		draw_area.queue_redraw()
 

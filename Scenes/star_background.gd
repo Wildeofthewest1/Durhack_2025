@@ -140,7 +140,7 @@ func create_star_texture(particles: CPUParticles2D) -> void:
 	texture.set_size_override(img.get_size())
 	particles.texture = texture
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	# Get camera position
 	var camera: Camera2D = get_viewport().get_camera_2d()
 	if camera != null:

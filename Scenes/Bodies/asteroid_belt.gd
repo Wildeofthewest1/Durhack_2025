@@ -28,7 +28,7 @@ func _ready() -> void:
 	_generate_asteroids()
 	_update_shader_asteroids()
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	_apply_damage(delta)
 
 # --- Asteroid Generation ---

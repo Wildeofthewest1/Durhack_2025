@@ -8,8 +8,8 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	actual_cam_pos = actual_cam_pos.lerp(player.position,delta*5)
+func _physics_process(delta: float) -> void:
+	actual_cam_pos = actual_cam_pos.lerp(player.position,delta*10)
 	var cam_subpixel_offset = actual_cam_pos.round() - actual_cam_pos
 	get_parent().get_parent().get_parent().material.set_shader_parameter("cam_offset",cam_subpixel_offset)
 	global_position = actual_cam_pos.round()
