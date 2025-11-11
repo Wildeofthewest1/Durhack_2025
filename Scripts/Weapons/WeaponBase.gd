@@ -1,32 +1,50 @@
+# WeaponBase.gd
 extends Node2D
 class_name WeaponBase
 
-@export var fire_cooldown: float = 1   # seconds between shots
-var _cooldown_timer: float = 0.0
+@export var data: WeaponData
+
+var _cooldown: float = 0.0
+var _current_mag: int = 0
+var _is_reloading: bool = false
+var _aim_dir: Vector2 = Vector2.RIGHT
+
+func _ready() -> void:
+	if data == null:
+		push_error("WeaponBase: data is not assigned!")
+		return
+	_current_mag = data.max_magazine
 
 func _process(delta: float) -> void:
-	# cooldown tick
-	if _cooldown_timer > 0.0:
-		_cooldown_timer -= delta
-		if _cooldown_timer < 0.0:
-			_cooldown_timer = 0.0
+	if _cooldown > 0.0:
+		_cooldown -= delta
 
-# returns true if we are allowed to fire right now
-func can_fire() -> bool:
-	return _cooldown_timer <= 0.0
-
-# call after a successful shot
-func start_cooldown() -> void:
-	_cooldown_timer = fire_cooldown
-
-# generic fire entry point
-# dir is the direction we want to shoot in (normalized Vector2)
 func try_fire(dir: Vector2) -> void:
-	if can_fire() == false:
+	if data == null:
 		return
-	_fire_projectile(dir)
-	start_cooldown()
+	if _is_reloading:
+		return
+	if _cooldown > 0.0:
+		return
+	if _current_mag <= 0:
+		_start_reload()
+		return
 
-# override this in child (WeaponPistol, etc.)
+	_aim_dir = dir
+	_current_mag -= 1
+	_cooldown = data.fire_cooldown
+
+	_fire_projectile(_aim_dir)
+
+func _start_reload() -> void:
+	if _is_reloading:
+		return
+	_is_reloading = true
+	var reload_time: float = data.reload_time
+	await get_tree().create_timer(reload_time).timeout
+	_current_mag = data.max_magazine
+	_is_reloading = false
+
 func _fire_projectile(dir: Vector2) -> void:
+	# overridden in child weapons
 	pass

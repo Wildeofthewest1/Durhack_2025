@@ -19,6 +19,13 @@ collision_mask = 0
 script = ExtResource("1_4fb8u")
 dialogue_data = ExtResource("2_4fb8u")
 
+[node name="TalkArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
+shape = SubResource("CapsuleShape2D_o0rdh")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 material = ExtResource("3_mg2bt")
@@ -27,13 +34,6 @@ region_enabled = true
 region_rect = Rect2(369, 16, 68, 163)
 script = ExtResource("5_5y0e1")
 rot = 0.01
-
-[node name="TalkArea" type="Area2D" parent="Sprite2D"]
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/TalkArea"]
-shape = SubResource("CapsuleShape2D_o0rdh")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 material = ExtResource("3_mg2bt")

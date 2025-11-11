@@ -1,15 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://l7t5l70jepnw"]
+[gd_scene load_steps=3 format=3 uid="uid://l7t5l70jepnw"]
 
 [ext_resource type="Script" uid="uid://ceyinrly14k5j" path="res://Scripts/Weapons/pistol.gd" id="1_aq3ds"]
-[ext_resource type="PackedScene" uid="uid://cgav1qmt2iach" path="res://Scenes/Weapons/pistol_bullet.tscn" id="2_olife"]
-[ext_resource type="PackedScene" uid="uid://jlpnlqjk6hqt" path="res://Scenes/particles/muzzle_flash_1.tscn" id="3_olife"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_njh1v"]
 
 [node name="pistol" type="Node2D"]
 script = ExtResource("1_aq3ds")
-bullet_scene = ExtResource("2_olife")
-flash = ExtResource("3_olife")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false

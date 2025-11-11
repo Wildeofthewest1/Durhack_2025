@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://jlpnlqjk6hqt"]
+[gd_scene load_steps=13 format=3 uid="uid://jlpnlqjk6hqt"]
 
 [ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="1_b1y23"]
 [ext_resource type="Script" uid="uid://dgp5bovlv0m1x" path="res://Scenes/particles/muzzle_flash_1.gd" id="1_kvfyu"]
@@ -27,7 +27,74 @@ curve_x = SubResource("Curve_uy56g")
 curve_y = SubResource("Curve_oyfeu")
 curve_z = SubResource("Curve_kfj1g")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_luw21"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kvfyu"]
+lifetime_randomness = 0.06
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+spread = 30.0
+flatness = 0.19
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.19999999
+scale_curve = SubResource("CurveXYZTexture_ehutb")
+alpha_curve = SubResource("CurveTexture_ya83i")
+turbulence_enabled = true
+turbulence_noise_strength = 0.0
+turbulence_noise_scale = 0.1
+turbulence_noise_speed_random = 1.0
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.010000001
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oyfeu"]
+lifetime_randomness = 0.06
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 0.5, 1)
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 1.0
+flatness = 0.19
+initial_velocity_min = 10.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.19999999
+scale_curve = SubResource("CurveXYZTexture_ehutb")
+alpha_curve = SubResource("CurveTexture_ya83i")
+turbulence_enabled = true
+turbulence_noise_strength = 0.0
+turbulence_noise_scale = 0.1
+turbulence_noise_speed_random = 1.0
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.010000001
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ya83i"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 0.5, 1)
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 4.0
+flatness = 0.19
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.19999999
+scale_curve = SubResource("CurveXYZTexture_ehutb")
+alpha_curve = SubResource("CurveTexture_ya83i")
+turbulence_enabled = true
+turbulence_noise_strength = 0.0
+turbulence_noise_scale = 0.1
+turbulence_noise_speed_random = 1.0
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.010000001
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uy56g"]
 particle_flag_align_y = true
 particle_flag_disable_z = true
 emission_shape_scale = Vector3(1, 0.5, 1)
@@ -50,13 +117,14 @@ turbulence_influence_min = 0.010000001
 turbulence_influence_max = 0.010000001
 
 [node name="MuzzleFlash" type="Node2D"]
+z_index = 5
 script = ExtResource("1_kvfyu")
 random_strength = 0.5
 
 [node name="Horizontal flash" type="GPUParticles2D" parent="."]
-position = Vector2(-10, 0)
+position = Vector2(3, 0)
 emitting = false
-amount = 30
+amount = 10
 texture = ExtResource("1_b1y23")
 lifetime = 0.2
 interp_to_end = 0.1
@@ -65,7 +133,21 @@ preprocess = 0.1
 explosiveness = 0.9
 randomness = 0.2
 local_coords = true
-process_material = SubResource("ParticleProcessMaterial_luw21")
+process_material = SubResource("ParticleProcessMaterial_kvfyu")
+
+[node name="Horizontal flash_2" type="GPUParticles2D" parent="."]
+position = Vector2(3, 0)
+emitting = false
+amount = 10
+texture = ExtResource("1_b1y23")
+lifetime = 0.3
+interp_to_end = 0.1
+one_shot = true
+preprocess = 0.1
+explosiveness = 0.9
+randomness = 0.2
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_oyfeu")
 
 [node name="VF1" type="GPUParticles2D" parent="."]
 position = Vector2(0, -5)
@@ -81,7 +163,7 @@ preprocess = 0.1
 explosiveness = 0.9
 randomness = 0.2
 local_coords = true
-process_material = SubResource("ParticleProcessMaterial_luw21")
+process_material = SubResource("ParticleProcessMaterial_ya83i")
 
 [node name="VF2" type="GPUParticles2D" parent="."]
 position = Vector2(0, 5)
@@ -97,4 +179,4 @@ preprocess = 0.1
 explosiveness = 0.9
 randomness = 0.2
 local_coords = true
-process_material = SubResource("ParticleProcessMaterial_luw21")
+process_material = SubResource("ParticleProcessMaterial_uy56g")
