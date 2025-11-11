@@ -18,7 +18,7 @@ func _ready() -> void:
 	_find_player()
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player == null or not is_instance_valid(player):
 		_find_player()
 		return

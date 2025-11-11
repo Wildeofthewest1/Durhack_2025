@@ -8,7 +8,7 @@ func _ready() -> void:
 	$Timer.wait_time = timescale
 	text = str(snapped(timevalue,0.1)) + " Years Until the Invasion" 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	text = str(snapped(timevalue,0.1)) + " Years Until the Invasion" 
 	
 

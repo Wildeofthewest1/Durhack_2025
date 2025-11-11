@@ -11,7 +11,7 @@ func _ready() -> void:
 	super._ready()
 	_muzzle = get_node(muzzle_path) as Node2D
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	super._process(delta)
 	_update_aim()
 
