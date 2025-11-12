@@ -12,5 +12,6 @@ bullet_scene = ExtResource("1_3isoy")
 flash_scene = ExtResource("2_m54r8")
 fire_cooldown = 0.2
 automatic = true
+muzzle_velocity = 500.0
 max_magazine = 20
 reload_time = 0.0

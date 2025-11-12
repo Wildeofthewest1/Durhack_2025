@@ -1,11 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgav1qmt2iach"]
+[gd_scene load_steps=7 format=3 uid="uid://cgav1qmt2iach"]
 
 [ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="1_2h6uo"]
 [ext_resource type="Script" uid="uid://3kdthckfpaio" path="res://Scripts/Weapons/pistol_bullet.gd" id="1_26nlb"]
+[ext_resource type="Script" uid="uid://bmx050jubjr86" path="res://Scenes/Weapons/readonly_gravity.gd" id="2_f4peu"]
+[ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/bullet_trail.gd" id="4_vvvpi"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ehpbk"]
 radius = 3.0
 height = 10.0
+
+[sub_resource type="Gradient" id="Gradient_26nlb"]
+colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
 
 [node name="pistol_bullet" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 0
@@ -14,7 +19,9 @@ motion_mode = 1
 script = ExtResource("1_26nlb")
 life_time = 1.0
 
-[node name="ReadonlyGravity" type="Node" parent="."]
+[node name="ReadonlyGravity" type="Node2D" parent="."]
+script = ExtResource("2_f4peu")
+gravity_multiplier = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(5, 0)
@@ -25,3 +32,11 @@ texture = ExtResource("1_2h6uo")
 position = Vector2(5, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ehpbk")
+
+[node name="Trail" type="Line2D" parent="."]
+top_level = true
+width = 2.0
+gradient = SubResource("Gradient_26nlb")
+script = ExtResource("4_vvvpi")
+max_points = 10
+min_step_distance = 1.0

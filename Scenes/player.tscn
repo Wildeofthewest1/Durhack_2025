@@ -1,8 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=17 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scripts/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
 [ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="2_cvnsp"]
+[ext_resource type="Script" uid="uid://dhm0acbe0tced" path="res://Scenes/player_movement.gd" id="2_ukyrk"]
+[ext_resource type="Script" uid="uid://dcr8jjiv8yg4s" path="res://Scenes/player_health.gd" id="3_7dp3o"]
 [ext_resource type="Material" uid="uid://cynyba7yprm84" path="res://Shaders/player.tres" id="3_f1ek2"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/trail.tscn" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scripts/Weapons/weapon_manager.gd" id="5_fkybt"]
@@ -10,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
 [ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Data/WeaponData.gd" id="9_tx1dd"]
 [ext_resource type="Resource" uid="uid://bi01ro1j5gj7h" path="res://Data/pistol.tres" id="10_gymyn"]
+[ext_resource type="Texture2D" uid="uid://clvjhf80sfkbd" path="res://Assets/hit_Eff_3.png" id="11_pu2lt"]
+[ext_resource type="Script" uid="uid://ohf7hfsapmlu" path="res://Scenes/hit_effect.gd" id="12_pu2lt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
@@ -27,9 +31,34 @@ initial_velocity = Vector2(100, 0)
 gravity_multiplier = 5.0
 thrust_accel = 500.0
 max_speed = 300.0
+deadzone_px = null
 rotate_with_motion = false
+rotate_offset_deg = null
+gravitational_constant = null
 thrust = NodePath("thrust")
+health = null
+fuel_max = null
+fuel_use_rate = null
+fuel_recharge_rate = null
 fuel_fulluse_recharge = 0.01
+extra_speed_limit = null
+speed_limit_grow_rate = null
+speed_limit_decay_rate = null
+hit_pause_duration = null
+hit_effect_duration = null
+hit_effect_scale = null
+invincibility_time = null
+
+[node name="Movement" type="Node2D" parent="." node_paths=PackedStringArray("thrust_particles")]
+script = ExtResource("2_ukyrk")
+thrust_accel = 1000.0
+max_speed = 300.0
+thrust_particles = NodePath("../thrust")
+
+[node name="Health" type="Node2D" parent="." node_paths=PackedStringArray("body_sprite", "hit_effect_sprite")]
+script = ExtResource("3_7dp3o")
+body_sprite = NodePath("../Sprite")
+hit_effect_sprite = NodePath("../HitEffect")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
@@ -73,6 +102,15 @@ starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn")])
 z_index = 5
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_f1ek2")
+
+[node name="HitEffect" type="Sprite2D" parent="."]
+visible = false
+z_index = 20
+texture_filter = 1
+rotation = -0.9072484
+texture = ExtResource("11_pu2lt")
+offset = Vector2(-5, -43)
+script = ExtResource("12_pu2lt")
 
 [connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
 [connection signal="area_exited" from="Area2D" to="Area2D" method="_on_area_exited"]

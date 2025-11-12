@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dq6k2o3ltoui2"]
+[gd_scene load_steps=7 format=3 uid="uid://dq6k2o3ltoui2"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_do1bh"]
 [ext_resource type="PackedScene" uid="uid://cn1v0cxx3hlvo" path="res://game_ekin.tscn" id="2_do1bh"]
 [ext_resource type="Script" uid="uid://bjtbfx4gunmwy" path="res://Scripts/UI/Minimap/canvas_control.gd" id="3_ygx3g"]
 [ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/InteractionUI.tscn" id="4_hjfxt"]
-[ext_resource type="Script" uid="uid://b74yrksvhgdhs" path="res://Scripts/UI/health_ui.gd" id="5_tfgm4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
 shader = ExtResource("1_do1bh")
@@ -52,14 +51,3 @@ grow_horizontal = 0
 grow_vertical = 2
 hidden_x = 600.0
 shown_x = -300.0
-
-[node name="HealthUI" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 50.0
-offset_bottom = 50.0
-script = ExtResource("5_tfgm4")
-square_size = 20
-spacing = 10

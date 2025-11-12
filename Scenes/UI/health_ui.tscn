@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://vj635ptco6m2"]
+
+[ext_resource type="Script" uid="uid://b74yrksvhgdhs" path="res://Scripts/UI/health_ui.gd" id="1_2oqq7"]
+
+[node name="HealthUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+script = ExtResource("1_2oqq7")
+square_size = 20
+spacing = 10

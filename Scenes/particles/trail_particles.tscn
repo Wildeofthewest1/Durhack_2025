@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://wcn2ccbx32uw"]
+
+[ext_resource type="Script" uid="uid://ccogyd84fmlym" path="res://Scenes/particles/trail_particles.gd" id="1_a4nd5"]
+
+[sub_resource type="Gradient" id="Gradient_vvvpi"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_d1vbg"]
+gradient = SubResource("Gradient_vvvpi")
+width = 2
+height = 2
+
+[sub_resource type="Curve" id="Curve_a4nd5"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.11309525, 0.90106547), -1.820395, -1.820395, 0, 0, Vector2(0.16666669, 0.55479455), -3.7503815, -3.7503815, 0, 0, Vector2(0.24404764, 0.15905637), -0.91107786, -0.91107786, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_2yc6x"]
+curve = SubResource("Curve_a4nd5")
+
+[sub_resource type="Curve" id="Curve_acuta"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_sux14"]
+curve_x = SubResource("Curve_acuta")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_acuta"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(5, 0.5, 1)
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = -10.0
+initial_velocity_max = 10.0
+directional_velocity_min = 1.0
+directional_velocity_max = 1.0
+directional_velocity_curve = SubResource("CurveXYZTexture_sux14")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.75
+alpha_curve = SubResource("CurveTexture_2yc6x")
+
+[node name="TrailParticles" type="GPUParticles2D"]
+amount = 20
+texture = SubResource("GradientTexture2D_d1vbg")
+visibility_rect = Rect2(-1000, -1000, 2000, 2000)
+process_material = SubResource("ParticleProcessMaterial_acuta")
+script = ExtResource("1_a4nd5")
