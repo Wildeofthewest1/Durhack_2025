@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=19 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://ohf7hfsapmlu" path="res://Scenes/particles/hit_effect.gd" id="12_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://crr37cm1dgssb" path="res://Assets/hit_4.png" id="13_7dp3o"]
 [ext_resource type="Resource" uid="uid://ulqehd0g6ycf" path="res://Data/twin.tres" id="13_dey5f"]
+[ext_resource type="Resource" uid="uid://cjwnh1iq63xf8" path="res://Data/shotgun.tres" id="14_r5xpd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
@@ -33,13 +34,16 @@ initial_velocity = Vector2(100, 0)
 [node name="Movement" type="Node2D" parent="." node_paths=PackedStringArray("thrust_particles")]
 rotation = 0.01833335
 script = ExtResource("2_ukyrk")
+gravity_multiplier = 2.0
 thrust_accel = 100.0
 max_speed = 300.0
 rotate_with_motion = false
 thrust_particles = NodePath("../thrust")
+fuel_max = 50.0
 fuel_use_rate = 30.0
 fuel_recharge_rate = 50.0
 fuel_fulluse_recharge = 0.1
+fuel_recharge_rate_fulluse = 40.0
 thrust_curve_strength = 2.0
 thrust_intensity_max = 3.0
 extra_speed_limit = 300.0
@@ -87,7 +91,7 @@ color = Color(1, 1, 1, 1)
 
 [node name="WeaponManager" type="Node2D" parent="."]
 script = ExtResource("5_fkybt")
-starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f")])
+starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd")])
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
 
@@ -119,6 +123,9 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("13_7dp3o")
 offset = Vector2(3.6909237, -15.3403015)
 script = ExtResource("12_pu2lt")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
 
 [connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
 [connection signal="area_exited" from="Area2D" to="Area2D" method="_on_area_exited"]

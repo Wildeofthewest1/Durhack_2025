@@ -18,9 +18,10 @@ func _ready() -> void:
 	_life_timer = life_time
 	if _trail != null:
 		_trail.visible = trail_enabled
-	var trailer: GPUParticles2D = trail_particles.instantiate() as GPUParticles2D
-	get_parent().add_child(trailer)
-	trailer.follower = self
+	if trail_particles != null:
+		var trailer: GPUParticles2D = trail_particles.instantiate() as GPUParticles2D
+		get_parent().add_child(trailer)
+		trailer.follower = self
 
 func initialize_projectile(dir: Vector2, speed: float, dmg: float) -> void:
 	_velocity_vec = dir.normalized() * speed

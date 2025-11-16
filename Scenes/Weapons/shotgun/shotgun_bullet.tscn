@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0yy73kbbfgv5"]
+
+[ext_resource type="Script" uid="uid://3kdthckfpaio" path="res://Scenes/Weapons/pistol/pistol_bullet.gd" id="1_fl5g8"]
+[ext_resource type="Script" uid="uid://bmx050jubjr86" path="res://Scenes/Weapons/general/readonly_gravity.gd" id="2_cae7j"]
+[ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/general/bullet_trail.gd" id="4_djh4e"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ehpbk"]
+radius = 3.4999957
+height = 6.9999914
+
+[sub_resource type="Gradient" id="Gradient_26nlb"]
+colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
+
+[node name="shotgun_bullet" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 0
+collision_mask = 20
+motion_mode = 1
+script = ExtResource("1_fl5g8")
+life_time = 1.0
+trail_particles = null
+
+[node name="ReadonlyGravity" type="Node2D" parent="."]
+script = ExtResource("2_cae7j")
+gravity_multiplier = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5.5, 0)
+rotation = 1.5724043
+shape = SubResource("CapsuleShape2D_ehpbk")
+
+[node name="Trail" type="Line2D" parent="."]
+top_level = true
+position = Vector2(2, 0)
+width = 2.0
+gradient = SubResource("Gradient_26nlb")
+script = ExtResource("4_djh4e")
+max_points = 6
+min_step_distance = 1.0
+
+[node name="Sprite2D" type="Polygon2D" parent="."]
+position = Vector2(4, 0)
+polygon = PackedVector2Array(0, -3, 0, 3, 4, 2, 4, -2)

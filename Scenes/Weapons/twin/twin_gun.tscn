@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://e1s7n324167h"]
+[gd_scene load_steps=3 format=3 uid="uid://e1s7n324167h"]
 
 [ext_resource type="Script" uid="uid://j0s8ns432k8f" path="res://Scenes/Weapons/twin/twin_gun.gd" id="1_kep1n"]
+[ext_resource type="AudioStream" uid="uid://ckbyvulsiri2u" path="res://Scenes/Weapons/twin/laserShoot.wav" id="2_jp5pb"]
 
 [node name="twin_gun" type="Node2D"]
 z_index = 1
@@ -32,3 +33,6 @@ visible = false
 modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
 position = Vector2(-1.7059374, 0)
 scale = Vector2(0.1433789, 0.125)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_jp5pb")

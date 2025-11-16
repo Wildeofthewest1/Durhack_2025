@@ -10,6 +10,8 @@ class_name WeaponTwin
 @export var fire_both_at_once: bool = false
 @export var alternate_start_left: bool = true
 
+@onready var _audio:= $AudioStreamPlayer
+
 var _muzzle_l: Node2D
 var _muzzle_r: Node2D
 var _next_left: bool = true
@@ -50,6 +52,7 @@ func _fire_projectile(dir: Vector2) -> void:
 	if fire_both_at_once:
 		_spawn_from_muzzle(_muzzle_l, dir)
 		_spawn_from_muzzle(_muzzle_r, dir)
+
 	else:
 		var use_left: bool = _next_left
 		var muzzle: Node2D = null
@@ -59,7 +62,8 @@ func _fire_projectile(dir: Vector2) -> void:
 			muzzle = _muzzle_r
 		_spawn_from_muzzle(muzzle, dir)
 		_next_left = not _next_left
-
+	_audio.pitch_scale = 1 + randf_range(-0.01,0.01)
+	_audio.play()
 
 # --- helpers ---
 
