@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://l7t5l70jepnw"]
 
-[ext_resource type="Script" uid="uid://ceyinrly14k5j" path="res://Scripts/Weapons/pistol.gd" id="1_aq3ds"]
+[ext_resource type="Script" uid="uid://ceyinrly14k5j" path="res://Scenes/Weapons/Weapons/pistol.gd" id="1_aq3ds"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_njh1v"]
 

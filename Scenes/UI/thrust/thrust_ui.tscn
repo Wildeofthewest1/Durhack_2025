@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://btrdmogpntkxv"]
 
-[ext_resource type="Script" uid="uid://6nsfmc4uipa7" path="res://Scenes/UI/thrust_ui.gd" id="1_gfky1"]
+[ext_resource type="Script" uid="uid://6nsfmc4uipa7" path="res://Scenes/UI/thrust/thrust_ui.gd" id="1_gfky1"]
 
 [node name="ThrustUI" type="Control" node_paths=PackedStringArray("thrust_bar_fill")]
 layout_mode = 3

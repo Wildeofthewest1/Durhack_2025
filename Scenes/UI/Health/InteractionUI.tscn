@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://rp1733dafbo0"]
 
-[ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scripts/UI/InteractionUI.gd" id="1_dekh7"]
+[ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scenes/UI/Health/InteractionUI.gd" id="1_dekh7"]
 
 [node name="InteractionUI" type="Control" groups=["InteractUI"]]
 texture_filter = 1

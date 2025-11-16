@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b88nfkimgjf5n"]
 
-[ext_resource type="PackedScene" uid="uid://btocrrilwnlyi" path="res://Scenes/planet.tscn" id="1_c7s6e"]
+[ext_resource type="PackedScene" uid="uid://btocrrilwnlyi" path="res://Scenes/Bodies/planet_alternative.tscn" id="1_3kx7a"]
 
 [node name="Map" type="Node"]
 
@@ -10,11 +10,11 @@ zoom = Vector2(0.1, 0.1)
 
 [node name="StarSystem" type="Node2D" parent="."]
 
-[node name="Star" parent="StarSystem" instance=ExtResource("1_c7s6e")]
+[node name="Star" parent="StarSystem" instance=ExtResource("1_3kx7a")]
 modulate = Color(0.9, 0.79499996, 0, 1)
 scale = Vector2(5, 5)
 
-[node name="Planet" parent="StarSystem" node_paths=PackedStringArray("orbital_parent") instance=ExtResource("1_c7s6e")]
+[node name="Planet" parent="StarSystem" node_paths=PackedStringArray("orbital_parent") instance=ExtResource("1_3kx7a")]
 position = Vector2(1447, 35)
 mass = 1
 initial_velocity = 400.0

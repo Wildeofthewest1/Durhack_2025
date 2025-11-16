@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cgav1qmt2iach"]
 
 [ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="1_2h6uo"]
-[ext_resource type="Script" uid="uid://3kdthckfpaio" path="res://Scripts/Weapons/pistol_bullet.gd" id="1_26nlb"]
+[ext_resource type="Script" uid="uid://3kdthckfpaio" path="res://Scenes/Weapons/Weapons/pistol_bullet.gd" id="1_26nlb"]
 [ext_resource type="Script" uid="uid://bmx050jubjr86" path="res://Scenes/Weapons/readonly_gravity.gd" id="2_f4peu"]
 [ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/bullet_trail.gd" id="4_vvvpi"]
 
