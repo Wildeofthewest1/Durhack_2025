@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://blelx7tsviryj"]
 
-[ext_resource type="Script" uid="uid://b0c14765wnqhs" path="res://Scripts/Fleet/FleetModel.gd" id="1_kfh47"]
+[ext_resource type="Script" uid="uid://b0c14765wnqhs" path="res://Scenes/Fleet/FleetModel.gd" id="1_kfh47"]
 [ext_resource type="Texture2D" uid="uid://0v6ehb2vbp27" path="res://Assets/Drones.png" id="2_ygpg6"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="3_ib72j"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="3_ib72j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kfh47"]
 size = Vector2(10, 38)

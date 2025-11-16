@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://cqpdodt668rju"]
 
-[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_f83kg"]
+[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_f83kg"]
 [ext_resource type="Resource" uid="uid://bhiv3uk0fn2ks" path="res://Data/dialogue_outpust_guard.tres" id="2_f83kg"]
 [ext_resource type="Material" uid="uid://coy5kyae7r1x7" path="res://Shaders/satellite.tres" id="3_oquqo"]
 [ext_resource type="Texture2D" uid="uid://c0irrhg6s42tf" path="res://Assets/sattelites.png" id="4_uvqe8"]
 [ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="5_setlu"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="6_8gkap"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="6_8gkap"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mamsb"]
 radius = 50.0

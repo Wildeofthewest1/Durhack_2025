@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dibs8io4xu6dn"]
 
 [ext_resource type="FontFile" uid="uid://bvjb5at85mx05" path="res://Fonts/ithaca-font/Ithaca-LVB75.ttf" id="1_06saf"]
-[ext_resource type="Script" uid="uid://bn3pcygov4nit" path="res://400_years.gd" id="1_nw066"]
+[ext_resource type="Script" uid="uid://bn3pcygov4nit" path="res://Scenes/UI/400_years.gd" id="1_nw066"]
 
 [node name="400Years" type="Label"]
 offset_right = 218.0

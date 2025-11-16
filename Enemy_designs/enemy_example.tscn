@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b5wsbnqmlr7im"]
 
-[ext_resource type="Script" uid="uid://b2aascdi8p3md" path="res://enemy_example.gd" id="1_wnfft"]
-[ext_resource type="Script" uid="uid://debeo6ppqgysr" path="res://scripts/ReadonlyGravity.gd" id="2_pkima"]
-[ext_resource type="Texture2D" uid="uid://bb31qkvvey3yv" path="res://circle-512.png" id="3_pkima"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://scripts/minimap_tracked_object.gd" id="4_nxo0o"]
+[ext_resource type="Script" path="res://enemy_example.gd" id="1_wnfft"]
+[ext_resource type="Script" path="res://scripts/ReadonlyGravity.gd" id="2_pkima"]
+[ext_resource type="Texture2D" path="res://circle-512.png" id="3_pkima"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="4_nxo0o"]
 
 [node name="Enemy_Example" type="CharacterBody2D"]
 motion_mode = 1

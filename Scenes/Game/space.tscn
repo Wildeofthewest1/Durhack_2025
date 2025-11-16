@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://i4hxnr3vdbch"]
 
-[ext_resource type="PackedScene" uid="uid://dxn1fw8iaskrw" path="res://Scenes/planet.tscn" id="1_0ll74"]
-[ext_resource type="PackedScene" uid="uid://dp671k4hbthh5" path="res://Scenes/space_station.tscn" id="2_p3ued"]
-[ext_resource type="Script" uid="uid://bqwocjokj8s4b" path="res://Scenes/camera_2d_debug.gd" id="2_wnfdr"]
-[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="3_2fo43"]
+[ext_resource type="PackedScene" path="res://Scenes/planet.tscn" id="1_0ll74"]
+[ext_resource type="PackedScene" uid="uid://dp671k4hbthh5" path="res://Scenes/Satellite/space_station.tscn" id="2_p3ued"]
+[ext_resource type="Script" uid="uid://bqwocjokj8s4b" path="res://Scenes/Camera/camera_2d_debug.gd" id="2_wnfdr"]
+[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="3_2fo43"]
 [ext_resource type="Texture2D" uid="uid://dcfgkv70danjw" path="res://Assets/spacestation.png" id="5_bj3u6"]
 
 [node name="Space" type="Node"]

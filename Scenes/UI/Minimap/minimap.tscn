@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b7vqm8xh0jw8p"]
 
-[ext_resource type="Script" uid="uid://fv630meevy3x" path="res://Scripts/UI/Minimap/minimap.gd" id="1_minimap"]
-[ext_resource type="Script" uid="uid://dx77uasv6hmq3" path="res://Scripts/UI/Minimap/minimap_draw_area.gd" id="2_draw_area"]
+[ext_resource type="Script" uid="uid://fv630meevy3x" path="res://Scenes/UI/Minimap/minimap.gd" id="1_minimap"]
+[ext_resource type="Script" uid="uid://dx77uasv6hmq3" path="res://Scenes/UI/Minimap/minimap_draw_area.gd" id="2_draw_area"]
 
 [node name="Minimap" type="Control"]
 layout_mode = 3

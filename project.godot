@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.5", "GL Compatibility")
 
 [autoload]
 
-FleetManager="*res://Scripts/FleetManager.gd"
+FleetManager="*res://Scenes/Managers/FleetManager.gd"
 PlayerVariables="*res://Scenes/Player/PlayerVariables.gd"
 
 [display]

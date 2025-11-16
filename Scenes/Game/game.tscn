@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="1_ebmjs"]
-[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scripts/game.gd" id="1_wowpa"]
+[ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/Game/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://cb05i3ko56emi" path="res://Scenes/star_background.gd" id="2_ldgsr"]
-[ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scripts/camera/subpixelcamera.gd" id="2_qxrlw"]
-[ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scripts/enemy_spawner.gd" id="4_3dryh"]
+[ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scenes/Camera/subpixelcamera.gd" id="2_qxrlw"]
+[ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scenes/Managers/enemy_spawner.gd" id="4_3dryh"]
 [ext_resource type="Script" uid="uid://iwtk8qqhqf41" path="res://Scenes/Bodies/PlanetSpawner.gd" id="4_wowpa"]
 [ext_resource type="PackedScene" uid="uid://b48kj3f1ysx00" path="res://Scenes/Satellite/satellite_3.tscn" id="6_h4fw4"]
 [ext_resource type="PackedScene" uid="uid://cu2xh3q6htkyi" path="res://Scenes/Satellite/satellite_2.tscn" id="6_i6g32"]

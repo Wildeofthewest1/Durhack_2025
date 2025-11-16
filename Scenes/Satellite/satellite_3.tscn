@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://b48kj3f1ysx00"]
 
-[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_4fb8u"]
+[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_4fb8u"]
 [ext_resource type="Resource" uid="uid://cnrc64sortms1" path="res://Data/dialogue_fleet_commander.tres" id="2_4fb8u"]
 [ext_resource type="Material" uid="uid://coy5kyae7r1x7" path="res://Shaders/satellite.tres" id="3_mg2bt"]
 [ext_resource type="Texture2D" uid="uid://gonc1utpupqy" path="res://Assets/ArtStyle Concept.png" id="3_o0rdh"]
 [ext_resource type="Texture2D" uid="uid://c0irrhg6s42tf" path="res://Assets/sattelites.png" id="4_wpam3"]
 [ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="5_5y0e1"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="6_klxb1"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="6_klxb1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o0rdh"]
 radius = 43.0

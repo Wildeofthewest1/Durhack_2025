@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://Scenes/UI/interaction_ui.tscn" id="1"]
 [ext_resource type="Script" uid="uid://l0fgfkljeenr" path="res://Scenes/UI/Interaction/debug_temp.gd" id="1_344qe"]
-[ext_resource type="Script" uid="uid://cyqrvayh7wgk0" path="res://Scripts/interaction_manager.gd" id="2"]
+[ext_resource type="Script" uid="uid://cyqrvayh7wgk0" path="res://Scenes/Managers/interaction_manager.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://8eqw2y2go8k3" path="res://Scenes/Satellite/example_station.tscn" id="3"]
 [ext_resource type="Script" uid="uid://bqygb3r6vageg" path="res://Scenes/Player/example_player.gd" id="4"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="4_bt0ug"]

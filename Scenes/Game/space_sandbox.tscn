@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bjvl00i8b302p"]
 
-[ext_resource type="PackedScene" uid="uid://btocrrilwnlyi" path="res://Scenes/planet.tscn" id="1_ygln2"]
-[ext_resource type="PackedScene" uid="uid://dy4pte6he5678" path="res://Scenes/player_owen.tscn" id="2_y24bc"]
+[ext_resource type="PackedScene" uid="uid://btocrrilwnlyi" path="res://Scenes/Bodies/planet_alternative.tscn" id="1_ygln2"]
+[ext_resource type="PackedScene" uid="uid://dy4pte6he5678" path="res://Scenes/Player/player_owen.tscn" id="2_y24bc"]
 
 [node name="Space" type="Node"]
 

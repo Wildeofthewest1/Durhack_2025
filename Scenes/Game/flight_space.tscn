@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://bmvd6w5pg0gl0"]
 
-[ext_resource type="PackedScene" uid="uid://dxn1fw8iaskrw" path="res://Scenes/planet.tscn" id="1_1wiwn"]
-[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/player.tscn" id="2_2sgmh"]
-[ext_resource type="Script" uid="uid://bqwocjokj8s4b" path="res://Scenes/camera_2d_debug.gd" id="3_2sgmh"]
+[ext_resource type="PackedScene" path="res://Scenes/planet.tscn" id="1_1wiwn"]
+[ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="2_2sgmh"]
+[ext_resource type="Script" uid="uid://bqwocjokj8s4b" path="res://Scenes/Camera/camera_2d_debug.gd" id="3_2sgmh"]
 
 [node name="FlightSpace" type="Node"]
 

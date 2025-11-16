@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://clohd2wj4g0jq"]
 
-[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scripts/npc.gd" id="1_a0cv1"]
+[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_a0cv1"]
 [ext_resource type="Resource" uid="uid://bsxi8j8ww1igw" path="res://Data/dialogue_example.tres" id="2_vewma"]
 [ext_resource type="Resource" uid="uid://du1f2rta3thym" path="res://Data/shop_example.tres" id="3_1cx8a"]
 [ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="4_vasjd"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scripts/UI/Minimap/minimap_tracked_object.gd" id="5_6hxmd"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="5_6hxmd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vasjd"]
 radius = 100.0
