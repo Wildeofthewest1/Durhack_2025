@@ -49,10 +49,10 @@ func die() -> void:
 
 func assign_behaviour() -> void:
 	var behaviour_paths = {
-		"melee": "res://Scripts/Enemy_Behaviour/melee_behaviour.gd",
-		"ranged": "res://Scripts/Enemy_Behaviour/ranged_behaviour.gd",
-		"charger": "res://Scripts/Enemy_Behaviour/charger_behaviour.gd",
-		"mothership": "res://Scripts/Enemy_Behaviour/mothership_behaviour.gd",
+		"melee": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/melee_behaviour.gd",
+		"ranged": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/ranged_behaviour.gd",
+		"charger": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/charger_behaviour.gd",
+		"mothership": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/mothership_behaviour.gd",
 	}
 
 	var script_path: String = behaviour_paths.get(behaviour_type, behaviour_paths["ranged"])

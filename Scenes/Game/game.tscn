@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cuqp3vdnbus2n"]
+[gd_scene load_steps=16 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/Game/game.gd" id="1_wowpa"]
@@ -13,9 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cqpdodt668rju" path="res://Scenes/Satellite/satellite_4.tscn" id="7_o5yvi"]
 [ext_resource type="PackedScene" uid="uid://cbwgac5vnc7eu" path="res://Scenes/Satellite/satellite_5.tscn" id="7_rku1e"]
 [ext_resource type="PackedScene" uid="uid://dvdupc2fvp8lg" path="res://Scenes/Satellite/satellite_1.tscn" id="7_v158k"]
-[ext_resource type="Resource" path="res://Data/dialogue_wanne_be_rebellion_leader.tres" id="8_h4fw4"]
-[ext_resource type="PackedScene" uid="uid://lyol4qhr8xkl" path="res://Scenes/Fleet/fleet_1.tscn" id="13_1phco"]
-[ext_resource type="PackedScene" uid="uid://blelx7tsviryj" path="res://Scenes/Fleet/fleet_2.tscn" id="14_nb51f"]
+[ext_resource type="Resource" uid="uid://c1algbfbjgo5w" path="res://Data/dialogue_wanne_be_rebellion_leader.tres" id="8_h4fw4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2vowc"]
 render_priority = 1
@@ -92,11 +90,3 @@ position = Vector2(3037, 481)
 dialogue_data = ExtResource("8_h4fw4")
 
 [node name="Fleet" type="Node2D" parent="."]
-
-[node name="Fleet_1" parent="Fleet" node_paths=PackedStringArray("follow_body") instance=ExtResource("13_1phco")]
-position = Vector2(365.64313, -189.91794)
-follow_body = NodePath("../../PlayerContainer/Player")
-
-[node name="Fleet_2" parent="Fleet" node_paths=PackedStringArray("follow_body") instance=ExtResource("14_nb51f")]
-position = Vector2(365.64313, -189.91794)
-follow_body = NodePath("../../PlayerContainer/Player")

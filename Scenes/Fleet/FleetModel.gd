@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name DroneFollower
 
-@export var follow_body: Node2D = null         # who we orbit
+@export var follow_body: Node2D = null
 @export var orbit_radius: float = 128.0
 @export var orbit_speed: float = 1.0
 @export var follow_lerp_speed: float = 5.0
@@ -11,14 +11,23 @@ class_name DroneFollower
 @export var drone_name: String = "Drone"
 
 @export var health: int = 200
-@export var respawn_delay: float = 5.0         # ⏱ seconds before respawn
+@export var respawn_delay: float = 5.0
+
+@export var drone_type: String = ""     #
+
+@export var uid: int = 0
+
 
 var _orbit_angle: float = 0.0
 var _prev_position: Vector2 = Vector2.ZERO
+var _default_color: Color
 
 
 func _ready() -> void:
-	FleetManager.register_drone(self)
+	if has_node("Sprite2D"):
+		var sprite: Sprite2D = $Sprite2D
+		_default_color = sprite.modulate
+
 	_prev_position = global_position
 	attach_weapons()
 
@@ -36,18 +45,15 @@ func take_damage(amount: int) -> void:
 
 
 func _flash_red(sprite: Sprite2D) -> void:
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(sprite, "modulate", Color(1, 0, 0), 0.05)
-	tween.tween_property(sprite, "modulate", Color(1, 1, 1), 0.1)
+	tween.tween_property(sprite, "modulate", _default_color, 0.1)
 
 
 func die() -> void:
 	print("%s has died" % name)
 
-	FleetManager.unregister_drone(self)
-	FleetManager.respawn_drone(global_position, follow_body, 5.0)
-
-	queue_free()
+	FleetManager.drone_died(self)
 
 
 

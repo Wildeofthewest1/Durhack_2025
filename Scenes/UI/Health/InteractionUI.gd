@@ -271,12 +271,25 @@ func _refresh_fleet() -> void:
 	_fleet_list.clear()
 
 	var drones: Array[DroneFollower] = FleetManager.get_drones()
+
 	for dr in drones:
-		var follow_name: String = "None"
-		if dr.follow_body != null:
+		# -------------------------------------------------------
+		# 1. DEAD or FREED DRONE?
+		# -------------------------------------------------------
+		if dr == null or not is_instance_valid(dr):
+			_fleet_list.add_item("Respawning drone...")
+			continue
+
+		# -------------------------------------------------------
+		# 2. LIVE DRONE — SAFE TO ACCESS PROPERTIES
+		# -------------------------------------------------------
+		var follow_name := "None"
+		if dr.follow_body != null and is_instance_valid(dr.follow_body):
 			follow_name = dr.follow_body.name
-		var label_text: String = dr.drone_name + " (guarding: " + follow_name + ")"
-		_fleet_list.add_item(label_text)
+
+		var label := dr.drone_name + " (guarding: " + follow_name + ")"
+		_fleet_list.add_item(label)
+
 
 
 func _refresh_shop() -> void:
@@ -318,18 +331,31 @@ func _on_assign_pressed() -> void:
 	if selected_items.is_empty():
 		return
 
-	var first_idx: int = selected_items[0]
-
+	var idx: int = selected_items[0]
 	var drones: Array[DroneFollower] = FleetManager.get_drones()
-	if first_idx < 0:
-		return
-	if first_idx >= drones.size():
+
+	if idx < 0 or idx >= drones.size():
 		return
 
-	var chosen_drone: DroneFollower = drones[first_idx]
-	chosen_drone.follow_body = _current_planet
+	var drone: DroneFollower = drones[idx]
+
+	# =====================================================
+	# TOGGLE BEHAVIOUR:
+	# If drone is already guarding THIS planet → return to player
+	# If drone is guarding anything else → assign to this planet
+	# =====================================================
+
+	if drone.follow_body == _current_planet:
+		# Return to player
+		drone.follow_body = FleetManager.player
+		print("🔄 Drone returned to player:", drone.name)
+	else:
+		# Assign to this planet/station
+		drone.follow_body = _current_planet
+		print("📡 Drone assigned to station:", _current_planet.name)
 
 	_refresh_fleet()
+
 
 
 func _on_buy_pressed() -> void:

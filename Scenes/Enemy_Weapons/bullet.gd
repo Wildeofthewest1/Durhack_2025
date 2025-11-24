@@ -36,6 +36,7 @@ func die() -> void:
 	queue_free()
 
 func _physics_process(delta: float) -> void:
+	"""
 	# --- Apply gravitational pull from all planets ---
 	for planet in get_tree().get_nodes_in_group("Planets"):
 		if not ("mass" in planet and "radius" in planet):
@@ -50,7 +51,7 @@ func _physics_process(delta: float) -> void:
 		var force = gravitational_constant * gravity_multiplier * planet.mass / pow(distance, 2)
 		velocity += g_dir * force * delta
 	# -------------------------------------------------
-
+	"""
 	# --- Optional deceleration ---
 	if deceleration > 0.0:
 		var s = velocity.length()

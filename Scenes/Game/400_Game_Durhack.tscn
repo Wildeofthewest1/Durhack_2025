@@ -1,4 +1,4 @@
-[gd_scene load_steps=0 format=3 uid="uid://dmxyuqgbiylji"]
+[gd_scene format=3 uid="uid://dmxyuqgbiylji"]
 
 [node name="Game" type="Node2D"]
 
