@@ -36,7 +36,7 @@ rotation = 0.01833335
 script = ExtResource("2_ukyrk")
 gravity_multiplier = 2.0
 thrust_accel = 100.0
-max_speed = 300.0
+max_speed = 100.0
 rotate_with_motion = false
 thrust_particles = NodePath("../thrust")
 fuel_fulluse_recharge = 0.1
@@ -45,7 +45,7 @@ thrust_curve_strength = 2.0
 thrust_intensity_max = 3.0
 extra_speed_limit = 300.0
 speed_limit_grow_rate = 30.0
-speed_limit_decay_rate = 40.0
+speed_limit_decay_rate = 1.0
 
 [node name="Health" type="Node2D" parent="." node_paths=PackedStringArray("body_sprite", "hit_effect_sprite")]
 script = ExtResource("3_7dp3o")

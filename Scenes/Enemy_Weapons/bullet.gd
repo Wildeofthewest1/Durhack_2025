@@ -68,8 +68,8 @@ func _physics_process(delta: float) -> void:
 		rotation = velocity.angle() + deg_to_rad(-90)
 
 	# --- Fade out based on speed ---
-	if sprite and initial_speed > 0.0:
-		sprite.modulate.a = clamp(velocity.length() / initial_speed, 0.0, 1.0)
+	#if sprite and initial_speed > 0.0:
+		#sprite.modulate.a = clamp(velocity.length() / initial_speed, 0.0, 1.0)
 
 
 func _on_hitbox_body_entered(body: Node) -> void:

@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cqpdodt668rju" path="res://Scenes/Satellite/satellite_4.tscn" id="7_o5yvi"]
 [ext_resource type="PackedScene" uid="uid://cbwgac5vnc7eu" path="res://Scenes/Satellite/satellite_5.tscn" id="7_rku1e"]
 [ext_resource type="PackedScene" uid="uid://dvdupc2fvp8lg" path="res://Scenes/Satellite/satellite_1.tscn" id="7_v158k"]
-[ext_resource type="Resource" uid="uid://c1algbfbjgo5w" path="res://Data/dialogue_wanne_be_rebellion_leader.tres" id="8_h4fw4"]
+[ext_resource type="Resource" path="res://Data/dialogue_wanne_be_rebellion_leader.tres" id="8_h4fw4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2vowc"]
 render_priority = 1
@@ -51,7 +51,7 @@ spawn_radius = 10000.0
 [node name="Other" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.75, 0.75)
 script = ExtResource("2_qxrlw")
 
 [node name="Sprite2D" type="Sprite2D" parent="Camera2D"]
