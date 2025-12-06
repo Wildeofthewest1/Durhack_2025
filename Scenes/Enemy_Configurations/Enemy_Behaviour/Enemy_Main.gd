@@ -5,13 +5,16 @@ extends CharacterBody2D
 @export var health: int = 100
 
 @export var rotation_speed: float = 3.0
-@export var detectionradius: float = 1000
+@export var detectionradius: float = 1000.0
 
 # Escort system (for motherships only)
 @export var escort_type: String = "Enemy1"
 @export var escort_count: int = 2
 @export var escort_offset: float = 150.0
 @export var escort_respawn_delay: float = 3.0
+
+# Death particles
+@export var death_particles_scene: PackedScene
 
 var behaviour_type: String = "default"
 var behaviour: Node = null
@@ -20,7 +23,7 @@ var spawner: Node
 var escorts: int = 0
 
 func _ready() -> void:
-	player = get_tree().get_first_node_in_group("player")
+	player = get_tree().get_first_node_in_group("player") as Node2D
 	spawner = get_tree().get_first_node_in_group("EnemySpawner")
 	
 	assign_behaviour()
@@ -38,17 +41,32 @@ func take_damage(amount: int) -> void:
 		die()
 
 func _flash_red(sprite: Sprite2D) -> void:
-	var tween = create_tween()
-	tween.tween_property(sprite, "modulate", Color(1, 0, 0), 0.05)
-	tween.tween_property(sprite, "modulate", Color(1, 1, 1), 0.1)
-
+	var tween: Tween = create_tween()
+	tween.tween_property(sprite, "modulate", Color(1.0, 0.0, 0.0), 0.05)
+	tween.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0), 0.1)
 
 func die() -> void:
 	print("%s has died" % name)
+	_spawn_death_particles()
 	queue_free()
 
+func _spawn_death_particles() -> void:
+	if death_particles_scene == null:
+		return
+
+	var particles_node: Node2D = death_particles_scene.instantiate() as Node2D
+
+	# Prefer spawning in the same parent so it stays in the same layer/space
+	var parent_node: Node = get_parent()
+	if parent_node == null:
+		parent_node = get_tree().current_scene
+
+	parent_node.add_child(particles_node)
+	particles_node.emitting = true
+	particles_node.global_position = global_position
+
 func assign_behaviour() -> void:
-	var behaviour_paths = {
+	var behaviour_paths: Dictionary = {
 		"melee": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/melee_behaviour.gd",
 		"ranged": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/ranged_behaviour.gd",
 		"charger": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/charger_behaviour.gd",
@@ -67,7 +85,7 @@ func assign_behaviour() -> void:
 
 
 func attach_weapons() -> void:
-	var weapon_scenes = [
+	var weapon_scenes: Array = [
 		preload("res://Scenes/Enemy_Weapons/Pistol.tscn"),
 		preload("res://Scenes/Enemy_Weapons/Shotgun.tscn")
 	]
@@ -76,64 +94,61 @@ func attach_weapons() -> void:
 		push_warning("Enemy has no WeaponSlots node: " + str(name))
 		return
 
-	var weapon_slots = $WeaponSlots.get_children()
+	var weapon_slots: Array = $WeaponSlots.get_children()
 
 	if not has_node("Weapons"):
-		var weapons_node = Node2D.new()
+		var weapons_node: Node2D = Node2D.new()
 		weapons_node.name = "Weapons"
 		add_child(weapons_node)
 
 	for i in range(weapon_slots.size()):
-		var weapon_scene = weapon_scenes[i % weapon_scenes.size()]
-		var weapon = weapon_scene.instantiate()
+		var weapon_scene: PackedScene = weapon_scenes[i % weapon_scenes.size()]
+		var weapon: Node2D = weapon_scene.instantiate() as Node2D
 
-		weapon.position = weapon_slots[i].position
-		#weapon.owner_enemy = self
+		weapon.position = (weapon_slots[i] as Node2D).position
 		$Weapons.add_child(weapon)
 
 
 func _physics_process(delta: float) -> void:
-	if player and faceplayer:
+	if player != null and faceplayer:
 		var direction: Vector2 = player.global_position - global_position
 
-		var desired_angle: float = direction.angle() + deg_to_rad(-90)
+		var desired_angle: float = direction.angle() + deg_to_rad(-90.0)
 		rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
 
-	if behaviour:
+	if behaviour != null:
 		behaviour.update(delta)
-	
+
 	#if not faceplayer:
 	#	_check_escort_status()
 
 
 func _spawn_escort() -> void:
-	if not spawner or health <= 0:
+	if spawner == null or health <= 0:
 		return
 
 	# Stop if we already have enough escorts
 	if escorts >= escort_count:
 		return
 
-	var angle = TAU / escort_count
-	var offset = Vector2(cos(angle), sin(angle)) * escort_offset
-	var spawn_position = global_position + offset
+	var angle: float = TAU / float(escort_count)
+	var offset: Vector2 = Vector2(cos(angle), sin(angle)) * escort_offset
+	var spawn_position: Vector2 = global_position + offset
 
-	var escort = spawner.spawn_enemy(
-		escort_type,                            # enemy_type
-		spawn_position,                         # position
-		"ranged",                               # behaviour_type
-		["res://Scenes/Enemy_Weapons/Shotgun.tscn"], # weapons
-		150.0,                                  # speed
-		120,                                    # health
-		true,                                   # rotate_toward_player
-		500                                     # detectionradius
+	var escort: Node = spawner.spawn_enemy(
+		escort_type,                                  # enemy_type
+		spawn_position,                               # position
+		"ranged",                                     # behaviour_type
+		["res://Scenes/Enemy_Weapons/Shotgun.tscn"],  # weapons
+		150.0,                                        # speed
+		120,                                          # health
+		true,                                         # rotate_toward_player
+		500.0                                         # detectionradius
 	)
 
-		
 func _check_escort_status() -> void:
 	# Spawn replacements until we reach escort_count
 	if escorts < escort_count:
 		print(escorts)
 		_spawn_escort()
 		escorts += 1
-		

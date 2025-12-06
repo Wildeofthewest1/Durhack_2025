@@ -25,12 +25,12 @@ colors = PackedColorArray(0.76, 0, 0, 1, 0.82350516, 0.2646048, 0.2646048, 1, 1,
 gradient = SubResource("Gradient_86ag7")
 
 [sub_resource type="Curve" id="Curve_86ag7"]
-_data = [Vector2(0, 0.19713265), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.15), 0.0, 0.0, 0, 0]
 point_count = 1
 
 [sub_resource type="Curve" id="Curve_htcqd"]
 _limits = [0.0, 2.0, 0.0, 1.0]
-_data = [Vector2(0, 1.0143371), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 4), 0.0, 0.0, 0, 0]
 point_count = 1
 
 [sub_resource type="Curve" id="Curve_iq101"]
@@ -51,7 +51,7 @@ emission_shape = 1
 emission_sphere_radius = 1.0
 spread = 15.0
 flatness = 0.06
-initial_velocity_max = 300.0
+initial_velocity_max = 500.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.29999998
 scale_max = 0.5
@@ -108,7 +108,7 @@ script = ExtResource("1_5hsui")
 emitting = false
 amount = 10
 texture = ExtResource("1_jtw85")
-lifetime = 0.3
+lifetime = 0.2
 one_shot = true
 explosiveness = 0.9
 randomness = 0.16
@@ -116,6 +116,7 @@ trail_lifetime = 0.25
 process_material = SubResource("ParticleProcessMaterial_5hsui")
 
 [node name="particle2" type="GPUParticles2D" parent="."]
+visible = false
 rotation = 3.1415927
 emitting = false
 amount = 1

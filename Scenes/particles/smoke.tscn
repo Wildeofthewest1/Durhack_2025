@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://cqiesav7vkq1i"]
+
+[ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="1_hq4tn"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hq4tn"]
+
+[sub_resource type="Curve" id="Curve_hq4tn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.03030028, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ncp72"]
+curve = SubResource("Curve_hq4tn")
+
+[sub_resource type="Curve" id="Curve_ncp72"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_t7fd7"]
+curve = SubResource("Curve_ncp72")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hq4tn"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-15, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(10, 1, 1)
+spread = 180.0
+flatness = 0.246
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 0.01
+scale_curve = SubResource("CurveTexture_t7fd7")
+alpha_curve = SubResource("CurveTexture_ncp72")
+
+[node name="smoke" type="GPUParticles2D"]
+self_modulate = Color(1, 1, 1, 0.19607843)
+material = SubResource("CanvasItemMaterial_hq4tn")
+amount = 300
+texture = ExtResource("1_hq4tn")
+lifetime = 2.0
+explosiveness = 0.05
+randomness = 0.07
+visibility_rect = Rect2(-250, -250, 500, 500)
+process_material = SubResource("ParticleProcessMaterial_hq4tn")

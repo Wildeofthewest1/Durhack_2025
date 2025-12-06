@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://ccdcu2r84bw4h"]
+
+[ext_resource type="Script" uid="uid://d2em44ye21jcu" path="res://Scenes/Weapons/missile_launcher/missile_1.gd" id="1_hqvpo"]
+[ext_resource type="PackedScene" uid="uid://chtntuksi7u5v" path="res://Scenes/particles/explosion.tscn" id="2_hqvpo"]
+[ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="3_tqcjo"]
+[ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/general/bullet_trail.gd" id="4_5pe3s"]
+[ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="5_n0dyn"]
+[ext_resource type="PackedScene" uid="uid://cqiesav7vkq1i" path="res://Scenes/particles/smoke.tscn" id="6_t75wg"]
+[ext_resource type="PackedScene" uid="uid://uv76idhwp6x8" path="res://Scenes/particles/missile_thrust.tscn" id="7_bf4c2"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k5p2k"]
+radius = 2.0
+height = 8.0
+
+[sub_resource type="Gradient" id="Gradient_c15xn"]
+colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
+
+[node name="missile_1" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 20
+motion_mode = 1
+script = ExtResource("1_hqvpo")
+startup_time = 0.3
+startup_speed = 200.0
+fast_seek_speed = 500.0
+slow_seek_speed = 200.0
+turn_speed_deg = 180.0
+explosion_scene = ExtResource("2_hqvpo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(2, 1.7881393e-07)
+scale = Vector2(0.3125, 0.12500001)
+texture = ExtResource("3_tqcjo")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-3, -2, -3, 2, 7, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_k5p2k")
+
+[node name="Trail" type="Line2D" parent="."]
+visible = false
+top_level = true
+width = 1.0
+gradient = SubResource("Gradient_c15xn")
+script = ExtResource("4_5pe3s")
+max_points = 10
+min_step_distance = 1.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(0.95, 0.95, 0.95, 0.39215687)
+position = Vector2(2, 0)
+scale = Vector2(0.08859375, 0.08)
+texture = ExtResource("5_n0dyn")
+
+[node name="smoke" parent="." instance=ExtResource("6_t75wg")]
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("7_bf4c2")]
+position = Vector2(-8, 0)

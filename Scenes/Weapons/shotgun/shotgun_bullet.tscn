@@ -46,4 +46,4 @@ min_step_distance = 1.0
 
 [node name="Sprite2D" type="Polygon2D" parent="."]
 position = Vector2(4, 0)
-polygon = PackedVector2Array(0, -3, 0, 3, 4, 2, 4, -2)
+polygon = PackedVector2Array(0, -3, 0, 0.025645733, 0, 3, 4, 1, 4, -1)

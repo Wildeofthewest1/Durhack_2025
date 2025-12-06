@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cuqp3vdnbus2n"]
+[gd_scene load_steps=17 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/Game/game.gd" id="1_wowpa"]
@@ -19,8 +19,8 @@
 shader = ExtResource("4_56qi8")
 shader_parameter/density = 10.0
 shader_parameter/layer_parascale = 5
-shader_parameter/speedx = 1.4901199918426758e-07
-shader_parameter/speedy = 1.4901199918426758e-07
+shader_parameter/speedx = 1.490119991842676e-07
+shader_parameter/speedy = 1.490119991842676e-07
 shader_parameter/star_horizontal_wave = 0.3
 shader_parameter/star_size = 3.0
 shader_parameter/twinkle_effect = 0.6
@@ -40,6 +40,17 @@ shader_parameter/cloud_color_ci3 = 0.9
 shader_parameter/cloud_color_shiftx = 0.0
 shader_parameter/cloud_color_shifty = 0.0
 shader_parameter/background_color = Color(0.09411765, 0.09019608, 0.12156863, 1)
+
+[sub_resource type="Environment" id="Environment_upfqs"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/4 = 1.0
+glow_levels/6 = 1.0
+glow_levels/7 = 1.0
+glow_blend_mode = 0
+glow_hdr_threshold = 1.5
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wowpa")
@@ -102,3 +113,6 @@ position = Vector2(3037, 481)
 dialogue_data = ExtResource("8_h4fw4")
 
 [node name="Fleet" type="Node2D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_upfqs")

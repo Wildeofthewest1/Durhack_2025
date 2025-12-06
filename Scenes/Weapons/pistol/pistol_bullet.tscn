@@ -33,9 +33,14 @@ script = ExtResource("2_f4peu")
 gravity_multiplier = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(5, 0)
 scale = Vector2(0.45, 0.225)
 texture = ExtResource("1_2h6uo")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+scale = Vector2(1, 0.875)
+polygon = PackedVector2Array(-1, -4, -1.9999981, -2.5767612, -2, 3, -1, 4, 6, 4, 12, 2, 12, -2, 6, -4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(5, 0)

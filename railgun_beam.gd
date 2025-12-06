@@ -31,6 +31,10 @@ var _start: Vector2 = Vector2.ZERO
 var _end: Vector2 = Vector2.ZERO
 var _length: float = 0.0
 
+# Base points for clean dissolve (no jitter)
+var _core_base_points: PackedVector2Array = PackedVector2Array()
+var _streak_base_points: PackedVector2Array = PackedVector2Array()
+
 
 func _ready() -> void:
 	_core_time_left = core_lifetime
@@ -63,9 +67,6 @@ func setup(start: Vector2, end: Vector2) -> void:
 
 
 func _build_core_line() -> void:
-	var points: PackedVector2Array = PackedVector2Array()
-	points.append(_start)
-
 	var direction: Vector2 = _end - _start
 	var length: float = direction.length()
 	var core_end: Vector2 = _end
@@ -74,14 +75,24 @@ func _build_core_line() -> void:
 		var dir_norm: Vector2 = direction / length
 		core_end = _end + dir_norm * core_extra_length
 
-	points.append(core_end)
+	var total_length: float = (_start - core_end).length()
+	var steps: int = int(total_length * segment_density)
+	if steps < min_segments:
+		steps = min_segments
+	if steps < 1:
+		steps = 1
+
+	var points: PackedVector2Array = PackedVector2Array()
+	for i in range(steps + 1):
+		var t: float = float(i) / float(steps)
+		var p: Vector2 = _start.lerp(core_end, t)
+		points.append(p)
+
+	_core_base_points = points
 	_core_line.points = points
 
 
 func _build_streak_line() -> void:
-	var points: PackedVector2Array = PackedVector2Array()
-	points.append(_start)
-
 	var direction: Vector2 = _end - _start
 	var length: float = direction.length()
 	var streak_end: Vector2 = _end
@@ -90,7 +101,20 @@ func _build_streak_line() -> void:
 		var dir_norm: Vector2 = direction / length
 		streak_end = _end + dir_norm * streak_extra_length
 
-	points.append(streak_end)
+	var total_length: float = (_start - streak_end).length()
+	var steps: int = int(total_length * segment_density)
+	if steps < min_segments:
+		steps = min_segments
+	if steps < 1:
+		steps = 1
+
+	var points: PackedVector2Array = PackedVector2Array()
+	for i in range(steps + 1):
+		var t: float = float(i) / float(steps)
+		var p: Vector2 = _start.lerp(streak_end, t)
+		points.append(p)
+
+	_streak_base_points = points
 	_streak_line.points = points
 
 
@@ -163,7 +187,7 @@ func _spawn_explosion() -> void:
 	root.add_child(e)
 	# your explosion scene handles emitting/rotation itself
 	e.emitting = true
-	e.look_at(get_tree().get_first_node_in_group("player").global_position-_end)
+	e.look_at(get_tree().get_first_node_in_group("player").global_position - _end)
 	e.global_position = _end
 
 
@@ -192,6 +216,15 @@ func _process(delta: float) -> void:
 	if core_ratio > 1.0:
 		core_ratio = 1.0
 
+	# Smooth, non-jittery dissolve: shorten the visible part of the line
+	_apply_shrink_line(_core_line, _core_base_points, core_ratio)
+	_apply_shrink_line(_streak_line, _streak_base_points, core_ratio)
+
+	# Width shrink as it dies
+	_core_line.width = width * (0.5 + 0.5 * core_ratio)
+	_streak_line.width = width * 1.2 * core_ratio
+
+	# Color fade
 	var main_color: Color = beam_color
 	main_color.a = beam_color.a * core_ratio
 	_core_line.default_color = main_color
@@ -211,3 +244,27 @@ func _process(delta: float) -> void:
 
 	for idx in range(_lightning_lines.size()):
 		_lightning_lines[idx].default_color = lightning_color
+# Helper: shrink beam from TIP → back to the muzzle
+func _apply_shrink_line(line: Line2D, base_points: PackedVector2Array, life_ratio: float) -> void:
+	var count: int = base_points.size()
+	if count <= 1:
+		return
+
+	# Keep the line full longer at high life ratios
+	var eased_ratio: float = life_ratio * life_ratio
+
+	var visible_points: int = int(float(count) * eased_ratio)
+	if visible_points < 2:
+		visible_points = 2
+	if visible_points > count:
+		visible_points = count
+
+	var new_points: PackedVector2Array = PackedVector2Array()
+
+	# Instead of starting at index 0, we take the LAST visible segment:
+	var start_index: int = count - visible_points
+
+	for i in range(start_index, count):
+		new_points.append(base_points[i])
+
+	line.points = new_points

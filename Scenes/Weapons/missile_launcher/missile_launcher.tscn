@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://b13iefanvdw4l"]
+
+[ext_resource type="Script" uid="uid://dcdfxlpbsyquq" path="res://Scenes/Weapons/missile_launcher/missile_launcher.gd" id="1_ry5vl"]
+[ext_resource type="AudioStream" uid="uid://ckbyvulsiri2u" path="res://Scenes/Weapons/twin/laserShoot.wav" id="2_p17ou"]
+
+[node name="missile_launcher" type="Node2D"]
+z_index = 1
+script = ExtResource("1_ry5vl")
+metadata/_edit_lock_ = true
+
+[node name="MuzzleL" type="Marker2D" parent="."]
+position = Vector2(8, -3)
+rotation = -1.0471976
+
+[node name="MuzzleR" type="Marker2D" parent="."]
+position = Vector2(8, 3)
+rotation = 1.0471976
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
+position = Vector2(3, 2)
+scale = Vector2(0.2, 0.05)
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
+position = Vector2(3, -2)
+scale = Vector2(0.2, 0.05)
+
+[node name="Sprite2D6" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.36862746, 0.47058824, 0.3647059, 1)
+position = Vector2(-1.7059374, 0)
+scale = Vector2(0.1433789, 0.125)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_p17ou")
