@@ -24,7 +24,6 @@ startup_time = 0.3
 startup_speed = 200.0
 fast_seek_speed = 500.0
 slow_seek_speed = 200.0
-turn_speed_deg = 180.0
 explosion_scene = ExtResource("2_hqvpo")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
