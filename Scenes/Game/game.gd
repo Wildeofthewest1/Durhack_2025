@@ -183,7 +183,7 @@ func _on_spawn_enemy_button_pressed() -> void:
 
 	# Cycle through defined enemy types
 	var enemy_type = enemy_types[current_enemy_index]
-	current_enemy_index = (current_enemy_index + 1) % enemy_types.size()
+	current_enemy_index = (current_enemy_index + 1) % (enemy_types.size()-2)
 
 	if not enemies.has(enemy_type):
 		push_warning("Enemy type %s not found in dictionary" % enemy_type)

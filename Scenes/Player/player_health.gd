@@ -22,7 +22,7 @@ func _ready() -> void:
 	if player == null:
 		push_error("PlayerHealth must be a child of a CharacterBody2D.")
 		return
-
+	
 	health = max_health
 	#if hit_effect_sprite != null:
 		#hit_effect_sprite.visible = false
@@ -68,6 +68,7 @@ func _die() -> void:
 func _play_hit_effect() -> void:
 	if hit_effect_sprite == null:
 		return
+	Screenshake.shake(0.5)
 	hit_effect_sprite.visible = true
 	hit_effect_sprite.emitting = true
 	#hit_effect_sprite.visible = true
