@@ -1,30 +1,40 @@
-[gd_scene load_steps=5 format=4 uid="uid://ben2rij4ywyor"]
+[gd_scene load_steps=5 format=3 uid="uid://ben2rij4ywyor"]
 
 [ext_resource type="Script" uid="uid://dxybrg1a1w4wk" path="res://Scenes/Bodies/asteroid_belt.gd" id="1_eimpt"]
 [ext_resource type="Shader" uid="uid://b330tlv7vvpk2" path="res://Shaders/asteroid_belt.gdshader" id="2_tf8ba"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_or6mn"]
-radius = 300.0
+radius = 900.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2vc58"]
 shader = ExtResource("2_tf8ba")
-shader_parameter/asteroid_count = 80
-shader_parameter/inner_radius = 100.0
-shader_parameter/outer_radius = 200.0
-shader_parameter/base_transparency = 0.3
-shader_parameter/asteroid_positions = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-shader_parameter/asteroid_sizes = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-shader_parameter/asteroid_colors = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/asteroid_density = 0.6530000310175
+shader_parameter/asteroid_scale = 0.058000002755
+shader_parameter/asteroid_color1 = Color(0.8392157, 0, 0, 1)
+shader_parameter/asteroid_color2 = Color(0.4509804, 0.07058824, 0.07058824, 1)
+shader_parameter/asteroid_color3 = Color(0.81960785, 0.32156864, 0.32941177, 1)
+shader_parameter/scroll_speed_1 = Vector2(0.003, 0.01)
+shader_parameter/scroll_speed_2 = Vector2(0.001, -0.002)
+shader_parameter/scroll_speed_3 = Vector2(-0.003, -0.003)
+shader_parameter/enable_ring = 1.0
+shader_parameter/ring_inner_radius = 0.450000021375
+shader_parameter/ring_outer_radius = 0.400000019
+shader_parameter/ring_edge_softness = 0.014000000665
+shader_parameter/texture_scale = 1.0
 
 [node name="AsteroidBelt" type="Area2D"]
+texture_filter = 1
 script = ExtResource("1_eimpt")
+inner_radius = 800.0
+outer_radius = 900.0
+damage_per_second = 50.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_or6mn")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_2vc58")
-offset_left = -300.0
-offset_top = -300.0
-offset_right = 300.0
-offset_bottom = 300.0
+offset_right = 1000.0
+offset_bottom = 1000.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(1000, 1000)

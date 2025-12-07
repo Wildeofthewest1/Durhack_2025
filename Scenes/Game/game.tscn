@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://cuqp3vdnbus2n"]
+[gd_scene load_steps=18 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/Game/game.gd" id="1_wowpa"]
 [ext_resource type="Script" uid="uid://cb05i3ko56emi" path="res://Scenes/star_background.gd" id="2_ldgsr"]
 [ext_resource type="Script" uid="uid://hwswi5bhrqxx" path="res://Scenes/Camera/subpixelcamera.gd" id="2_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://ben2rij4ywyor" path="res://Scenes/Bodies/asteroid_belt.tscn" id="3_8e3kh"]
 [ext_resource type="Script" uid="uid://iupmyhogtxop" path="res://Scenes/Managers/enemy_spawner.gd" id="4_3dryh"]
 [ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="4_8e3kh"]
 [ext_resource type="Shader" uid="uid://drbdbpesc4eaw" path="res://Shaders/stars_1.gdshader" id="4_56qi8"]
@@ -66,6 +67,8 @@ star_colors = Array[Color]([Color(0.26666668, 0.25490198, 0.34901962, 1), Color(
 trackObject = NodePath("../../PlayerContainer/Player")
 stars_per_layer = 1000
 spawn_radius = 10000.0
+
+[node name="AsteroidBelt" parent="Environment" instance=ExtResource("3_8e3kh")]
 
 [node name="Systems" type="Node2D" parent="."]
 

@@ -38,7 +38,7 @@ initial_velocity = Vector2(100, 0)
 [node name="Movement" type="Node2D" parent="." node_paths=PackedStringArray("thrust_particles")]
 rotation = 0.01833335
 script = ExtResource("2_ukyrk")
-gravity_multiplier = 2.0
+gravity_multiplier = 3.0
 thrust_accel = 100.0
 max_speed = 100.0
 rotate_with_motion = false
