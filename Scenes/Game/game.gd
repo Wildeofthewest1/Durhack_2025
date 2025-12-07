@@ -86,7 +86,7 @@ func _ready() -> void:
 			"position": Vector2(-800, 400),
 			"behaviour": "ranged",
 			"weapons": ["res://Scenes/Enemy_Weapons/Shotgun.tscn"],
-			"speed": 150,
+			"speed": 200,
 			"health": 80,
 			"rotate_toward_player": true,
 			"detectionradius": 500
@@ -96,7 +96,7 @@ func _ready() -> void:
 			"position": Vector2(0, 0),
 			"behaviour": "ranged",
 			"weapons": ["res://Scenes/Enemy_Weapons/Pistol.tscn"],
-			"speed": 120,
+			"speed": 190,
 			"health": 100,
 			"rotate_toward_player": true,
 			"detectionradius": 500
@@ -116,7 +116,7 @@ func _ready() -> void:
 			"position": Vector2(-100, 2000),
 			"behaviour": "ranged",
 			"weapons": ["res://Scenes/Enemy_Weapons/Pistol.tscn"],
-			"speed": 100,
+			"speed": 180,
 			"health": 750,
 			"rotate_toward_player": true,
 			"detectionradius": 500

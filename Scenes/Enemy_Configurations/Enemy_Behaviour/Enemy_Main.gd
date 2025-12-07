@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export var speed: float = 100.0
 @export var health: int = 100
 
-@export var rotation_speed: float = 3.0
+@export var rotation_speed: float = 10.0
 @export var detectionradius: float = 1000.0
 
 # Death particles
