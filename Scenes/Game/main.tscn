@@ -1,13 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=13 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://cuqp3vdnbus2n" path="res://Scenes/Game/game.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://btuyc1djn4djp" path="res://Scenes/UI/UI_Manager.gd" id="3_wrqr2"]
+[ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="4_5fdju"]
 [ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/Health/InteractionUI.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://dibs8io4xu6dn" path="res://Scenes/UI/400_years.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://btrdmogpntkxv" path="res://Scenes/UI/thrust/thrust_ui.tscn" id="6_21xkr"]
 [ext_resource type="PackedScene" uid="uid://vj635ptco6m2" path="res://Scenes/UI/Health/health_ui.tscn" id="7_6bp64"]
 [ext_resource type="PackedScene" uid="uid://b7vqm8xh0jw8p" path="res://Scenes/UI/Minimap/minimap.tscn" id="8_wrqr2"]
+[ext_resource type="Texture2D" uid="uid://c4vn2chdck31v" path="res://Assets/health_overlay.png" id="9_veifj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
 shader = ExtResource("1_jjgbg")
@@ -36,13 +38,18 @@ render_target_update_mode = 4
 script = ExtResource("3_wrqr2")
 
 [node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
+texture_filter = 1
 anchors_preset = -1
-anchor_right = 0.0609375
+anchor_right = 0.09739583
 anchor_bottom = 0.024074074
-offset_left = 1549.0
-offset_top = 403.0
-offset_right = 1557.0
-offset_bottom = 411.0
+offset_left = 1606.0
+offset_top = 426.0
+offset_right = 1657.0
+offset_bottom = 434.0
+theme = ExtResource("4_5fdju")
+theme_override_colors/font_color = Color(0.93, 0.89776003, 0.44640002, 1)
+theme_override_colors/font_focus_color = Color(0.92941177, 0.8980392, 0.44705883, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.19949998, 0.19949998, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_8gbba")
 text = "Spawn Enemy"
 flat = true
@@ -78,19 +85,39 @@ theme_override_font_sizes/font_size = 80
 [node name="ThrustUI" parent="CanvasLayer" instance=ExtResource("6_21xkr")]
 anchor_left = 0.35
 anchor_right = 0.65
-offset_top = -40.0
-offset_bottom = -20.0
+offset_top = -55.0
+offset_bottom = -30.0
 
 [node name="HealthUI" parent="CanvasLayer" instance=ExtResource("7_6bp64")]
+anchors_preset = -1
+offset_left = 50.0
+offset_top = 50.0
+max_health = 100
+health_color = Color(0.6, 1, 0.6, 1)
 
 [node name="Minimap" parent="CanvasLayer" instance=ExtResource("8_wrqr2")]
+minimap_size = Vector2(300, 300)
+world_scale = 0.05
+margin_right = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+texture_filter = 1
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(4, 4)
+texture = ExtResource("9_veifj")
 
 [node name="Instructions" type="Label" parent="."]
-offset_left = 1554.0
-offset_top = 324.0
-offset_right = 1847.0
-offset_bottom = 399.0
-text = "Press E to interact with space stations
+texture_filter = 1
+offset_left = 1606.0
+offset_top = 341.0
+offset_right = 1906.0
+offset_bottom = 416.0
+theme = ExtResource("4_5fdju")
+theme_override_constants/line_spacing = 7
+text = "Press E to interact
 Right-Click to boost
 Left-Click to shoot"
 

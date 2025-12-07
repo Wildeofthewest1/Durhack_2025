@@ -104,12 +104,12 @@ func _ready() -> void:
 		"Enemy3": {
 			"type": "Enemy3",
 			"position": Vector2(-1000, 200),
-			"behaviour": "ranged",
+			"behaviour": "pursuer",
 			"weapons": ["res://Scenes/Enemy_Weapons/Shotgun.tscn"],
 			"speed": 100,
 			"health": 500,
 			"rotate_toward_player": true,
-			"detectionradius": 500
+			"detectionradius": 1000
 		},
 		"Enemy4": {
 			"type": "Enemy4",

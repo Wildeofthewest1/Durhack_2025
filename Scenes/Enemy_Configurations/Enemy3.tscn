@@ -17,16 +17,17 @@ death_particles_scene = ExtResource("2_7iebr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+rotation = -1.5707964
 texture = ExtResource("2_ahgkp")
 region_enabled = true
 region_rect = Rect2(95.886925, -0.21530151, 39.24839, 23.438091)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1.5)
-rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ahgkp")
 
 [node name="WeaponSlots" type="Node2D" parent="."]
+rotation = -1.5707964
 
 [node name="Slot1" type="Node2D" parent="WeaponSlots"]
 position = Vector2(10, 4)
@@ -35,14 +36,17 @@ position = Vector2(10, 4)
 position = Vector2(-10, 4)
 
 [node name="Weapons" type="Node2D" parent="."]
+rotation = -1.5707964
 
 [node name="Minimap" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+rotation = -1.5707964
 script = ExtResource("3_ahgkp")
 target_node = NodePath("..")
 dot_shape = 2
 dot_color = Color(0.9823325, 0, 0.04619918, 1)
 
 [node name="VisionCone" type="Area2D" parent="."]
+rotation = -1.5707964
 collision_layer = 0
 collision_mask = 13
 

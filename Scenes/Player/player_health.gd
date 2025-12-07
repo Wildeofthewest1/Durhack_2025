@@ -9,7 +9,7 @@ class_name PlayerHealth
 @export var invincibility_time: float = 1.0
 
 @export var body_sprite: Sprite2D
-@export var hit_effect_sprite: Sprite2D
+@export var hit_effect_sprite: GPUParticles2D
 
 var player: CharacterBody2D = null
 var health: int = 0
@@ -24,12 +24,10 @@ func _ready() -> void:
 		return
 
 	health = max_health
-	if hit_effect_sprite != null:
-		hit_effect_sprite.visible = false
+	#if hit_effect_sprite != null:
+		#hit_effect_sprite.visible = false
 
 func _physics_process(delta: float) -> void:
-	if hit_effect_sprite != null:
-		hit_effect_sprite.global_rotation = hit_rot
 
 	if _invincible_timer > 0.0:
 		_invincible_timer -= delta
@@ -70,20 +68,21 @@ func _die() -> void:
 func _play_hit_effect() -> void:
 	if hit_effect_sprite == null:
 		return
-
 	hit_effect_sprite.visible = true
-	hit_effect_sprite.scale = Vector2.ONE * hit_effect_scale
-	hit_effect_sprite.modulate = Color(1.0, 1.0, 1.0, 0.0)
-
-	var tween: Tween = create_tween()
-
-	var in_time: float = hit_effect_duration * 0.01
-	var out_time: float = hit_effect_duration 
-
-	tween.tween_property(hit_effect_sprite, "modulate:a", 1.0, in_time)
-	tween.tween_property(hit_effect_sprite, "modulate:a", 1.0, out_time)
-	tween.tween_property(hit_effect_sprite, "modulate:a", 0.0, 0.01)
-	tween.finished.connect(Callable(self, "_on_hit_effect_tween_finished"))
+	hit_effect_sprite.emitting = true
+	#hit_effect_sprite.visible = true
+	#hit_effect_sprite.scale = Vector2.ONE * hit_effect_scale
+	#hit_effect_sprite.modulate = Color(1.0, 1.0, 1.0, 0.0)
+#
+	#var tween: Tween = create_tween()
+#
+	#var in_time: float = hit_effect_duration * 0.01
+	#var out_time: float = hit_effect_duration 
+#
+	#tween.tween_property(hit_effect_sprite, "modulate:a", 1.0, in_time)
+	#tween.tween_property(hit_effect_sprite, "modulate:a", 1.0, out_time)
+	#tween.tween_property(hit_effect_sprite, "modulate:a", 0.0, 0.01)
+	#tween.finished.connect(Callable(self, "_on_hit_effect_tween_finished"))
 
 func _on_hit_effect_tween_finished() -> void:
 	if hit_effect_sprite == null:

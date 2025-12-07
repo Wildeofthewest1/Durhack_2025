@@ -68,7 +68,8 @@ func _spawn_death_particles() -> void:
 func assign_behaviour() -> void:
 	var behaviour_paths: Dictionary = {
 		"melee": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/melee_behaviour.gd",
-		"ranged": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/ranged_behaviour.gd",
+		"ranged": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/ranger_behaviour.gd",
+		"pursuer": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/pursuer_behaviour.gd",
 		"charger": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/charger_behaviour.gd",
 		"mothership": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/mothership_behaviour.gd",
 	}

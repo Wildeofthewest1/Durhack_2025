@@ -54,8 +54,8 @@ speed_limit_decay_rate = 1.0
 [node name="Health" type="Node2D" parent="." node_paths=PackedStringArray("body_sprite", "hit_effect_sprite")]
 script = ExtResource("3_7dp3o")
 max_health = 100
-hit_pause_duration = 0.02
-hit_effect_duration = 0.3
+hit_pause_duration = 0.3
+hit_effect_duration = 0.1
 body_sprite = NodePath("../Sprite")
 hit_effect_sprite = NodePath("../hit_effect")
 
