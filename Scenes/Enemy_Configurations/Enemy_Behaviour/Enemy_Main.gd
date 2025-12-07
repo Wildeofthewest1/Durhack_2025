@@ -7,12 +7,6 @@ extends CharacterBody2D
 @export var rotation_speed: float = 3.0
 @export var detectionradius: float = 1000.0
 
-# Escort system (for motherships only)
-@export var escort_type: String = "Enemy1"
-@export var escort_count: int = 2
-@export var escort_offset: float = 150.0
-@export var escort_respawn_delay: float = 3.0
-
 # Death particles
 @export var death_particles_scene: PackedScene
 
@@ -119,37 +113,3 @@ func _physics_process(delta: float) -> void:
 
 	if behaviour != null:
 		behaviour.update(delta)
-
-	#if not faceplayer:
-	#	_check_escort_status()
-
-
-func _spawn_escort() -> void:
-	if spawner == null or health <= 0:
-		return
-
-	# Stop if we already have enough escorts
-	if escorts >= escort_count:
-		return
-
-	var angle: float = TAU / float(escort_count)
-	var offset: Vector2 = Vector2(cos(angle), sin(angle)) * escort_offset
-	var spawn_position: Vector2 = global_position + offset
-
-	var escort: Node = spawner.spawn_enemy(
-		escort_type,                                  # enemy_type
-		spawn_position,                               # position
-		"ranged",                                     # behaviour_type
-		["res://Scenes/Enemy_Weapons/Shotgun.tscn"],  # weapons
-		150.0,                                        # speed
-		120,                                          # health
-		true,                                         # rotate_toward_player
-		500.0                                         # detectionradius
-	)
-
-func _check_escort_status() -> void:
-	# Spawn replacements until we reach escort_count
-	if escorts < escort_count:
-		print(escorts)
-		_spawn_escort()
-		escorts += 1

@@ -6,10 +6,19 @@ var enemy: CharacterBody2D = null
 # Config (local to the behaviour; tweak as needed)
 var initial_velocity: Vector2 = Vector2.ZERO
 var thrust_accel: float = 1000.0
-var max_speed: float = 800.0
-var detection_radius: float = 150.0
-var far_away_radius: float = 500.0
-var far_away_max_speed: float = 500.0
+
+var max_speed: float:
+	get: return enemy.speed  # inherits the enemy “speed” variable
+
+var detection_radius: float:
+	get: return enemy.detectionradius/5  # inherits from your enemy script
+
+var far_away_radius: float:
+	get: return detection_radius * 5
+	
+var far_away_max_speed: float:
+	get: return max_speed * 0.5
+
 var rotate_with_motion: bool = true
 var rotate_offset_deg: float = 0.0
 var randomisation_strength: float = 50.0
