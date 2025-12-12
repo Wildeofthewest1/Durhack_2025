@@ -9,6 +9,7 @@ class_name PlayerHealth
 @export var invincibility_time: float = 1.0
 
 @export var body_sprite: Sprite2D
+@export var trail_line: Line2D
 @export var hit_effect_sprite: GPUParticles2D
 
 var player: CharacterBody2D = null
@@ -60,15 +61,26 @@ func _flash_red(sprite: Sprite2D) -> void:
 
 func _die() -> void:
 	print(str(player.name) + " has died")
+	body_sprite.visible = false
+	player.velocity = Vector2.ZERO
+	player.set_physics_process(false)
+	player.velocity = Vector2.ZERO
+	Screenshake.shake(2)
+	await get_tree().create_timer(1.0).timeout
 	health = max_health
+	body_sprite.visible = true
+	trail_line.visible = true
+	player.set_physics_process(true)
 	if player != null:
-		player.global_position = Vector2(0.0, 0.0)
-		player.velocity = Vector2.ZERO
+		player.global_position = Vector2(500, 0.0)
+		player.velocity = Vector2(0,200)
+		trail_line._pts=[]
+		trail_line.clear_points()
 
 func _play_hit_effect() -> void:
 	if hit_effect_sprite == null:
 		return
-	Screenshake.shake(0.5)
+	Screenshake.shake(1)
 	hit_effect_sprite.visible = true
 	hit_effect_sprite.emitting = true
 	#hit_effect_sprite.visible = true

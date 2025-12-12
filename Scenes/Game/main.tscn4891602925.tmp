@@ -17,30 +17,16 @@
 shader = ExtResource("1_jjgbg")
 shader_parameter/cam_offset = Vector2(0, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_sw6w7"]
-shader = ExtResource("11_5fdju")
-shader_parameter/SCREEN_TEXTURE_PIXEL_SIZE = Vector2(1920, 1080)
-shader_parameter/intensity_color = Color(1, 0, 0, 1)
-shader_parameter/intensity_color_opacity = 0.050000002375
-shader_parameter/vignette_strength = 1.0
-shader_parameter/clear_center_radius = 0.25
-shader_parameter/active_craters = 0
-shader_parameter/crater_center0 = Vector2(0, 0)
-shader_parameter/crater_radius0 = 0.0
-shader_parameter/crater_strength0 = 0.0
-shader_parameter/crater_center1 = Vector2(0, 0)
-shader_parameter/crater_radius1 = 0.0
-shader_parameter/crater_strength1 = 0.0
-shader_parameter/crater_center2 = Vector2(0, 0)
-shader_parameter/crater_radius2 = 0.0
-shader_parameter/crater_strength2 = 0.0
-shader_parameter/crater_center3 = Vector2(0, 0)
-shader_parameter/crater_radius3 = 0.0
-shader_parameter/crater_strength3 = 0.0
-shader_parameter/global_intensity = 0.0
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gbba"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sw6w7"]
+shader = ExtResource("11_5fdju")
+shader_parameter/crater_count = 0
+shader_parameter/crater_centers = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/crater_radius = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/crater_strength = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/global_intensity = 0.0
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -60,25 +46,6 @@ render_target_update_mode = 4
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("3_wrqr2")
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["asteroid_belt_fx"]]
-material = SubResource("ShaderMaterial_sw6w7")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 2
-size_flags_vertical = 10
-script = ExtResource("12_sw6w7")
-max_tracked_craters = 64
-spawn_interval = 0.1
-min_radius = 0.25
-max_radius = 1.0
-min_strength = 0.8
-intensity_rise_speed = 3.0
-intensity_fall_speed = 7.5
-min_spawn_distance_from_center = 0.3
 
 [node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
 texture_filter = 1
@@ -151,6 +118,18 @@ offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(4, 4)
 texture = ExtResource("9_veifj")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_sw6w7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 10
+script = ExtResource("12_sw6w7")
+color_rect_path = NodePath(".")
 
 [node name="Instructions" type="Label" parent="."]
 texture_filter = 1

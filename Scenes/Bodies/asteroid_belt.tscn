@@ -23,18 +23,19 @@ shader_parameter/ring_edge_softness = 0.014000000665
 shader_parameter/texture_scale = 1.0
 
 [node name="AsteroidBelt" type="Area2D"]
+modulate = Color(1, 1, 1, 0.5019608)
 texture_filter = 1
 script = ExtResource("1_eimpt")
 inner_radius = 800.0
 outer_radius = 900.0
-damage_per_second = 50.0
+damage_per_second = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_or6mn")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_2vc58")
-offset_right = 1000.0
-offset_bottom = 1000.0
+offset_right = 2000.0
+offset_bottom = 2000.0
 scale = Vector2(2, 2)
-pivot_offset = Vector2(1000, 1000)
+pivot_offset = Vector2(2000, 2000)

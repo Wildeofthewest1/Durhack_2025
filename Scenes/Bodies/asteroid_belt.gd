@@ -16,9 +16,13 @@ class_name AsteroidBelt
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
+# NEW: reference to the screen effect controller
+var _belt_fx: AsteroidBeltScreenFX = null
+
 var _bodies_in_belt: Array[Node2D] = []
 var _asteroids: Array[Dictionary] = []
 var _damage_timers: Dictionary = {}
+
 
 func _ready() -> void:
 	# Configure the outer collision circle
@@ -31,9 +35,12 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
+	# NEW: find the screen FX node (CanvasLayer with AsteroidBeltScreenFX)
+	_belt_fx = get_tree().get_first_node_in_group("asteroid_belt_fx") as AsteroidBeltScreenFX
+
 
 func _physics_process(delta: float) -> void:
-	_apply_damage(delta)
+	_apply_damage_and_fx(delta)
 
 
 # --- Enter / exit tracking ---
@@ -61,10 +68,11 @@ func _on_area_exited(area: Area2D) -> void:
 		_damage_timers.erase(area)
 
 
-# --- Damage System ---
+# --- Damage + FX System ---
 
-func _apply_damage(delta: float) -> void:
+func _apply_damage_and_fx(delta: float) -> void:
 	var bodies_to_remove: Array[Node2D] = []
+	var any_in_ring: bool = false
 
 	for body: Node2D in _bodies_in_belt:
 		if is_instance_valid(body) == false:
@@ -80,6 +88,8 @@ func _apply_damage(delta: float) -> void:
 		var in_ring: bool = inside_outer and outside_inner
 
 		if in_ring:
+			any_in_ring = true
+
 			_damage_timers[body] = _damage_timers.get(body, 0.0) + delta
 
 			# Apply damage every 1 second (or change to continuous if you want)
@@ -93,6 +103,10 @@ func _apply_damage(delta: float) -> void:
 	for body: Node2D in bodies_to_remove:
 		_bodies_in_belt.erase(body)
 		_damage_timers.erase(body)
+
+	# ---- SCREEN FX TOGGLE ----
+	if _belt_fx != null:
+		_belt_fx.set_inside_belt(any_in_ring)
 
 
 func _damage_body(body: Node2D) -> void:

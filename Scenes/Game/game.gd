@@ -19,49 +19,49 @@ func _ready() -> void:
 	# --- Planets setup ---
 	var planets = {
 		"Star": {
-			"position": Vector2(883, 540),
+			"position": Vector2(0, 0),
 			"velocity": Vector2(1, 0),
-			"mass": 100,
+			"mass": 1000,
 			"radius": 120,
 			"colour": Color(0.9, 0.795, 0, 1)
 		},
 		"Planet1": {
-			"position": Vector2(1250, 565),
+			"position": Vector2(0, 1000),
 			"velocity": Vector2(0, -1),
 			"mass": 100,
 			"radius": 40,
 			"colour": Color(0, 0.622, 0.723, 1)
 		},
 		"Planet2": {
-			"position": Vector2(3013, -1201),
+			"position": Vector2(0, 2000),
 			"velocity": Vector2(1, 0) * 300,
 			"mass": 100,
 			"radius": 30,
 			"colour": Color(0.741, 0.47, 0.007, 1)
 		},
 		"Planet3": {
-			"position": Vector2(3013, -1201),
+			"position": Vector2(0, 3000),
 			"velocity": Vector2(1, 0),
 			"mass": 100,
 			"radius": 20,
 			"colour": Color(0.82, 0.325, 0, 1)
 		},
 		"Planet4": {
-			"position": Vector2(2205, 1030),
+			"position": Vector2(0, 4000),
 			"velocity": Vector2(0, 1),
 			"mass": 50,
 			"radius": 20,
 			"colour": Color(0, 0.691, 0.306, 1)
 		},
 		"Planet5": {
-			"position": Vector2(851, 751),
+			"position": Vector2(0, 5000),
 			"velocity": Vector2(0, 1),
 			"mass": 50,
 			"radius": 20,
 			"colour": Color(0.573, 0.2, 1, 1)
 		},
 		"Planet6": {
-			"position": Vector2(-133, -694),
+			"position": Vector2(0, 1500),
 			"velocity": Vector2(1, 0),
 			"mass": 10,
 			"radius": 20,

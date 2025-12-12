@@ -14,8 +14,8 @@ height = 8.0
 colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
 
 [node name="twin_bullet" type="CharacterBody2D"]
-collision_layer = 0
-collision_mask = 20
+collision_layer = 16
+collision_mask = 6
 motion_mode = 1
 script = ExtResource("1_7ial4")
 

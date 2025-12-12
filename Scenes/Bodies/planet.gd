@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var mass: float = 1.0
 @export var radius: float = 10.0
 @export var gravitational_constant: float = 1
+@export var _damage: float = 999
 
 func _ready() -> void:
 	add_to_group("Planets")
@@ -32,3 +33,10 @@ func _apply_gravity_to_other_planets(delta):
 
 		# Apply acceleration to velocity
 		velocity += direction * acceleration * delta
+
+
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.has_method("take_damage"):
+		body.take_damage(_damage)

@@ -28,7 +28,7 @@ func spawn_planet(
 	# ✅ Scale the sprite here — works every time
 	var sprite = planet.get_node("Sprite2D")
 	var sprite_half_width = sprite.texture.get_width() / 2.0
-	sprite.scale = Vector2.ONE * (radius / sprite_half_width)
+	planet.scale = planet.scale*(radius / sprite_half_width)
 	sprite.modulate = colour
 	
 	var minimap = planet.get_node("MinimapMark")

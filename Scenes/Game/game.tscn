@@ -69,6 +69,8 @@ stars_per_layer = 1000
 spawn_radius = 10000.0
 
 [node name="AsteroidBelt" parent="Environment" instance=ExtResource("3_8e3kh")]
+inner_radius = 1600.0
+outer_radius = 1800.0
 
 [node name="Systems" type="Node2D" parent="."]
 
@@ -96,6 +98,7 @@ script = ExtResource("4_wowpa")
 [node name="PlayerContainer" type="Node2D" parent="."]
 
 [node name="Player" parent="PlayerContainer" instance=ExtResource("1_ebmjs")]
+position = Vector2(-52, -522)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -109,7 +112,7 @@ position = Vector2(1495, 1765)
 position = Vector2(-1243, 1677)
 
 [node name="Satellite_1" parent="." instance=ExtResource("6_i6g32")]
-position = Vector2(172, 9)
+position = Vector2(257, -508)
 
 [node name="Satellite_2" parent="." instance=ExtResource("7_v158k")]
 position = Vector2(3037, 481)
