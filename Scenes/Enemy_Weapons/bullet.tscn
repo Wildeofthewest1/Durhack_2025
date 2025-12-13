@@ -5,10 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="2_uadox"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fpflf"]
-radius = 3.0
+radius = 4.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uadox"]
-radius = 3.0
+radius = 4.0
 
 [node name="Bullet" type="CharacterBody2D" groups=["Bullet"]]
 collision_layer = 16
@@ -19,7 +19,7 @@ lifetime = 5.0
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 self_modulate = Color(1, 0.06999999, 0.06999999, 0.078431375)
 show_behind_parent = true
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_uadox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -27,7 +27,7 @@ shape = SubResource("CircleShape2D_fpflf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0.07058824, 0.07058824, 1)
-scale = Vector2(0.012, 0.012)
+scale = Vector2(0.018, 0.018)
 texture = ExtResource("2_fpflf")
 
 [node name="Hitbox" type="Area2D" parent="."]

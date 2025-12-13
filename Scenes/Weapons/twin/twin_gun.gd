@@ -87,7 +87,7 @@ func _spawn_from_muzzle(muzzle: Node2D, base_dir: Vector2) -> void:
 	proj.rotation = fire_dir.angle()
 
 	if proj.has_method("initialize_projectile"):
-		proj.call("initialize_projectile", fire_dir, data.muzzle_velocity, data.damage)
+		proj.call("initialize_projectile", fire_dir, data.muzzle_velocity, data.damage,get_parent().get_parent().get_parent().velocity)
 
 	# muzzle flash is local to muzzle → no weird rotation
 	if data.flash_scene != null:

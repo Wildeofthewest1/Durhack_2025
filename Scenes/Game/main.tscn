@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=17 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://cuqp3vdnbus2n" path="res://Scenes/Game/game.tscn" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://bh6xbk3b5rc8q" path="res://Scenes/Camera/PixelZoomViewport.gd" id="2_cwscw"]
 [ext_resource type="Script" uid="uid://btuyc1djn4djp" path="res://Scenes/UI/UI_Manager.gd" id="3_wrqr2"]
 [ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="4_5fdju"]
 [ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/Health/InteractionUI.tscn" id="4_jjvhh"]
@@ -45,11 +46,20 @@ bg_color = Color(1, 1, 1, 1)
 [node name="Main" type="Node2D"]
 texture_filter = 1
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." node_paths=PackedStringArray("viewport", "container")]
 material = SubResource("ShaderMaterial_bo1nx")
 offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(3, 3)
+script = ExtResource("2_cwscw")
+viewport = NodePath("SubViewport")
+container = NodePath(".")
+zoom_scales = Array[int]([1, 2, 3])
+auto_zoom_enabled = true
+speed_for_zoom_in = 200.0
+speed_for_zoom_out = 400.0
+auto_max_scale = 3.0
+auto_zoom_lerp_speed = 3.0
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
