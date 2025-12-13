@@ -8,7 +8,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_iyo2w"]
 radius = 5.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
+[node name="CharacterBody2D3" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_4ncoq")
@@ -19,7 +19,7 @@ texture_filter = 1
 scale = Vector2(2, 2)
 texture = ExtResource("2_cld2s")
 region_enabled = true
-region_rect = Rect2(165.92229, 5.894499, 12.154007, 13.21413)
+region_rect = Rect2(164.84279, 3.8885589, 14.183868, 18.213686)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_iyo2w")
@@ -27,10 +27,10 @@ shape = SubResource("CircleShape2D_iyo2w")
 [node name="WeaponSlots" type="Node2D" parent="."]
 
 [node name="Slot1" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-6, 3)
+position = Vector2(-10, 1)
 
 [node name="Slot2" type="Node2D" parent="WeaponSlots"]
-position = Vector2(6, 3)
+position = Vector2(10, 1)
 
 [node name="Weapons" type="Node2D" parent="."]
 
