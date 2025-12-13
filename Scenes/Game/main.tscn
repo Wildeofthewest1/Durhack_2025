@@ -58,8 +58,9 @@ zoom_scales = Array[int]([1, 2, 3])
 auto_zoom_enabled = true
 speed_for_zoom_in = 200.0
 speed_for_zoom_out = 400.0
+auto_min_scale = 1.0
 auto_max_scale = 3.0
-auto_zoom_lerp_speed = 3.0
+auto_zoom_lerp_speed = 0.1
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false

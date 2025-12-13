@@ -5,6 +5,7 @@
 
 [node name="Pistol" type="Node2D"]
 script = ExtResource("1_8wv0e")
+initial_speed = 300.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1

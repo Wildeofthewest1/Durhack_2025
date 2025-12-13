@@ -146,9 +146,10 @@ func _physics_process(delta: float) -> void:
 	if was_fully_depleted and fuel >= recharge_threshold:
 		was_fully_depleted = false
 
-	# --- Thrust particles ---
+	# --- Thrust particles and Screenshake---
 	if thrust_particles != null:
 		if applied_thrust:
+			#Screenshake.shake(0.02)
 			thrust_particles.emitting = true
 		else:
 			thrust_particles.emitting = false
