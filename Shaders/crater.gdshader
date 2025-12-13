@@ -125,7 +125,7 @@ void add_crater(
 
 	// Clear color mask (crater center should show original screen)
 	float sigma_c = 0.1;
-	float clear_shape = exp(- (d * d) / (2.0 * sigma_c * sigma_c));
+	float clear_shape = 2.0*exp(- (d * d) / (2.0 * sigma_c * sigma_c));
 	float local_clear = clear_shape * strength;
 
 	if (local_clear > clear_mask_accum) {
