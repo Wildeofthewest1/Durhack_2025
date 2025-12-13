@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var life_time: float = 2.0
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 @export var trail_particles: PackedScene = preload("res://Scenes/particles/trail_particles.tscn")
+@export var visual_rotation_offset_deg: float = 0.0
 
 @export var trail_enabled: bool = true
 
@@ -21,14 +22,23 @@ func _ready() -> void:
 	get_parent().add_child(trailer)
 	trailer.follower = self
 
-func initialize_projectile(dir: Vector2, speed: float, dmg: float) -> void:
-	_velocity_vec = dir.normalized() * speed
+@export var face_aim_instead_of_velocity: bool = true
+var _aim_dir: Vector2 = Vector2.RIGHT
+
+func initialize_projectile(dir: Vector2, speed: float, dmg: float, carrier_vel: Vector2) -> void:
+	_aim_dir = dir.normalized()
+	_velocity_vec = _aim_dir * speed + carrier_vel
 	_damage = dmg
 	_life_timer = life_time
+	_update_facing()
 
-	if _velocity_vec.length() > 0.0:
-		global_rotation = _velocity_vec.angle()
-	
+func _update_facing() -> void:
+	var offset_rad: float = deg_to_rad(visual_rotation_offset_deg)
+	var facing_dir: Vector2 = _aim_dir if face_aim_instead_of_velocity else _velocity_vec
+	if facing_dir.length() <= 0.001:
+		return
+	rotation = facing_dir.angle() + offset_rad
+
 
 func _physics_process(delta: float) -> void:
 	var collision: KinematicCollision2D = move_and_collide(_velocity_vec * delta)
