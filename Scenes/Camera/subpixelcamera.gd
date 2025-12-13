@@ -4,9 +4,9 @@ class_name GameCamera
 @export var lerp_speed: float = 5.0
 
 # Screenshake settings
-@export var shake_decay: float = 1.5          # how fast shake fades
-@export var shake_max_offset: float = 12.0    # max pixel offset
-@export var shake_max_rotation: float = 0.04  # in radians
+@export var shake_decay: float = 1.5
+@export var shake_max_offset: float = 12.0
+@export var shake_max_rotation: float = 0.04
 
 var actual_cam_pos: Vector2 = Vector2.ZERO
 @onready var player: CharacterBody2D = $"../PlayerContainer/Player"
@@ -18,18 +18,16 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 func _ready() -> void:
 	_rng.randomize()
 	actual_cam_pos = global_position
-	
-	# Optional: register this camera to a global singleton
-	# (see Screenshake.gd below)
-	Screenshake.register_camera(self)  # <--- THIS IS CRUCIAL
 
+	Screenshake.register_camera(self)
 
 
 func _physics_process(delta: float) -> void:
 	# --- follow player smoothly ---
 	var target_pos: Vector2 = player.global_position
 	actual_cam_pos = actual_cam_pos.lerp(target_pos, delta * lerp_speed)
-	
+
+	# Subpixel offset for your shader correction
 	var cam_subpixel_offset: Vector2 = actual_cam_pos.round() - actual_cam_pos
 
 	# --- compute shake offset / rotation ---
@@ -37,7 +35,7 @@ func _physics_process(delta: float) -> void:
 	var shake_rot: float = 0.0
 
 	if _trauma > 0.0:
-		var t: float = _trauma * _trauma  # more "easing" feel
+		var t: float = _trauma * _trauma
 
 		var off_x: float = shake_max_offset * t * (_rng.randf() * 2.0 - 1.0)
 		var off_y: float = shake_max_offset * t * (_rng.randf() * 2.0 - 1.0)
@@ -47,11 +45,11 @@ func _physics_process(delta: float) -> void:
 
 		_trauma = max(_trauma - shake_decay * delta, 0.0)
 
-	# --- apply position + shake (keep your subpixel fix) ---
+	# --- apply position + shake (pixel snap) ---
 	global_position = actual_cam_pos.round() + shake_offset
 	rotation = shake_rot
 
-	# If your parent’s material/shader uses cam_offset, add the subpixel offset only
+	# --- push cam_offset to your shader owner (same logic you had) ---
 	var root: Node = get_parent()
 	if root != null and root.get_parent() != null and root.get_parent().get_parent() != null:
 		var mat_owner: Node = root.get_parent().get_parent()
@@ -59,7 +57,7 @@ func _physics_process(delta: float) -> void:
 			var mat: Material = mat_owner.material
 			if mat != null:
 				mat.set_shader_parameter("cam_offset", cam_subpixel_offset)
-				# if you want the shake visible in the shader as well, you could do:
+				# If you want shake to affect the shader too, use:
 				# mat.set_shader_parameter("cam_offset", cam_subpixel_offset + shake_offset)
 
 
