@@ -39,7 +39,7 @@ initial_velocity = Vector2(100, 0)
 rotation = 0.01833335
 script = ExtResource("2_ukyrk")
 gravity_multiplier = 3.0
-thrust_accel = 100.0
+thrust_accel = 200.0
 max_speed = 200.0
 rotate_with_motion = false
 thrust_particles = NodePath("../thrust")
@@ -47,7 +47,7 @@ fuel_fulluse_recharge = 0.1
 fuel_recharge_rate_fulluse = 5.0
 thrust_curve_strength = 2.0
 thrust_intensity_max = 3.0
-extra_speed_limit = 300.0
+extra_speed_limit = 200.0
 speed_limit_grow_rate = 30.0
 speed_limit_decay_rate = 1.0
 
