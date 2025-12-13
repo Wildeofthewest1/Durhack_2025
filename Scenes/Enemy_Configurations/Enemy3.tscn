@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://vcuai7va1yy7"]
+[gd_scene load_steps=7 format=3 uid="uid://vcuai7va1yy7"]
 
 [ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_n0yk8"]
 [ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_7iebr"]
@@ -8,6 +8,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ahgkp"]
 radius = 11.5
 height = 36.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7iebr"]
+radius = 1186.2849
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
@@ -50,5 +53,5 @@ rotation = -1.5707964
 collision_layer = 0
 collision_mask = 13
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
-polygon = PackedVector2Array(500, -500, 500, 500, -500, 500, -500, -500)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionCone"]
+shape = SubResource("CircleShape2D_7iebr")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://braqrdktf8pw5"]
+[gd_scene load_steps=7 format=3 uid="uid://braqrdktf8pw5"]
 
 [ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_dyful"]
 [ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_ov1hc"]
@@ -8,6 +8,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ahgkp"]
 radius = 39.0
 height = 92.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q64ij"]
+radius = 797.3412
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
@@ -52,6 +55,5 @@ dot_color = Color(0.9823325, 0, 0.04619918, 1)
 collision_layer = 0
 collision_mask = 13
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
-position = Vector2(0, -19)
-polygon = PackedVector2Array(0, -100, 200, 400, -200, 400)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionCone"]
+shape = SubResource("CircleShape2D_q64ij")
