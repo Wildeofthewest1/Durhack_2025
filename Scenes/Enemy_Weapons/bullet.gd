@@ -9,7 +9,6 @@ extends CharacterBody2D
 
 var inherited_velocity: Vector2 = Vector2.ZERO
 
-
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hitbox: Area2D = $Hitbox
 
