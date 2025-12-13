@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=25 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
 [ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Data/WeaponData.gd" id="9_tx1dd"]
 [ext_resource type="Resource" uid="uid://bi01ro1j5gj7h" path="res://Data/pistol.tres" id="10_gymyn"]
+[ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="11_h8ma5"]
 [ext_resource type="Script" uid="uid://ohf7hfsapmlu" path="res://Scenes/particles/hit_effect.gd" id="12_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://crr37cm1dgssb" path="res://Assets/hit_4.png" id="13_7dp3o"]
 [ext_resource type="Resource" uid="uid://ulqehd0g6ycf" path="res://Data/twin.tres" id="13_dey5f"]
@@ -23,6 +24,13 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eksi1"]
+shader = ExtResource("11_h8ma5")
+shader_parameter/base_color = Color(0.64, 0.4096, 0.58239996, 0.11764706)
+shader_parameter/intensity = 1.5
+shader_parameter/spread = 1.0
+shader_parameter/pulse_speed = 5.0000002375
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f1ek2"]
 radius = 4.0
@@ -39,10 +47,11 @@ initial_velocity = Vector2(100, 0)
 rotation = 0.01833335
 script = ExtResource("2_ukyrk")
 gravity_multiplier = 3.0
-thrust_accel = 200.0
+thrust_accel = 300.0
 max_speed = 200.0
 rotate_with_motion = false
 thrust_particles = NodePath("../thrust")
+fuel_max = 50.0
 fuel_fulluse_recharge = 0.1
 fuel_recharge_rate_fulluse = 5.0
 thrust_curve_strength = 2.0
@@ -96,9 +105,27 @@ region_rect = Rect2(224, 4, 96, 172)
 [node name="Trail" parent="." instance=ExtResource("4_vgqql")]
 z_index = 4
 material = ExtResource("3_f1ek2")
-width = 2.0
+points = PackedVector2Array(0, 0)
+body_path = NodePath("../TrailMarker")
+max_points = 10
+color = Color(1, 1, 1, 1)
+
+[node name="Trail2" parent="." instance=ExtResource("4_vgqql")]
+z_index = 4
+material = ExtResource("3_f1ek2")
+points = PackedVector2Array(0, 0)
+body_path = NodePath("../TrailMarker2")
+max_points = 10
+color = Color(1, 1, 1, 1)
+
+[node name="Trail3" parent="." instance=ExtResource("4_vgqql")]
+z_index = 4
+material = SubResource("ShaderMaterial_eksi1")
+points = PackedVector2Array(0, 0)
+width = 8.0
 body_path = NodePath("..")
-width = 2.0
+max_points = 30
+width = 8.0
 color = Color(1, 1, 1, 1)
 
 [node name="WeaponManager" type="Node2D" parent="."]
@@ -141,6 +168,12 @@ script = ExtResource("12_pu2lt")
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 current = true
+
+[node name="TrailMarker" type="Marker2D" parent="."]
+position = Vector2(-4, -4)
+
+[node name="TrailMarker2" type="Marker2D" parent="."]
+position = Vector2(-4, 4)
 
 [connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
 [connection signal="area_exited" from="Area2D" to="Area2D" method="_on_area_exited"]

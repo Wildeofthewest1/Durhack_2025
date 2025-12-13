@@ -1,7 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://iow6shlx8o0w"]
+[gd_scene load_steps=3 format=3 uid="uid://iow6shlx8o0w"]
 
 [ext_resource type="Script" uid="uid://d28f1auty7m8h" path="res://Scenes/particles/trail.gd" id="1_ccptl"]
 
+[sub_resource type="Curve" id="Curve_q8h4h"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.1, 0.25), 0.0, 0.0, 0, 0, Vector2(1, 0.25), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="Trail" type="Line2D"]
 z_index = -1
+width = 2.0
+width_curve = SubResource("Curve_q8h4h")
 script = ExtResource("1_ccptl")
+width = 2.0
