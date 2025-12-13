@@ -72,6 +72,7 @@ func _die() -> void:
 	trail_line.visible = true
 	player.set_physics_process(true)
 	if player != null:
+		player.get_child(0).fuel = player.get_child(0).fuel_max
 		player.global_position = Vector2(500, 0.0)
 		player.velocity = Vector2(0,200)
 		trail_line._pts=[]
