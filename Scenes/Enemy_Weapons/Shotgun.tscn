@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ciqnqt877uhto"]
 
 [ext_resource type="Script" uid="uid://cj5f5hqjr5qm8" path="res://Scenes/Enemy_Weapons/shotgun.gd" id="1_f1fb4"]
-[ext_resource type="Texture2D" uid="uid://dhy451kgo4rip" path="res://Assets/Enemy_designs.png" id="2_f1fb4"]
+[ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_f1fb4"]
 
 [node name="Shotgun" type="Node2D"]
 script = ExtResource("1_f1fb4")
@@ -11,6 +11,6 @@ texture_filter = 1
 position = Vector2(0, 1)
 texture = ExtResource("2_f1fb4")
 region_enabled = true
-region_rect = Rect2(119.97658, 27.961374, 9.057129, 5.076372)
+region_rect = Rect2(118.97635, 27.961374, 11.136536, 9.082102)
 
 [node name="FireTimer" type="Timer" parent="."]
