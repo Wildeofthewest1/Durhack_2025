@@ -5,7 +5,7 @@ extends Node2D
 @export var rotation_speed: float = 10.0
 @export var vision_cone_path: NodePath = "../../VisionCone"
 @export var bullet_lifetime: float = 5
-@export var initial_speed: float = 400 #bullet speed
+@export var initial_speed: float = 600 #bullet speed
 
 var target: Node2D = null
 var can_fire: bool = false
@@ -125,8 +125,8 @@ func _fire_bullet() -> void:
 		bullet.lifetime = bullet_lifetime
 		
 	#var speed_factor = 1
-	#if "initial_speed" in bullet:
-	#	bullet.initial_speed = initial_speed*speed_factor
+	if "initial_speed" in bullet:
+		bullet.initial_speed = initial_speed#*speed_factor
 		
 	if "inherited_velocity" in bullet:
 		bullet.inherited_velocity = shooter_velocity
