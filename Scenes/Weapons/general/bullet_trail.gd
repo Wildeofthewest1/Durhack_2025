@@ -5,40 +5,53 @@ class_name ProjectileTrail2D
 @export var min_step_distance: float = 2.0
 
 var _parent_node: Node2D = null
-var _points: Array[Vector2] = []
+var _world_points: Array[Vector2] = []
+var _is_seeded: bool = false
 
+func _enter_tree() -> void:
+	# Hide + clear BEFORE the first possible render
+	visible = false
+	points = PackedVector2Array()
 
 func _ready() -> void:
 	_parent_node = get_parent() as Node2D
-
-	# Make this Line2D exist in world space, not in the bullet's local space
 	set_as_top_level(true)
-	global_position = Vector2.ZERO
 	global_rotation = 0.0
 
-	_points.clear()
-	points = _points
-
+func reset_to_world_pos(p: Vector2) -> void:
+	_world_points.clear()
+	_world_points.append(p)
+	_world_points.append(p)
+	_is_seeded = true
+	_rebuild_points()
+	visible = true
 
 func _physics_process(delta: float) -> void:
-	if _parent_node == null:
-		queue_free()
-		return
-	if not is_instance_valid(_parent_node):
-		queue_free()
+	if not _is_seeded:
 		return
 
-	var pos: Vector2 = _parent_node.global_position
+	if _parent_node == null or not is_instance_valid(_parent_node):
+		queue_free()
+		return
 
-	if _points.size() == 0:
-		# Seed with two identical points so there is no long segment on first frame
-		_points.append(pos)
-		_points.append(pos)
-	else:
-		var last_pos: Vector2 = _points[0]
-		if pos.distance_to(last_pos) >= min_step_distance:
-			_points.insert(0, pos)
-			if _points.size() > max_points:
-				_points.resize(max_points)
+	var p: Vector2 = _parent_node.global_position
+	var last_p: Vector2 = _world_points[0]
 
-	points = _points
+	if p.distance_to(last_p) >= min_step_distance:
+		_world_points.insert(0, p)
+		if _world_points.size() > max_points:
+			_world_points.resize(max_points)
+		_rebuild_points()
+
+func _rebuild_points() -> void:
+	# Anchor at oldest point (stable, no jumping)
+	var anchor: Vector2 = _world_points[_world_points.size() - 1]
+	global_position = anchor
+	global_rotation = 0.0
+
+	var local_pts: PackedVector2Array = PackedVector2Array()
+	var count: int = _world_points.size()
+	for i in range(0, count):
+		local_pts.append(_world_points[i] - anchor)
+
+	points = local_pts

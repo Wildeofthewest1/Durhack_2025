@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://n1jhbwdhyp73"]
 
 [ext_resource type="Script" uid="uid://bmx050jubjr86" path="res://Scenes/Weapons/general/readonly_gravity.gd" id="1_0p72g"]
-[ext_resource type="Script" uid="uid://dpt7dxcr78l7a" path="res://Scenes/Weapons/twin/twin_bullet.gd" id="1_7ial4"]
+[ext_resource type="Script" uid="uid://3kdthckfpaio" path="res://Scenes/Weapons/pistol/pistol_bullet.gd" id="1_l3gyg"]
 [ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="2_7ial4"]
 [ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/general/bullet_trail.gd" id="3_l3gyg"]
 [ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="5_l3gyg"]
@@ -17,7 +17,8 @@ colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
 collision_layer = 16
 collision_mask = 6
 motion_mode = 1
-script = ExtResource("1_7ial4")
+script = ExtResource("1_l3gyg")
+life_time = 1.0
 
 [node name="ReadonlyGravity" type="Node2D" parent="."]
 script = ExtResource("1_0p72g")
