@@ -5,6 +5,7 @@ extends Node2D
 @export var rotation_speed: float = 10.0
 @export var vision_cone_path: NodePath = "../../VisionCone"
 @export var bullet_lifetime: float = 5
+@export var initial_speed: float = 400 #bullet speed
 
 var target: Node2D = null
 var can_fire: bool = false
@@ -42,7 +43,6 @@ func _ready() -> void:
 	timer.connect("timeout", Callable(self, "_on_fire_timer_timeout"))
 	timer.start()
 
-
 func _physics_process(delta: float) -> void:
 	# 🔹 Smoothly rotate toward the target
 	if target and is_instance_valid(target):
@@ -57,7 +57,6 @@ func _physics_process(delta: float) -> void:
 	if cone:
 		cone.rotation = 0
 
-
 func _on_cone_body_entered(body: Node) -> void:
 	for group in target_groups:
 		if body.is_in_group(group):
@@ -65,12 +64,10 @@ func _on_cone_body_entered(body: Node) -> void:
 			_update_closest_target()
 			break
 
-
 func _on_cone_body_exited(body: Node) -> void:
 	targets_in_cone.erase(body)
 	if body == target:
 		_update_closest_target()
-
 
 func _update_closest_target() -> void:
 	if targets_in_cone.is_empty():
@@ -103,8 +100,6 @@ func _on_fire_timer_timeout() -> void:
 func _fire_bullet() -> void:
 	if bullet_scene == null:
 		return
-		
-		
 
 	var spawn_origin: Vector2 = global_position
 	var spawn_rotation: float = global_rotation
@@ -120,10 +115,21 @@ func _fire_bullet() -> void:
 	elif shooter.is_in_group("player"):
 		bullet.team = "player"
 	
+	var shooter_velocity := Vector2.ZERO
+	if shooter is CharacterBody2D:
+		shooter_velocity = shooter.velocity
+	
 	bullet.direction = Vector2.RIGHT.rotated(spawn_rotation + deg_to_rad(90))
 	
 	if "lifetime" in bullet:
 		bullet.lifetime = bullet_lifetime
+		
+	#var speed_factor = 1
+	#if "initial_speed" in bullet:
+	#	bullet.initial_speed = initial_speed*speed_factor
+		
+	if "inherited_velocity" in bullet:
+		bullet.inherited_velocity = shooter_velocity
 	
 	add_child(bullet)
 	bullet.position = spawn_origin

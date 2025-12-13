@@ -66,7 +66,6 @@ func _physics_process(delta: float) -> void:
 	if cone:
 		cone.rotation = 0
 
-
 var targets_in_cone: Array[Node2D] = []  # store all detected bodies
 
 func _on_cone_body_entered(body: Node) -> void:
@@ -138,8 +137,11 @@ func _fire_shotgun_blast() -> void:
 			bullet.team = "player"
 			#bullet.collision_layer = 5          # Allied Bullets
 			#bullet.collision_mask = 3           # Enemies
-
-
+		
+		var shooter_velocity := Vector2.ZERO
+		if shooter is CharacterBody2D:
+			shooter_velocity = shooter.velocity
+		
 		if "lifetime" in bullet:
 			bullet.lifetime = pellet_lifetime
 
@@ -150,6 +152,9 @@ func _fire_shotgun_blast() -> void:
 		if "deceleration" in bullet:
 			bullet.deceleration = pellet_deceleration
 		
+		if "inherited_velocity" in bullet:
+			bullet.inherited_velocity = shooter_velocity
+		
 		var random_offset := randf_range(-half_spread, half_spread)
 		bullet.direction = Vector2.RIGHT.rotated(spawn_rotation + deg_to_rad(90) + random_offset)
 		
@@ -157,6 +162,3 @@ func _fire_shotgun_blast() -> void:
 		bullet.position = spawn_origin
 		bullet.global_rotation = spawn_rotation
 		bullet.top_level = true
-
-		
-		

@@ -7,6 +7,9 @@ extends CharacterBody2D
 @export var gravity_multiplier: float = 1.0
 @export var gravitational_constant: float = 100000.0
 
+var inherited_velocity: Vector2 = Vector2.ZERO
+
+
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hitbox: Area2D = $Hitbox
 
@@ -18,7 +21,8 @@ var direction: Vector2 = Vector2.UP
 @export var team: String = ""   # "Enemy", "Fleet", or "player"
 
 func _ready() -> void:
-	velocity = direction.normalized() * initial_speed
+	velocity = direction.normalized() * initial_speed + inherited_velocity
+
 	if hitbox:
 		hitbox.connect("body_entered", Callable(self, "_on_hitbox_body_entered"))
 	await get_tree().create_timer(lifetime).timeout

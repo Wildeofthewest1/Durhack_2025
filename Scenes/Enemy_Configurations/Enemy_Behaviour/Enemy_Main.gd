@@ -106,10 +106,14 @@ func attach_weapons() -> void:
 
 func _physics_process(delta: float) -> void:
 	if player != null and faceplayer:
-		var direction: Vector2 = player.global_position - global_position
-
-		var desired_angle: float = direction.angle() + deg_to_rad(-90.0)
-		rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
+		
+		if velocity.length_squared() > 1.0:
+			var desired_angle: float = velocity.angle() + deg_to_rad(-90.0)
+			rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
+		
+		#var direction: Vector2 = player.global_position - global_position
+		#var desired_angle: float = direction.angle() + deg_to_rad(-90.0)
+		#rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
 
 	if behaviour != null:
 		behaviour.update(delta)
