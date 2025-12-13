@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="3_ov1hc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ahgkp"]
-radius = 25.5
+radius = 39.0
 height = 92.0
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
@@ -19,26 +19,25 @@ death_particles_scene = ExtResource("2_ov1hc")
 texture_filter = 1
 texture = ExtResource("2_q64ij")
 region_enabled = true
-region_rect = Rect2(0.057456017, -0.0014858246, 95.837, 81.05951)
+region_rect = Rect2(0.057456017, -0.0014858246, 64.12845, 70.185646)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ahgkp")
 
 [node name="WeaponSlots" type="Node2D" parent="."]
 
 [node name="Slot1" type="Node2D" parent="WeaponSlots"]
-position = Vector2(26, 37)
+position = Vector2(14, 23)
 
 [node name="Slot2" type="Node2D" parent="WeaponSlots"]
-position = Vector2(14, 36)
+position = Vector2(-14, 23)
 
 [node name="Slot3" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-14, 36)
+position = Vector2(26, 5)
 
 [node name="Slot4" type="Node2D" parent="WeaponSlots"]
-position = Vector2(-26, 37)
+position = Vector2(-26, 5)
 
 [node name="Weapons" type="Node2D" parent="."]
 
@@ -55,4 +54,4 @@ collision_mask = 13
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
 position = Vector2(0, -19)
-polygon = PackedVector2Array(0, 0, 100, 400, -100, 400)
+polygon = PackedVector2Array(0, -100, 200, 400, -200, 400)
