@@ -6,7 +6,7 @@ const InterceptMath = preload("PredictiveAim.gd")
 @export var rotation_speed: float = 10.0
 @export var vision_cone_path: NodePath = "../../VisionCone"
 @export var bullet_lifetime: float = 5
-@export var initial_speed: float = 600 # bullet speed (muzzle speed relative to muzzle)
+@export var initial_speed: float = 300 # bullet speed (muzzle speed relative to muzzle)
 
 var target: Node2D = null
 var can_fire: bool = false

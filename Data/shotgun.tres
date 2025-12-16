@@ -13,6 +13,7 @@ flash_scene = ExtResource("2_gj6lh")
 fire_cooldown = 0.5
 automatic = true
 spread_deg = 10.0
+damage = 30.0
 muzzle_velocity = 600.0
 max_magazine = 20
 reload_time = 0.0
