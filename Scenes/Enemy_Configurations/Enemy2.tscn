@@ -7,8 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="5_va2mn"]
 [ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="6_cm3qx"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_iyo2w"]
-radius = 5.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_va2mn"]
+radius = 3.5793128
+height = 37.578712
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xthvh"]
 radius = 384.1302
@@ -35,8 +36,16 @@ texture = ExtResource("3_xthvh")
 region_enabled = true
 region_rect = Rect2(16, 16, 128, 48)
 
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(14.999996, -4)
+rotation = 1.0781523
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("CapsuleShape2D_va2mn")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_iyo2w")
+position = Vector2(-16, -4)
+rotation = -1.1035093
+shape = SubResource("CapsuleShape2D_va2mn")
 
 [node name="WeaponSlots" type="Node2D" parent="."]
 
@@ -59,6 +68,7 @@ collision_layer = 0
 collision_mask = 13
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionCone"]
+position = Vector2(-1, 2)
 shape = SubResource("CircleShape2D_xthvh")
 
 [node name="Trail" parent="." instance=ExtResource("5_va2mn")]

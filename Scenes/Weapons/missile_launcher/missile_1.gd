@@ -17,6 +17,11 @@ class_name MissileProjectile
 # --- TURNING ---
 @export var turn_speed_deg: float = 360.0    # degrees per second
 
+# --- PREDICTIVE AIMING ---
+@export var predictive_aim: bool = true
+@export var max_lead_time: float = 1.25      # seconds (clamps how far ahead we lead)
+@export var lead_blend: float = 1.0          # 0 = no lead, 1 = full lead
+
 # --- DETECTION (CONE + CIRCLE) ---
 @export var cone_angle_deg: float = 30.0     # half-angle of cone
 @export var cone_radius: float = 600.0
@@ -37,6 +42,10 @@ var _forward: Vector2 = Vector2.RIGHT
 var _current_target: Node2D = null
 var _cached_cone_cos: float = 0.0
 
+# For velocity estimation when target isn't a physics body
+var _target_last_pos: Dictionary = {}   # ObjectID -> Vector2
+var _target_last_vel: Dictionary = {}   # ObjectID -> Vector2
+
 # --- EXPLOSION SCENE (OPTIONAL) ---
 @export var explosion_scene: PackedScene
 @onready var _trail: GPUParticles2D = $smoke
@@ -47,16 +56,14 @@ func _ready() -> void:
 	_cached_cone_cos = cos(deg_to_rad(cone_angle_deg))
 	# wait for initialize() to set direction/velocity
 
-
 func initialize(initial_direction: Vector2) -> void:
 	var dir: Vector2 = initial_direction
 	if dir.length() == 0.0:
-		dir = Vector2.RIGHT   # fallback
+		dir = Vector2.RIGHT
 
 	_forward = dir.normalized()
 	velocity = _forward * startup_speed
 	rotation = _forward.angle()
-
 
 func _physics_process(delta: float) -> void:
 	# Lifetime
@@ -77,9 +84,7 @@ func _physics_process(delta: float) -> void:
 		_handle_collision(collision)
 		return
 
-
 # --- STATE LOGIC ---
-
 
 func _process_startup(delta: float) -> void:
 	_startup_timer -= delta
@@ -88,7 +93,6 @@ func _process_startup(delta: float) -> void:
 	if _startup_timer <= 0.0:
 		_acquire_initial_target()
 		_state = STATE_SEEK
-
 
 func _process_seek(delta: float) -> void:
 	# If current target is invalid, clear it
@@ -105,19 +109,16 @@ func _process_seek(delta: float) -> void:
 			return
 
 	# At this point, we have a target (sticky until it leaves range/angle)
-
 	var in_cone: bool = _is_in_cone(_current_target)
 	var in_circle: bool = _is_in_circle(_current_target)
 
 	if not in_cone and not in_circle:
-		# target lost: clear and try to reacquire
 		_current_target = null
 		_acquire_initial_target()
 		if _current_target == null:
 			_accelerate_forward(delta, slow_seek_speed)
 			return
 
-		# re-evaluate new target
 		in_cone = _is_in_cone(_current_target)
 		in_circle = _is_in_circle(_current_target)
 
@@ -127,9 +128,7 @@ func _process_seek(delta: float) -> void:
 	elif in_circle:
 		_home_towards_target(delta, _current_target, slow_seek_speed)
 	else:
-		# safety fallback
 		_accelerate_forward(delta, slow_seek_speed)
-
 
 func _acquire_initial_target() -> void:
 	# Prefer a cone target; otherwise use circle
@@ -144,9 +143,7 @@ func _acquire_initial_target() -> void:
 	else:
 		_current_target = null
 
-
 # --- TARGET SEARCH HELPERS ---
-
 
 func _find_target_in_cone() -> Node2D:
 	var enemies: Array = get_tree().get_nodes_in_group(enemy_group)
@@ -167,7 +164,6 @@ func _find_target_in_cone() -> Node2D:
 
 		var dir_to_enemy: Vector2 = to_enemy.normalized()
 		var dot_val: float = forward.dot(dir_to_enemy)
-
 		if dot_val < _cached_cone_cos:
 			continue
 
@@ -176,7 +172,6 @@ func _find_target_in_cone() -> Node2D:
 			best_target = enemy
 
 	return best_target
-
 
 func _find_target_in_circle() -> Node2D:
 	var enemies: Array = get_tree().get_nodes_in_group(enemy_group)
@@ -199,7 +194,6 @@ func _find_target_in_circle() -> Node2D:
 
 	return best_target
 
-
 func _is_in_cone(target: Node2D) -> bool:
 	if target == null:
 		return false
@@ -217,7 +211,6 @@ func _is_in_cone(target: Node2D) -> bool:
 
 	return dot_val >= _cached_cone_cos
 
-
 func _is_in_circle(target: Node2D) -> bool:
 	if target == null:
 		return false
@@ -228,44 +221,120 @@ func _is_in_circle(target: Node2D) -> bool:
 	var dist_sq: float = to_enemy.length_squared()
 	return dist_sq <= circle_radius * circle_radius
 
-
 # --- MOVEMENT HELPERS ---
 
-
 func _home_towards_target(delta: float, target: Node2D, target_speed: float) -> void:
-	var to_target: Vector2 = target.global_position - global_position
-	if to_target.length() == 0.0:
+	if target == null:
+		return
+	if not is_instance_valid(target):
 		return
 
-	var desired_dir: Vector2 = to_target.normalized()
+	var aim_point: Vector2 = target.global_position
 
-	# Smoothly rotate _forward towards desired_dir
+	if predictive_aim:
+		var target_vel: Vector2 = _get_target_velocity(target, delta)
+		var predicted: Vector2 = _predict_intercept_point(global_position, target.global_position, target_vel, target_speed)
+		aim_point = aim_point.lerp(predicted, clampf(lead_blend, 0.0, 1.0))
+
+	var to_point: Vector2 = aim_point - global_position
+	if to_point.length() == 0.0:
+		return
+
+	var desired_dir: Vector2 = to_point.normalized()
+
+	# Smoothly rotate _forward towards desired_dir with a true angular step limit
 	var current_angle: float = _forward.angle()
 	var desired_angle: float = desired_dir.angle()
 
 	var max_step: float = deg_to_rad(turn_speed_deg) * delta
-	var t: float = max_step
-	if t > 1.0:
-		t = 1.0
-	if t < 0.0:
-		t = 0.0
-
-	var new_angle: float = lerp_angle(current_angle, desired_angle, t)
+	var delta_angle: float = wrapf(desired_angle - current_angle, -PI, PI)
+	delta_angle = clampf(delta_angle, -max_step, max_step)
+	var new_angle: float = current_angle + delta_angle
 
 	_forward = Vector2.RIGHT.rotated(new_angle)
 	rotation = new_angle
 
 	_accelerate_forward(delta, target_speed)
 
-
 func _accelerate_forward(delta: float, target_speed: float) -> void:
 	var forward_vec: Vector2 = _forward.normalized()
 	var desired_velocity: Vector2 = forward_vec * target_speed
 	velocity = velocity.move_toward(desired_velocity, acceleration * delta)
 
+# --- PREDICTION HELPERS ---
+
+func _get_target_velocity(target: Node2D, delta: float) -> Vector2:
+	# Prefer real physics velocities if available
+	var cb: CharacterBody2D = target as CharacterBody2D
+	if cb != null:
+		return cb.velocity
+
+	var rb: RigidBody2D = target as RigidBody2D
+	if rb != null:
+		return rb.linear_velocity
+
+	# Otherwise estimate from position history
+	var id: int = target.get_instance_id()
+	var pos_now: Vector2 = target.global_position
+
+	var had_prev: bool = _target_last_pos.has(id)
+	var pos_prev: Vector2 = pos_now
+	if had_prev:
+		pos_prev = _target_last_pos[id] as Vector2
+
+	_target_last_pos[id] = pos_now
+
+	var vel: Vector2 = Vector2.ZERO
+	if had_prev and delta > 0.0:
+		vel = (pos_now - pos_prev) / delta
+
+	_target_last_vel[id] = vel
+	return vel
+
+func _predict_intercept_point(missile_pos: Vector2, target_pos: Vector2, target_vel: Vector2, missile_speed: float) -> Vector2:
+	# Solve |p + v*t| = s*t
+	var p: Vector2 = target_pos - missile_pos
+	var v: Vector2 = target_vel
+	var s: float = maxf(missile_speed, 0.001)
+
+	var a: float = v.dot(v) - s * s
+	var b: float = 2.0 * p.dot(v)
+	var c: float = p.dot(p)
+
+	var t: float = 0.0
+
+	if absf(a) < 0.0001:
+		# Linear fallback
+		if absf(b) > 0.0001:
+			t = -c / b
+		else:
+			t = 0.0
+	else:
+		var disc: float = b * b - 4.0 * a * c
+		if disc >= 0.0:
+			var sqrt_disc: float = sqrt(disc)
+			var t1: float = (-b - sqrt_disc) / (2.0 * a)
+			var t2: float = (-b + sqrt_disc) / (2.0 * a)
+
+			# Smallest positive time
+			t = INF
+			if t1 > 0.0:
+				t = t1
+			if t2 > 0.0 and t2 < t:
+				t = t2
+
+			if t == INF:
+				t = 0.0
+		else:
+			t = 0.0
+
+	if t < 0.0:
+		t = 0.0
+	t = minf(t, max_lead_time)
+
+	return target_pos + target_vel * t
 
 # --- COLLISION / EXPLOSION ---
-
 
 func _handle_collision(collision: KinematicCollision2D) -> void:
 	var target: Object = collision.get_collider()
@@ -281,19 +350,16 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	_spawn_explosion()
 	_die()
 
-
 func _die() -> void:
 	_detach_trail()
 	queue_free()
-	
+
 func _detach_trail() -> void:
 	if _trail == null:
 		return
 
-	# Stop emitting new particles, keep existing ones
 	_trail.emitting = false
 
-	# Reparent trail to the world so it survives after missile is freed
 	var world_root: Node = get_parent()
 
 	var parent: Node = _trail.get_parent()
@@ -302,7 +368,6 @@ func _detach_trail() -> void:
 	world_root.add_child(_trail)
 	_trail.global_position = global_position
 
-	# Create a timer to free the trail after 10 seconds
 	var timer: Timer = Timer.new()
 	timer.wait_time = 10.0
 	timer.one_shot = true

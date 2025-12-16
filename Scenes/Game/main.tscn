@@ -153,7 +153,7 @@ anchor_left = 0.35
 anchor_right = 0.65
 offset_top = -55.0
 offset_bottom = -30.0
-back_steps = 15
+back_steps = 20
 
 [node name="HealthUI" parent="CanvasLayer" instance=ExtResource("7_6bp64")]
 anchors_preset = -1

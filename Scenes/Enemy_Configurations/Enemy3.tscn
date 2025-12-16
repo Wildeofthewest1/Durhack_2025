@@ -9,8 +9,8 @@
 [ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="7_ert80"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ahgkp"]
-radius = 11.5
-height = 36.0
+radius = 9.0
+height = 72.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7iebr"]
 radius = 1186.2849
@@ -37,7 +37,6 @@ region_enabled = true
 region_rect = Rect2(160, 38, 96, 26)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1.5)
 shape = SubResource("CapsuleShape2D_ahgkp")
 
 [node name="WeaponSlots" type="Node2D" parent="."]
