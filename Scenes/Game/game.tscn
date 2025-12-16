@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cuqp3vdnbus2n"]
+[gd_scene load_steps=19 format=3 uid="uid://cuqp3vdnbus2n"]
 
 [ext_resource type="PackedScene" uid="uid://dcbvpreahnt2f" path="res://Scenes/Player/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://83ansfhhkj23" path="res://Scenes/Game/game.gd" id="1_wowpa"]
@@ -15,32 +15,11 @@
 [ext_resource type="PackedScene" uid="uid://cbwgac5vnc7eu" path="res://Scenes/Satellite/satellite_5.tscn" id="7_rku1e"]
 [ext_resource type="PackedScene" uid="uid://dvdupc2fvp8lg" path="res://Scenes/Satellite/satellite_1.tscn" id="7_v158k"]
 [ext_resource type="Resource" path="res://Data/dialogue_wanne_be_rebellion_leader.tres" id="8_h4fw4"]
+[ext_resource type="AudioStream" uid="uid://42gnkrxygj6j" path="res://Assets/Menu_Theme.wav" id="16_56qi8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2vowc"]
 shader = ExtResource("4_56qi8")
-shader_parameter/density = 10.0
-shader_parameter/layer_parascale = 5
-shader_parameter/speedx = 1.490119991842676e-07
-shader_parameter/speedy = 1.490119991842676e-07
-shader_parameter/star_horizontal_wave = 0.3
-shader_parameter/star_size = 3.0
-shader_parameter/twinkle_effect = 0.6
-shader_parameter/twinkle_speed = 0.3
-shader_parameter/fbm_strength = 0.12
-shader_parameter/fbm_mix = 0.07
-shader_parameter/fbm_freq = 4.0
-shader_parameter/fbm_amp = 1.5
-shader_parameter/fbm_speed = 5.0
-shader_parameter/warp_scale = 9.99999977648
-shader_parameter/cloud_freq = 40.0
-shader_parameter/cloud_amp = 0.02
-shader_parameter/cloud_speed = 0.1999999955296
-shader_parameter/cloud_color_ci1 = 0.75
-shader_parameter/cloud_color_ci2 = 0.45
-shader_parameter/cloud_color_ci3 = 0.9
-shader_parameter/cloud_color_shiftx = 0.0
-shader_parameter/cloud_color_shifty = 0.0
-shader_parameter/background_color = Color(0.09411765, 0.09019608, 0.12156863, 1)
+shader_parameter/VIEWPORT_SIZE = Vector2(640, 320)
 
 [sub_resource type="Environment" id="Environment_upfqs"]
 background_mode = 3
@@ -122,3 +101,8 @@ dialogue_data = ExtResource("8_h4fw4")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_upfqs")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_56qi8")
+volume_db = 1.0
+autoplay = true

@@ -8,7 +8,8 @@ radius = 900.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2vc58"]
 shader = ExtResource("2_tf8ba")
-shader_parameter/asteroid_density = 0.6530000310175
+shader_parameter/background_color = Color(1, 0.33999997, 0.33999997, 0.078431375)
+shader_parameter/asteroid_density = 0.10000000475
 shader_parameter/asteroid_scale = 0.058000002755
 shader_parameter/asteroid_color1 = Color(0.8392157, 0, 0, 1)
 shader_parameter/asteroid_color2 = Color(0.4509804, 0.07058824, 0.07058824, 1)
