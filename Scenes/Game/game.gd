@@ -126,7 +126,7 @@ func _ready() -> void:
 			"position": Vector2(-100, 2000),
 			"behaviour": "pursuer",
 			"weapons": ["res://Scenes/Enemy_Weapons/CircleGun.tscn"],
-			"speed": 180,
+			"speed": 300,
 			"health": 750,
 			"rotate_toward_player": true,
 			"detectionradius": 500

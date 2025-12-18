@@ -27,6 +27,7 @@ radius = 1186.2849
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_w36vh")
+health = 750
 death_particles_scene = ExtResource("2_8ggvy")
 
 [node name="Trail" parent="." instance=ExtResource("6_21orn")]
@@ -37,7 +38,7 @@ body_path = NodePath("..")
 max_points = 50
 width = 10.0
 
-[node name="centre" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(0, 1.7763568e-15)
 scale = Vector2(0.25, 0.25)
@@ -45,7 +46,7 @@ texture = ExtResource("3_w36vh")
 region_enabled = true
 region_rect = Rect2(296, 176, 48, 48)
 
-[node name="Limb1" type="Sprite2D" parent="centre"]
+[node name="Limb1" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 texture = ExtResource("3_w36vh")
 offset = Vector2(0, -254)
@@ -54,13 +55,13 @@ region_rect = Rect2(496, 0, 16, 511)
 script = ExtResource("4_8ggvy")
 damping = 10.0
 
-[node name="TrailParticles2" parent="centre/Limb1" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+[node name="TrailParticles2" parent="Sprite2D/Limb1" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
 self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
 position = Vector2(4, -508)
 scale = Vector2(4, 4)
 follower = NodePath(".")
 
-[node name="Limb3" type="Sprite2D" parent="centre"]
+[node name="Limb3" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 rotation = -1.5707964
 texture = ExtResource("3_w36vh")
@@ -68,7 +69,7 @@ offset = Vector2(-0.06253052, -111.59512)
 region_enabled = true
 region_rect = Rect2(448, 289, 16, 223)
 
-[node name="Limb4" type="Sprite2D" parent="centre"]
+[node name="Limb4" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 rotation = 3.1415927
 texture = ExtResource("3_w36vh")
@@ -79,14 +80,14 @@ script = ExtResource("4_8ggvy")
 damping = 20.0
 max_lag_rad = 1.0
 
-[node name="TrailParticles" parent="centre/Limb4" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+[node name="TrailParticles" parent="Sprite2D/Limb4" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
 self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
 position = Vector2(-1.9073486e-05, -220)
 rotation = 3.1415925
 scale = Vector2(4, 4)
 follower = NodePath(".")
 
-[node name="Limb5" type="Sprite2D" parent="centre"]
+[node name="Limb5" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 rotation = 3.9269907
 texture = ExtResource("3_w36vh")
@@ -97,7 +98,7 @@ script = ExtResource("4_8ggvy")
 damping = 30.0
 max_lag_rad = 0.7
 
-[node name="Nose" type="Sprite2D" parent="centre"]
+[node name="Nose" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 position = Vector2(88, 0)
 rotation = 1.5707964
@@ -112,7 +113,7 @@ shape = SubResource("CapsuleShape2D_ahgkp")
 rotation = -1.5707964
 
 [node name="Slot1" type="Node2D" parent="WeaponSlots"]
-position = Vector2(10, 4)
+position = Vector2(-9.536743e-07, 34)
 
 [node name="Weapons" type="Node2D" parent="."]
 rotation = -1.5707964
