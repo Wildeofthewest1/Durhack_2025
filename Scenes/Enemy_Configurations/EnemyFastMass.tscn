@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_w36vh"]
 [ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_8ggvy"]
 [ext_resource type="Texture2D" uid="uid://cv0vt3m0of08i" path="res://Assets/fast_mass.png" id="3_w36vh"]
-[ext_resource type="Script" uid="uid://c3y0uvaeip3n8" path="res://Scenes/Enemy_Configurations/FastMass_llim.gd" id="4_8ggvy"]
+[ext_resource type="Script" uid="uid://c3y0uvaeip3n8" path="res://Scenes/Enemy_Configurations/FastMass_limb.gd" id="4_8ggvy"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="4_fdr8q"]
 [ext_resource type="PackedScene" uid="uid://wcn2ccbx32uw" path="res://Scenes/particles/trail_particles.tscn" id="5_dx2vn"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="6_21orn"]
@@ -27,6 +27,7 @@ radius = 1186.2849
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_w36vh")
+speed = 250.0
 health = 750
 death_particles_scene = ExtResource("2_8ggvy")
 
@@ -48,6 +49,7 @@ region_rect = Rect2(296, 176, 48, 48)
 
 [node name="Limb1" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
+scale = Vector2(1, 0.75)
 texture = ExtResource("3_w36vh")
 offset = Vector2(0, -254)
 region_enabled = true
@@ -62,6 +64,7 @@ scale = Vector2(4, 4)
 follower = NodePath(".")
 
 [node name="Limb3" type="Sprite2D" parent="Sprite2D"]
+self_modulate = Color(0.9, 0.9, 0.9, 1)
 texture_filter = 1
 rotation = -1.5707964
 texture = ExtResource("3_w36vh")
@@ -71,13 +74,13 @@ region_rect = Rect2(448, 289, 16, 223)
 
 [node name="Limb4" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
-rotation = 3.1415927
+rotation = 2.6179938
 texture = ExtResource("3_w36vh")
 offset = Vector2(-0.06253052, -111.59512)
 region_enabled = true
 region_rect = Rect2(448, 289, 16, 223)
 script = ExtResource("4_8ggvy")
-damping = 20.0
+damping = 10.0
 max_lag_rad = 1.0
 
 [node name="TrailParticles" parent="Sprite2D/Limb4" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
@@ -89,14 +92,21 @@ follower = NodePath(".")
 
 [node name="Limb5" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
-rotation = 3.9269907
+rotation = 3.6651914
 texture = ExtResource("3_w36vh")
 offset = Vector2(-0.06253052, -111.59512)
 region_enabled = true
 region_rect = Rect2(448, 289, 16, 223)
 script = ExtResource("4_8ggvy")
-damping = 30.0
+damping = 10.0
 max_lag_rad = 0.7
+
+[node name="TrailParticles3" parent="Sprite2D/Limb5" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
+position = Vector2(-0.46924973, -216.81277)
+rotation = 2.6179938
+scale = Vector2(4, 2.9999998)
+follower = NodePath(".")
 
 [node name="Nose" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
