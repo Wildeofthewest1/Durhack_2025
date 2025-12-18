@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://q1vr0kgljwio"]
+
+[ext_resource type="Script" uid="uid://co42g2fccuoba" path="res://Scenes/Enemy_Weapons/pistol.gd" id="1_4asm2"]
+[ext_resource type="PackedScene" uid="uid://dgam4fixxso5l" path="res://Scenes/Enemy_Weapons/bullet_circle_small.tscn" id="2_1y3ip"]
+[ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_4guhr"]
+
+[node name="Pistol" type="Node2D"]
+script = ExtResource("1_4asm2")
+bullet_scene = ExtResource("2_1y3ip")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 3)
+texture = ExtResource("2_4guhr")
+region_enabled = true
+region_rect = Rect2(107.92838, 27.938126, 5.1758804, 11.192841)
+
+[node name="FireTimer" type="Timer" parent="."]
