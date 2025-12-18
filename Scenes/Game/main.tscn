@@ -171,7 +171,6 @@ back_steps = 20
 anchors_preset = -1
 offset_left = 50.0
 offset_top = 50.0
-health_per_square = 10
 
 [node name="Minimap" parent="CanvasLayer" instance=ExtResource("8_wrqr2")]
 minimap_size = Vector2(300, 300)

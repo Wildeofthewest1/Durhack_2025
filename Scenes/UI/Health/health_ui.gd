@@ -8,7 +8,7 @@ class_name HealthShieldUI
 @export var square_size: int = 8
 @export var spacing: int = 2
 @export var squares_per_row: int = 10
-@export var health_per_square: int = 1
+@export var health_per_square: int = 10
 @export var health_color: Color = Color("99ff99")
 @export var empty_color: Color = Color("333333")
 
@@ -18,8 +18,7 @@ class_name HealthShieldUI
 @export var max_shield: int = 100
 @export var shield_color: Color = Color("84dbf5")
 @export var shield_empty_color: Color = Color("333333")
-var shield_bar_height: int = 100#_grid_size.y
-var shield_bar_gap: int = spacing/2
+@export var shield_bar_gap: int = 100
 @export var shield_bar_align_y: int = 0   # 0=center, -1=top, +1=bottom
 
 # -------------------------
@@ -230,13 +229,12 @@ func _draw_shield_bar_halo() -> void:
 	var bar_x := _grid_origin.x
 
 	# --- Vertical alignment: top of shield bar is gap below health ---
-	var bar_y := _grid_origin.y + shield_bar_gap + _grid_size.y
-
-	var bar_h := float(shield_bar_height)
-	var health_h := float(_grid_size.y + shield_bar_gap + shield_bar_height)
+	var bar_y := _grid_origin.y + _grid_size.y + shield_bar_gap# + _grid_size.y
+	var bar_h := _grid_size.y/5#float(shield_bar_height)
+	var health_h := float(_grid_size.y + shield_bar_gap + bar_h)
 	var cap_radius := health_h
 	var bridge_len = _amount_to_pixel_width(max_shield - 100)
-	var total_w = _grid_size.x + spacing#max(_amount_to_pixel_width(max_shield), 1.0)
+	var total_w = _grid_size.x + shield_bar_gap
 	#var fill_w := _shield_amount_to_width(current_shield, max_shield, total_w)#_amount_to_pixel_width(clampi(current_shield, 0, max_shield))
 	
 	# --- Path lengths ---
