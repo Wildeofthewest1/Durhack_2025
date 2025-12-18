@@ -233,7 +233,7 @@ func _draw_shield_bar_halo() -> void:
 	var bar_y := _grid_origin.y + shield_bar_gap + _grid_size.y
 
 	var bar_h := float(shield_bar_height)
-	var health_h := float(square_size + shield_bar_gap + shield_bar_height)
+	var health_h := float(_grid_size.y + shield_bar_gap + shield_bar_height)
 	var cap_radius := health_h
 	var bridge_len = _amount_to_pixel_width(max_shield - 100)
 	var total_w = _grid_size.x + spacing#max(_amount_to_pixel_width(max_shield), 1.0)
