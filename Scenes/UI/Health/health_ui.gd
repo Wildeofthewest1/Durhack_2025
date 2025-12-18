@@ -1,23 +1,30 @@
 extends Control
 class_name HealthShieldUI
 
+# -------------------------
+# HEALTH (square blocks)
+# -------------------------
 @export var max_health: int = 200
 @export var square_size: int = 8
 @export var spacing: int = 2
 @export var squares_per_row: int = 10
-@export var health_per_square: int = 10
-@export var health_color: Color = Color.GREEN
-@export var empty_color: Color = Color(0.2, 0.2, 0.2, 1.0)
+@export var health_per_square: int = 1
+@export var health_color: Color = Color("99ff99")
+@export var empty_color: Color = Color("333333")
 
-# --- SHIELD (horizontal bar) ---
+# -------------------------
+# SHIELD (Halo-style bar)
+# -------------------------
 @export var max_shield: int = 100
-@export var shield_color: Color = Color(0.2, 0.6, 1.0, 1.0)
-@export var shield_empty_color: Color = Color(0.12, 0.12, 0.18, 1.0)
-@export var shield_bar_height: int = 6
-@export var shield_bar_gap: int = 6          # distance from health block (to the right)
-@export var shield_bar_align_y: int = 0      # 0=center, -1=top, +1=bottom
+@export var shield_color: Color = Color("84dbf5")
+@export var shield_empty_color: Color = Color("333333")
+var shield_bar_height: int = 100#_grid_size.y
+var shield_bar_gap: int = spacing/2
+@export var shield_bar_align_y: int = 0   # 0=center, -1=top, +1=bottom
 
-# Data
+# -------------------------
+# Runtime data
+# -------------------------
 var current_health: int = 0
 var current_shield: int = 0
 
@@ -31,33 +38,35 @@ var _ph: Node = null
 var _grid_origin: Vector2 = Vector2.ZERO
 var _grid_size: Vector2 = Vector2.ZERO
 
-# Track max updates
+# Change tracking
 var _last_max_health: int = 0
 var _last_max_shield: int = 0
 
+# =========================================================
+# Lifecycle
+# =========================================================
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
-	_ph = null
 	if player != null:
-		# Your setup: PlayerHealth is child(1)
 		_ph = player.get_child(1)
 
 	_pull_initial_values()
 	_rebuild_health_layout()
 	queue_redraw()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player == null:
 		return
+
 	if _ph == null:
 		_ph = player.get_child(1)
 		if _ph == null:
 			return
 
-	var new_health: int = current_health
-	var new_shield: int = current_shield
-	var new_max_health: int = max_health
-	var new_max_shield: int = max_shield
+	var new_health := current_health
+	var new_shield := current_shield
+	var new_max_health := max_health
+	var new_max_shield := max_shield
 
 	if "health" in _ph:
 		new_health = int(_ph.health)
@@ -68,7 +77,7 @@ func _process(delta: float) -> void:
 	if "max_shield" in _ph:
 		new_max_shield = int(_ph.max_shield)
 
-	var layout_changed: bool = false
+	var layout_changed := false
 
 	if new_max_health != _last_max_health:
 		max_health = new_max_health
@@ -78,36 +87,29 @@ func _process(delta: float) -> void:
 	if new_max_shield != _last_max_shield:
 		max_shield = new_max_shield
 		_last_max_shield = new_max_shield
-		# shield bar width is computed in _draw(), so no layout recompute needed
-		# unless you want to reposition it based on its own width (we don't)
-		# layout_changed = true
 
 	if layout_changed:
 		_rebuild_health_layout()
 
-	var changed: bool = false
-	if new_health != current_health:
+	if new_health != current_health or new_shield != current_shield:
 		current_health = new_health
-		changed = true
-	if new_shield != current_shield:
 		current_shield = new_shield
-		changed = true
-
-	if layout_changed or changed:
 		queue_redraw()
 
+
+# =========================================================
+# Layout & state
+# =========================================================
 func _pull_initial_values() -> void:
 	if _ph != null:
 		if "max_health" in _ph:
 			max_health = int(_ph.max_health)
 		if "max_shield" in _ph:
 			max_shield = int(_ph.max_shield)
-
 		if "health" in _ph:
 			current_health = int(_ph.health)
 		else:
 			current_health = max_health
-
 		if "shield" in _ph:
 			current_shield = int(_ph.shield)
 		else:
@@ -119,117 +121,278 @@ func _pull_initial_values() -> void:
 	_last_max_health = max_health
 	_last_max_shield = max_shield
 
+
 func _rebuild_health_layout() -> void:
-	var total: float = float(max_health) / float(health_per_square)
+	var total := float(max_health) / float(health_per_square)
 	square_count = int(ceil(total))
 	_calculate_square_positions()
 
 func _calculate_square_positions() -> void:
 	square_positions.clear()
 
-	var x_offset: int = 8
-	var y_offset: int = 8
+	var x_offset := 8
+	var y_offset := 8
+	_grid_origin = Vector2(x_offset, y_offset)
 
-	_grid_origin = Vector2(float(x_offset), float(y_offset))
-
-	for i: int in range(square_count):
-		var row: int = i / squares_per_row
-		var col: int = i - row * squares_per_row
-		var x: float = float(x_offset + col * (square_size + spacing))
-		var y: float = float(y_offset + row * (square_size + spacing))
+	for i in range(square_count):
+		var row := i / squares_per_row
+		var col := i - row * squares_per_row
+		var x := x_offset + col * (square_size + spacing)
+		var y := y_offset + row * (square_size + spacing)
 		square_positions.append(Vector2(x, y))
 
-	var rows: int = int(ceil(float(square_count) / float(squares_per_row)))
-	var cols: int = min(squares_per_row, square_count)
+	var rows := int(ceil(float(square_count) / squares_per_row))
+	var cols = min(squares_per_row, square_count)
 
-	var w: float = float(cols * square_size + (cols - 1) * spacing)
-	var h: float = float(rows * square_size + (rows - 1) * spacing)
-	_grid_size = Vector2(w, h)
+	_grid_size = Vector2(
+		cols * square_size + (cols - 1) * spacing,
+		rows * square_size + (rows - 1) * spacing
+	)
 
+
+# =========================================================
+# Drawing
+# =========================================================
 func _draw() -> void:
 	_draw_health_squares()
-	_draw_shield_bar_horizontal()
+	_draw_shield_bar_halo()
+
 
 func _draw_health_squares() -> void:
-	for i: int in range(square_count):
-		var pos: Vector2 = square_positions[i]
+	for i in range(square_count):
+		var pos := square_positions[i]
+		var square_start := i * health_per_square
+		var square_end := square_start + health_per_square
 
-		var square_start_hp: int = i * health_per_square
-		var square_end_hp: int = square_start_hp + health_per_square
+		draw_rect(Rect2(pos, Vector2(square_size, square_size)), empty_color)
 
-		draw_rect(Rect2(pos, Vector2(float(square_size), float(square_size))), empty_color)
+		if current_health >= square_end:
+			draw_rect(Rect2(pos, Vector2(square_size, square_size)), health_color)
+		elif current_health > square_start:
+			var frac := float(current_health - square_start) / health_per_square
+			draw_rect(
+				Rect2(pos, Vector2(square_size * frac, square_size)),
+				health_color
+			)
 
-		if current_health >= square_end_hp:
-			draw_rect(Rect2(pos, Vector2(float(square_size), float(square_size))), health_color)
-		elif current_health > square_start_hp:
-			var filled_hp: float = float(current_health - square_start_hp)
-			var fraction: float = filled_hp / float(health_per_square)
-			if fraction > 1.0:
-				fraction = 1.0
-			if fraction > 0.0:
-				var fill_width: float = float(square_size) * fraction
-				draw_rect(Rect2(pos, Vector2(fill_width, float(square_size))), health_color)
 
+# Converts health/shield units into pixel width
 func _amount_to_pixel_width(amount: int) -> float:
-	var a: int = max(amount, 0)
+	var a = max(amount, 0)
+	var full = a / health_per_square
+	var rem = a - full * health_per_square
 
-	var full_chunks: int = a / health_per_square
-	var rem: int = a - full_chunks * health_per_square
+	var w := 0.0
+	if full > 0:
+		w += full * square_size
+		w += max(full - 1, 0) * spacing
 
-	var w: float = 0.0
-
-	# Full squares
-	if full_chunks > 0:
-		w += float(full_chunks) * float(square_size)
-		w += float(max(full_chunks - 1, 0)) * float(spacing)
-
-	# Partial square (needs a gap before it if there were full squares)
 	if rem > 0:
-		if full_chunks > 0:
-			w += float(spacing)
-		var frac: float = float(rem) / float(health_per_square)
-		w += float(square_size) * frac
+		if full > 0:
+			w += spacing
+		w += square_size * (float(rem) / health_per_square)
 
 	return w
 
-func _draw_shield_bar_horizontal() -> void:
-	var bar_x: float = _grid_origin.x + _grid_size.x + float(shield_bar_gap)
+# Converts shield amount into pixel width based on a fixed bar length
+func _shield_amount_to_width(
+	amount: int,
+	max_amount: int,
+	bar_length: float
+) -> float:
+	if max_amount <= 0 or bar_length <= 0.0:
+		return 0.0
 
-	var bar_y: float = _grid_origin.y
-	if shield_bar_align_y == 0:
-		bar_y = _grid_origin.y + (_grid_size.y - float(shield_bar_height)) * 0.5
-	elif shield_bar_align_y > 0:
-		bar_y = _grid_origin.y + (_grid_size.y - float(shield_bar_height))
-	else:
-		bar_y = _grid_origin.y
+	var fraction = clamp(float(amount) / float(max_amount), 0.0, 1.0)
+	return bar_length * fraction
 
-	var bar_h: float = float(shield_bar_height)
+# Converts shield amount into remaining path length
+func _shield_amount_to_length(
+	amount: int,
+	max_amount: int,
+	total_length: float
+) -> float:
+	if max_amount <= 0 or total_length <= 0.0:
+		return 0.0
 
-	# Total width equals "max_shield" converted to the same square+gap pixel units
-	var total_w: float = _amount_to_pixel_width(max_shield)
-	if total_w < 1.0:
-		total_w = 1.0
+	var fraction = clamp(float(amount) / float(max_amount), 0.0, 1.0)
+	return total_length * fraction
 
-	draw_rect(Rect2(Vector2(bar_x, bar_y), Vector2(total_w, bar_h)), shield_empty_color)
 
-	var clamped_shield: int = clampi(current_shield, 0, max_shield)
-	var fill_w: float = _amount_to_pixel_width(clamped_shield)
-	if fill_w <= 0.0:
+# =========================================================
+# Halo-style shield drawing
+# =========================================================
+func _draw_shield_bar_halo() -> void:
+	if max_shield <= 0:
 		return
 
-	draw_rect(Rect2(Vector2(bar_x, bar_y), Vector2(fill_w, bar_h)), shield_color)
+	# --- Horizontal alignment: under health squares ---
+	var bar_x := _grid_origin.x
 
-# Optional setters (if you want to drive this UI by signals later)
-func set_health(new_health: int) -> void:
-	current_health = clampi(new_health, 0, max_health)
+	# --- Vertical alignment: top of shield bar is gap below health ---
+	var bar_y := _grid_origin.y + shield_bar_gap + _grid_size.y
+
+	var bar_h := float(shield_bar_height)
+	var health_h := float(square_size + shield_bar_gap + shield_bar_height)
+	var cap_radius := health_h
+	var bridge_len = _amount_to_pixel_width(max_shield - 100)
+	var total_w = _grid_size.x + spacing#max(_amount_to_pixel_width(max_shield), 1.0)
+	#var fill_w := _shield_amount_to_width(current_shield, max_shield, total_w)#_amount_to_pixel_width(clampi(current_shield, 0, max_shield))
+	
+	# --- Path lengths ---
+	var thin_len = total_w
+	#var bridge_len = _amount_to_pixel_width(max_shield-100)
+	var arc_len = cap_radius * (PI / 2)
+
+	var total_len = thin_len + bridge_len + arc_len
+	
+	var remaining = _shield_amount_to_length(
+		current_shield,
+		max_shield,
+		total_len
+	)
+	# --- Vertical transition up into the health silhouette ---
+	var bridge_x = total_w + _grid_origin.x# + fill_w #- cap_radius
+	var bridge_y := _grid_origin.y
+	var bridge_height = health_h #+ bar_h
+		# --- Rounded end cap (flush with health height) ---
+	var cap_center := Vector2(
+		bridge_x + bridge_len,
+		bridge_y
+	)
+	# --- Empty thin bar ---
+	draw_rect(
+		Rect2(Vector2(bar_x, bar_y), Vector2(total_w, bar_h)),
+		shield_empty_color
+	)
+	draw_rect(
+		Rect2(Vector2(bridge_x,bridge_y),Vector2(bridge_len,bridge_height)),
+		shield_empty_color
+	)
+	_draw_filled_quarter_circle(
+		cap_center,
+		cap_radius,
+		0.0,
+		PI/2,
+		24,
+		shield_empty_color
+	)
+	
+	# -------------------------------------------------
+	# Allocate visible length from LEFT → RIGHT
+	# Depletion therefore happens RIGHT → LEFT
+	# (arc first, then bridge, then thin bar)
+	# -------------------------------------------------
+
+	# 1) Thin bar (fills first, shrinks last)
+	var bar_visible = clamp(remaining, 0.0, thin_len)
+	if bar_visible > 0.0:
+		draw_rect(
+			Rect2(
+				Vector2(bar_x, bar_y),
+				Vector2(bar_visible, bar_h)
+			),
+			shield_color
+		)
+
+	remaining -= bar_visible
+
+	# 2) Bridge (fills second)
+	var bridge_visible = clamp(remaining, 0.0, bridge_len)
+	if bridge_visible > 0.0:
+		draw_rect(
+			Rect2(
+				Vector2(
+					bridge_x,
+					bridge_y
+				),
+				Vector2(bridge_visible, bridge_height)
+			),
+			shield_color
+		)
+
+	remaining -= bridge_visible
+
+	# 3) Arc (fills last, so depletes first)
+	var arc_visible = clamp(remaining, 0.0, arc_len)
+	#var cutoff_x = bar_x + remaining
+
+	if arc_visible > 0.0:
+		var arc_angle = arc_visible / arc_len * (PI / 2)      # 0..PI/2 (how much is visible)
+		var start_angle = (PI / 2) - arc_angle                # moves 0 -> PI/2 as it empties
+		var end_angle = PI / 2
+
+		_draw_filled_quarter_circle(
+			cap_center,
+			cap_radius,
+			start_angle,
+			end_angle,
+			24,
+			shield_color
+		)
+
+
+
+
+func _draw_filled_quarter_circle(
+	center: Vector2,
+	radius: float,
+	start_angle: float,
+	end_angle: float,
+	segments: int,
+	color: Color
+) -> void:
+	var points := PackedVector2Array()
+	points.append(center)
+
+	for i in range(segments + 1):
+		var t := float(i) / segments
+		var angle = lerp(start_angle, end_angle, t)
+		points.append(center + Vector2(cos(angle), sin(angle)) * radius)
+
+	draw_polygon(points, PackedColorArray([color]))
+
+func _draw_filled_quarter_circle_clipped(
+	center: Vector2,
+	radius: float,
+	start_angle: float,
+	end_angle: float,
+	segments: int,
+	color: Color,
+	cutoff_x: float
+) -> void:
+	var points = PackedVector2Array()
+	points.append(center)
+
+	for i in range(segments + 1):
+		var t = float(i) / segments
+		var angle = lerp(start_angle, end_angle, t)
+		var p = center + Vector2(cos(angle), sin(angle)) * radius
+
+		# Only include points that are NOT cut off horizontally
+		if p.x >= cutoff_x:
+			points.append(p)
+
+	# Need at least 3 points to draw a polygon
+	if points.size() >= 3:
+		draw_polygon(points, PackedColorArray([color]))
+
+# =========================================================
+# Optional setters
+# =========================================================
+func set_health(v: int) -> void:
+	current_health = clampi(v, 0, max_health)
 	queue_redraw()
 
-func set_shield(new_shield: int) -> void:
-	current_shield = clampi(new_shield, 0, max_shield)
+
+func set_shield(v: int) -> void:
+	current_shield = clampi(v, 0, max_shield)
 	queue_redraw()
+
 
 func get_current_health() -> int:
 	return current_health
+
 
 func get_current_shield() -> int:
 	return current_shield
