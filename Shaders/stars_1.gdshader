@@ -85,5 +85,5 @@ void fragment() {
         col += StarLayer(uv * scale + i * 343.0) * fade;
     }
 
-    COLOR = vec4(col, 0.05);
+    COLOR = vec4(col, 0.03);
 }

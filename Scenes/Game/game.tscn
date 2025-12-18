@@ -60,8 +60,7 @@ zoom = Vector2(0.75, 0.75)
 script = ExtResource("2_qxrlw")
 
 [node name="Sprite2D" type="Sprite2D" parent="Camera2D"]
-visible = false
-modulate = Color(1, 1, 1, 0.19607843)
+modulate = Color(1, 1, 1, 0.039215688)
 z_index = -10
 material = SubResource("ShaderMaterial_2vowc")
 position = Vector2(193.50002, 41.91622)
