@@ -155,14 +155,31 @@ func _fire_bullet() -> void:
 
 	var bullet := bullet_scene.instantiate()
 
-	# Team
-	if "team" in bullet:
-		if owner_body.is_in_group("Enemy"):
-			bullet.team = "Enemy"
-		elif owner_body.is_in_group("Fleet"):
-			bullet.team = "Fleet"
-		elif owner_body.is_in_group("player"):
-			bullet.team = "player"
+		# Identify the shooter
+	var shooter = get_parent().get_parent()  # CharacterBody2D (enemy or drone)
+
+	if shooter.is_in_group("Enemy"):
+		bullet.team = "Enemy"
+		if "col" in bullet:
+			bullet.col = Color("ff1212")
+		if "glowcol" in bullet:
+			bullet.glowcol = Color("ff121214")
+		#bullet.collision_layer = 6          # Enemy Bullets
+		#bullet.collision_mask = 1 | 4       # Player + Fleet
+
+	elif shooter.is_in_group("Fleet"):
+		bullet.team = "Fleet"
+		if "col" in bullet:
+			bullet.col = Color("5dff76ff")
+		if "glowcol" in bullet:
+			bullet.glowcol = Color("5dff7614")
+		#bullet.collision_layer = 5          # Allied Bullets
+		#bullet.collision_mask = 3           # Enemies
+
+	elif shooter.is_in_group("player"):
+		bullet.team = "player"
+		#bullet.collision_layer = 5          # Allied Bullets
+		#bullet.collision_mask = 3           # Enemies
 
 	# Bullet parameters
 	if "lifetime" in bullet:
