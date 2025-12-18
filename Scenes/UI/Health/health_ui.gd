@@ -4,9 +4,9 @@ class_name HealthShieldUI
 # -------------------------
 # HEALTH (square blocks)
 # -------------------------
-@export var max_health: int = 200
-@export var square_size: int = 8
-@export var spacing: int = 2
+@export var max_health: int = 100
+@export var square_size: int = 25
+@export var spacing: int = 50
 @export var squares_per_row: int = 10
 @export var health_per_square: int = 10
 @export var health_color: Color = Color("99ff99")
@@ -18,8 +18,10 @@ class_name HealthShieldUI
 @export var max_shield: int = 100
 @export var shield_color: Color = Color("84dbf5")
 @export var shield_empty_color: Color = Color("333333")
-@export var shield_bar_gap: int = 100
-@export var shield_bar_align_y: int = 0   # 0=center, -1=top, +1=bottom
+
+var shield_bar_gap: int = 5
+var shield_bar_height: int = 5
+var shield_bar_align_y: int = 0   # 0=center, -1=top, +1=bottom
 
 # -------------------------
 # Runtime data
@@ -48,7 +50,9 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	if player != null:
 		_ph = player.get_child(1)
-
+	shield_bar_gap = spacing
+	shield_bar_height = spacing
+	shield_bar_align_y = 0
 	_pull_initial_values()
 	_rebuild_health_layout()
 	queue_redraw()
@@ -230,7 +234,7 @@ func _draw_shield_bar_halo() -> void:
 
 	# --- Vertical alignment: top of shield bar is gap below health ---
 	var bar_y := _grid_origin.y + _grid_size.y + shield_bar_gap# + _grid_size.y
-	var bar_h := _grid_size.y/5#float(shield_bar_height)
+	var bar_h := shield_bar_height#_grid_size.y/5#float(shield_bar_height)
 	var health_h := float(_grid_size.y + shield_bar_gap + bar_h)
 	var cap_radius := health_h
 	var bridge_len = _amount_to_pixel_width(max_shield - 100)
@@ -240,7 +244,7 @@ func _draw_shield_bar_halo() -> void:
 	# --- Path lengths ---
 	var thin_len = total_w
 	#var bridge_len = _amount_to_pixel_width(max_shield-100)
-	var arc_len = cap_radius * (PI / 2)
+	var arc_len = cap_radius# * (PI / 2)
 
 	var total_len = thin_len + bridge_len + arc_len
 	
@@ -315,19 +319,39 @@ func _draw_shield_bar_halo() -> void:
 	var arc_visible = clamp(remaining, 0.0, arc_len)
 	#var cutoff_x = bar_x + remaining
 
-	if arc_visible > 0.0:
-		var arc_angle = arc_visible / arc_len * (PI / 2)      # 0..PI/2 (how much is visible)
-		var start_angle = (PI / 2) - arc_angle                # moves 0 -> PI/2 as it empties
-		var end_angle = PI / 2
+	#if arc_visible > 0.0:
+	#	var arc_angle = arc_visible / arc_len * (PI / 2)      # 0..PI/2 (how much is visible)
+	#	var start_angle = (PI / 2) - arc_angle                # moves 0 -> PI/2 as it empties
+	#	var end_angle = PI / 2
+	
+		# cutoff_x should be the vertical line where the "mask" ends.
+	# If your bar fills left->right and remaining is the visible length from the left:
+	var cutoff_x = bar_x + thin_len + bridge_len + arc_visible  # if you're allocating visible length into arc
+		# Maximum visible X of the entire shield shape
+	#var max_cutoff_x = cap_center.x + cap_radius
 
-		_draw_filled_quarter_circle(
-			cap_center,
-			cap_radius,
-			start_angle,
-			end_angle,
-			24,
-			shield_color
-		)
+	#cutoff_x = min(cutoff_x, max_cutoff_x)
+
+	# OR (simpler, if you have a global visible length "visible_total" from the left):
+	# var cutoff_x = bar_x + visible_total
+
+	# Build the full sector in the correct quadrant first
+	var sector = _build_filled_sector_polygon(cap_center, cap_radius, 0.0, PI / 2, 32)
+
+	# Clip it to x >= cutoff_x (keep the right-hand side)
+	var clipped = _clip_polygon_x_le(sector, cutoff_x)
+
+	if clipped.size() >= 3:
+		draw_polygon(clipped, PackedColorArray([shield_color]))
+
+		#	_draw_filled_quarter_circle(
+		#		cap_center,
+			#	cap_radius,
+			#	start_angle,
+			#	end_angle,
+			#	24,
+			#	shield_color
+			#)
 
 
 
@@ -350,30 +374,50 @@ func _draw_filled_quarter_circle(
 
 	draw_polygon(points, PackedColorArray([color]))
 
-func _draw_filled_quarter_circle_clipped(
-	center: Vector2,
-	radius: float,
-	start_angle: float,
-	end_angle: float,
-	segments: int,
-	color: Color,
-	cutoff_x: float
-) -> void:
-	var points = PackedVector2Array()
-	points.append(center)
+func _build_filled_sector_polygon(center: Vector2, radius: float, start_angle: float, end_angle: float, segments: int) -> PackedVector2Array:
+	var pts = PackedVector2Array()
+	pts.append(center)
 
 	for i in range(segments + 1):
-		var t = float(i) / segments
-		var angle = lerp(start_angle, end_angle, t)
-		var p = center + Vector2(cos(angle), sin(angle)) * radius
+		var t = float(i) / float(segments)
+		var a = lerp(start_angle, end_angle, t)
+		pts.append(center + Vector2(cos(a), sin(a)) * radius)
 
-		# Only include points that are NOT cut off horizontally
-		if p.x >= cutoff_x:
-			points.append(p)
+	return pts
 
-	# Need at least 3 points to draw a polygon
-	if points.size() >= 3:
-		draw_polygon(points, PackedColorArray([color]))
+
+# Clips a polygon to the half-plane x >= cutoff_x (vertical line).
+# Clips a polygon to the half-plane x <= cutoff_x (keep left-hand side).
+func _clip_polygon_x_le(poly: PackedVector2Array, cutoff_x: float) -> PackedVector2Array:
+	var out = PackedVector2Array()
+	if poly.size() < 3:
+		return out
+
+	var prev = poly[poly.size() - 1]
+	var prev_in = prev.x <= cutoff_x
+
+	for i in range(poly.size()):
+		var curr = poly[i]
+		var curr_in = curr.x <= cutoff_x
+
+		# Edge crosses boundary -> add intersection
+		if prev_in != curr_in:
+			var dx = curr.x - prev.x
+			if abs(dx) > 0.000001:
+				var t = (cutoff_x - prev.x) / dx
+				var inter = prev + (curr - prev) * t
+				out.append(inter)
+
+		# Keep points inside
+		if curr_in:
+			out.append(curr)
+
+		prev = curr
+		prev_in = curr_in
+
+	return out
+
+
 
 # =========================================================
 # Optional setters

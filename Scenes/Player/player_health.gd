@@ -5,7 +5,7 @@ signal health_changed(new_health: int, max_health: int)
 signal shield_changed(new_shield: int, max_shield: int)
 signal died()
 
-@export var max_health: int = 200
+@export var max_health: int = 100
 
 @export var max_shield: int = 100
 @export var shield_regen_per_second: float = 30.0
