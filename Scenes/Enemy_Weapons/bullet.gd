@@ -6,10 +6,13 @@ extends CharacterBody2D
 @export var damage: int = 10
 @export var gravity_multiplier: float = 1.0
 @export var gravitational_constant: float = 100000.0
+@export var col = Color("ff1212")
+@export var glowcol = Color("ff121214")
 
 var inherited_velocity: Vector2 = Vector2.ZERO
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var glowsprite: Sprite2D = $Sprite2D2
 @onready var hitbox: Area2D = $Hitbox
 
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
@@ -21,7 +24,9 @@ var direction: Vector2 = Vector2.UP
 
 func _ready() -> void:
 	velocity = direction.normalized() * initial_speed + inherited_velocity
-
+	if sprite and glowsprite:
+		sprite.modulate = col
+		glowsprite.self_modulate = glowcol
 	if hitbox:
 		hitbox.connect("body_entered", Callable(self, "_on_hitbox_body_entered"))
 	await get_tree().create_timer(lifetime).timeout
