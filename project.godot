@@ -35,6 +35,8 @@ Planets=""
 Enemy=""
 Fleet=""
 Bullet=""
+GameViewport=""
+GameCamera=""
 
 [input]
 

@@ -10,7 +10,7 @@ extends Node2D
 
 # Parallax parameters
 @export var trackObject: Node2D
-var playerPath: NodePath = "../PlayerContainer/Player"
+var playerPath: NodePath = "../../PlayerContainer/Player"
 @export var num_layers: int = 3
 @export var layer_1_speed: float = 0.0   # Farthest - stationary
 @export var layer_2_speed: float = 0.05  # Middle - moves slightly
@@ -34,7 +34,7 @@ func generate_particle_layers() -> void:
 		particle_layers.append(particles)
 		
 		# Calculate depth factor (0 = far, 1 = close)
-		var depth_factor: float = 1.0 - (float(layer_index) / float(num_layers))
+		var _depth_factor: float = 1.0 - (float(layer_index) / float(num_layers))
 		
 		# Store parallax speed for this layer using custom speeds
 		var speed: float = 0.0
@@ -140,7 +140,7 @@ func create_star_texture(particles: CPUParticles2D) -> void:
 	texture.set_size_override(img.get_size())
 	particles.texture = texture
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# Get camera position
 	var camera: Camera2D = get_viewport().get_camera_2d()
 	if camera != null:

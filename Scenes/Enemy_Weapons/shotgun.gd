@@ -1,5 +1,5 @@
 extends Node2D
-const InterceptMath = preload("PredictiveAim.gd")
+const InterceptMath_ = preload("PredictiveAim.gd")
 
 @export var bullet_scene: PackedScene = preload("res://Scenes/Enemy_Weapons/bullet.tscn")
 @export var fire_rate: float = 1.5
@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 		if target is CharacterBody2D:
 			target_velocity = target.velocity
 
-		var aim_dir := InterceptMath.get_intercept_direction(
+		var aim_dir := InterceptMath_.get_intercept_direction(
 			global_position,
 			owner_body.velocity,
 			target.global_position,
@@ -115,28 +115,35 @@ func _update_closest_target() -> void:
 	if targets_in_cone.is_empty():
 		target = null
 		can_fire = false
+		if timer.is_inside_tree():
+			timer.stop()
 		return
 
 	var closest: Node2D = null
-	var min_dist: float = INF
+	var min_dist := INF
 
 	for candidate in targets_in_cone:
 		if not is_instance_valid(candidate):
 			continue
-
-		var dist = global_position.distance_to(candidate.global_position)
+		var dist := global_position.distance_to(candidate.global_position)
 		if dist < min_dist:
 			min_dist = dist
 			closest = candidate
 
 	target = closest
 	can_fire = target != null
-	if can_fire:
+
+	if can_fire and timer.is_inside_tree() and timer.is_stopped():
 		timer.start()
 
+
+
 func _on_fire_timer_timeout() -> void:
+	if not is_inside_tree():
+		return
 	if can_fire and target and is_instance_valid(target):
 		_fire_shotgun_blast()
+
 
 func _fire_shotgun_blast() -> void:
 	if bullet_scene == null:
@@ -152,7 +159,7 @@ func _fire_shotgun_blast() -> void:
 
 	var shooter_velocity := muzzle_world_velocity
 
-	var base_aim_dir := InterceptMath.get_intercept_direction(
+	var base_aim_dir := InterceptMath_.get_intercept_direction(
 		spawn_origin,
 		shooter_velocity,
 		target.global_position,

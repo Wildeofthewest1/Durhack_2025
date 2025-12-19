@@ -26,7 +26,7 @@ func reset_to_world_pos(p: Vector2) -> void:
 	_rebuild_points()
 	visible = true
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not _is_seeded:
 		return
 

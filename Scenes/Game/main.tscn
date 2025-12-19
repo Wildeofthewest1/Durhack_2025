@@ -86,7 +86,7 @@ auto_min_scale = 1.0
 auto_max_scale = 3.0
 auto_zoom_lerp_speed = 0.1
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" groups=["GameViewport"]]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(642, 362)
@@ -140,16 +140,16 @@ texture_filter = 1
 anchors_preset = -1
 anchor_right = 0.09739583
 anchor_bottom = 0.024074074
-offset_left = 1602.0
-offset_top = 459.0
-offset_right = 1653.0
-offset_bottom = 467.0
+offset_left = 1606.0
+offset_top = 460.0
+offset_right = 1657.0
+offset_bottom = 468.0
 theme = ExtResource("4_5fdju")
 theme_override_colors/font_color = Color(0.93, 0.89776003, 0.44640002, 1)
 theme_override_colors/font_focus_color = Color(0.92941177, 0.8980392, 0.44705883, 1)
 theme_override_colors/font_hover_color = Color(0.95, 0.19949998, 0.19949998, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_8gbba")
-text = "Spawn Wave 1"
+text = "Spawn Wave"
 flat = true
 script = ExtResource("9_yyavk")
 metadata/_edit_use_anchors_ = true

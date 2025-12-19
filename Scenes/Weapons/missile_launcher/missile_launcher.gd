@@ -67,7 +67,7 @@ func _fire_projectile(dir: Vector2) -> void:
 
 # --- helpers ---
 
-func _spawn_from_muzzle(muzzle: Node2D, base_dir: Vector2) -> void:
+func _spawn_from_muzzle(muzzle: Node2D, _base_dir: Vector2) -> void:
 	if muzzle == null:
 		return
 

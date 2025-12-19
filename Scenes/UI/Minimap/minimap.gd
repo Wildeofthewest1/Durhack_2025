@@ -34,7 +34,7 @@ func _ready() -> void:
 		draw_area.offset_right = 0.0
 		draw_area.offset_bottom = 0.0
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if draw_area != null:
 		draw_area.queue_redraw()
 
