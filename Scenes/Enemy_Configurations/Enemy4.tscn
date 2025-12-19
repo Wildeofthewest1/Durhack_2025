@@ -24,7 +24,7 @@ texture = ExtResource("2_q64ij")
 region_enabled = true
 region_rect = Rect2(0.057456017, -0.0014858246, 64.12845, 70.185646)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="HitBox" type="CollisionShape2D" parent="."]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ahgkp")
 

@@ -12,7 +12,7 @@ extends CharacterBody2D
 var inherited_velocity: Vector2 = Vector2.ZERO
 
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var glowsprite: Sprite2D = $Sprite2D2
+@onready var glowsprite: Sprite2D = $Glow
 @onready var hitbox: Area2D = $Hitbox
 
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")

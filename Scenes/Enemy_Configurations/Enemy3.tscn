@@ -36,7 +36,7 @@ texture = ExtResource("3_7iebr")
 region_enabled = true
 region_rect = Rect2(160, 38, 96, 26)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="HitBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ahgkp")
 
 [node name="WeaponSlots" type="Node2D" parent="."]

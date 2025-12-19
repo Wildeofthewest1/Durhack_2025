@@ -1,5 +1,7 @@
 extends Node2D
 
+signal wave_enemy_died
+
 @onready var enemies_container: Node = get_parent().get_node("Enemies")
 
 @export var enemy_scenes: Dictionary = {
@@ -20,8 +22,8 @@ func spawn_enemy(
 	speed: float = 100.0,
 	health: int = 100,
 	faceplayer: bool = true,
-	detectionradius: float = 1000
-) -> void:
+	detectionradius: float = 1000,
+	is_wave_enemy: bool = false) -> CharacterBody2D:
 	# Ensure the type exists
 	if not enemy_scenes.has(enemy_type):
 		push_error("Unknown enemy type: " + enemy_type)
@@ -36,6 +38,9 @@ func spawn_enemy(
 	# Instantiate
 	var enemy: CharacterBody2D = enemy_scene.instantiate()
 	enemy.position = position
+	
+	if is_wave_enemy:
+		enemy.set_meta("is_wave_enemy", true)
 
 	# Apply core properties
 	if "behaviour_type" in enemy:
@@ -48,15 +53,19 @@ func spawn_enemy(
 		enemy.faceplayer = faceplayer
 	if "detectionradius" in enemy:
 		enemy.detectionradius = detectionradius
-
+	
+	if is_wave_enemy:
+		enemy.tree_exited.connect(func():
+			if enemy.get_meta("is_wave_enemy", false):
+				emit_signal("wave_enemy_died")
+		)	
 	# Add to world
 	enemies_container.add_child(enemy)
-
 	# Attach weapons if any
 	if not weapons.is_empty():
 		_attach_weapons(enemy, weapons)
-
 	print("Spawned", enemy_type, "with behaviour", behaviour_type, "at", position)
+	return enemy
 
 
 func _attach_weapons(enemy: CharacterBody2D, weapon_paths: Array) -> void:

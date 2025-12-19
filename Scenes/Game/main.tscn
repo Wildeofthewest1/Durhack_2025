@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=21 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://b2is01dn5d4fu" path="res://Scenes/Camera/background.tscn" id="1_xqoiw"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://vj635ptco6m2" path="res://Scenes/UI/Health/health_ui.tscn" id="7_6bp64"]
 [ext_resource type="PackedScene" uid="uid://b7vqm8xh0jw8p" path="res://Scenes/UI/Minimap/minimap.tscn" id="8_wrqr2"]
 [ext_resource type="Texture2D" uid="uid://c4vn2chdck31v" path="res://Assets/health_overlay.png" id="9_veifj"]
+[ext_resource type="Script" uid="uid://rkbfb8dcwrpl" path="res://Scenes/Game/spawn_enemy_wave_button.gd" id="9_yyavk"]
 [ext_resource type="Shader" uid="uid://op0uhga5faoc" path="res://Shaders/crater.gdshader" id="11_5fdju"]
 [ext_resource type="Script" uid="uid://bhdxekukr2r8h" path="res://Scenes/Bodies/asteroid_belt/asteroid_belt.gd" id="12_sw6w7"]
 
@@ -133,6 +134,25 @@ text = "Spawn Enemy"
 flat = true
 metadata/_edit_use_anchors_ = true
 
+[node name="SpawnEnemyWaveButton" type="Button" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = -1
+anchor_right = 0.09739583
+anchor_bottom = 0.024074074
+offset_left = 1602.0
+offset_top = 459.0
+offset_right = 1653.0
+offset_bottom = 467.0
+theme = ExtResource("4_5fdju")
+theme_override_colors/font_color = Color(0.93, 0.89776003, 0.44640002, 1)
+theme_override_colors/font_focus_color = Color(0.92941177, 0.8980392, 0.44705883, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.19949998, 0.19949998, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_8gbba")
+text = "Spawn Wave 1"
+flat = true
+script = ExtResource("9_yyavk")
+metadata/_edit_use_anchors_ = true
+
 [node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
 anchors_preset = 6
 anchor_left = 1.0
@@ -199,3 +219,4 @@ Right-Click to boost
 Left-Click to shoot"
 
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/SpawnEnemyWaveButton" to="CanvasLayer/SpawnEnemyWaveButton" method="_on_pressed"]
