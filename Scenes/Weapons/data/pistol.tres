@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=5 format=3 uid="uid://bi01ro1j5gj7h"]
 
 [ext_resource type="PackedScene" uid="uid://cgav1qmt2iach" path="res://Scenes/Weapons/pistol/pistol_bullet.tscn" id="1_3isoy"]
-[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Data/WeaponData.gd" id="1_yvqru"]
+[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="1_yvqru"]
 [ext_resource type="PackedScene" uid="uid://jlpnlqjk6hqt" path="res://Scenes/particles/muzzle_flash_1.tscn" id="2_m54r8"]
 [ext_resource type="PackedScene" uid="uid://l7t5l70jepnw" path="res://Scenes/Weapons/pistol/pistol.tscn" id="3_m54r8"]
 
@@ -11,7 +11,7 @@ weapon_scene = ExtResource("3_m54r8")
 bullet_scene = ExtResource("1_3isoy")
 flash_scene = ExtResource("2_m54r8")
 fire_cooldown = 0.2
-automatic = true
 muzzle_velocity = 500.0
-max_magazine = 20
-reload_time = 0.0
+max_magazine = 5
+reload_time = 0.5
+ammo_model = 1

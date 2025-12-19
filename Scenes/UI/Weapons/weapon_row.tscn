@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=3 uid="uid://epsx8iktmlse"]
+
+[ext_resource type="Script" uid="uid://7vkj2l4kktxo" path="res://Scenes/UI/Weapons/weapon_row.gd" id="1_yrltk"]
+[ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="2_apva6"]
+
+[sub_resource type="Gradient" id="Gradient_tmauf"]
+colors = PackedColorArray(1, 1, 1, 0.39215687, 1, 1, 1, 0.039215688)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_araxr"]
+gradient = SubResource("Gradient_tmauf")
+
+[sub_resource type="Gradient" id="Gradient_yrltk"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 0.19607843)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_apva6"]
+gradient = SubResource("Gradient_yrltk")
+
+[sub_resource type="Gradient" id="Gradient_apva6"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tmauf"]
+gradient = SubResource("Gradient_apva6")
+
+[node name="WeaponRow" type="Control" node_paths=PackedStringArray("name_label", "ammo_bar", "regen_bar", "stored_label")]
+texture_filter = 1
+custom_minimum_size = Vector2(240, 100)
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_right = 240.0
+grow_vertical = 0
+size_flags_horizontal = 3
+script = ExtResource("1_yrltk")
+name_label = NodePath("Content/Info/Name")
+ammo_bar = NodePath("Content/Info/AmmoBar")
+regen_bar = NodePath("TextureProgressBar")
+stored_label = NodePath("Content/StoredLabel")
+fill_up_speed = 100.0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+custom_minimum_size = Vector2(204, 0)
+layout_mode = 1
+anchors_preset = -1
+offset_left = 40.0
+offset_right = 204.0
+offset_bottom = 40.0
+size_flags_horizontal = 2
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture1D_araxr")
+
+[node name="Content" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 281.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="Content"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+
+[node name="Info" type="VBoxContainer" parent="Content"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Name" type="Label" parent="Content/Info"]
+layout_mode = 2
+theme = ExtResource("2_apva6")
+text = "PISTOL"
+
+[node name="AmmoBar" type="TextureProgressBar" parent="Content/Info"]
+layout_mode = 2
+size_flags_vertical = 3
+value = 100.0
+nine_patch_stretch = true
+texture_under = SubResource("GradientTexture1D_apva6")
+texture_progress = SubResource("GradientTexture1D_tmauf")
+
+[node name="StoredLabel" type="Label" parent="Content"]
+layout_mode = 2
+theme = ExtResource("2_apva6")
+vertical_alignment = 1

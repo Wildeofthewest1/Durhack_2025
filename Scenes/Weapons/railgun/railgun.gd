@@ -58,22 +58,11 @@ func _update_aim() -> void:
 func request_fire() -> void:
 	_wants_to_fire = true
 
-	# Already charging, nothing else to do
 	if _is_charging:
 		return
 
-	# Mirror WeaponBase.try_fire checks, but don't actually fire yet
-	if data == null:
-		return
-	if _is_reloading:
-		return
-	if _cooldown > 0.0:
-		return
-	if _current_mag <= 0:
-		_start_reload()
-		return
-
 	_start_charge()
+
 
 
 # You need WeaponManager to call this when fire button is released
@@ -108,7 +97,8 @@ func _update_charge(delta: float) -> void:
 		if _wants_to_fire:
 			# This calls into WeaponBase, which finally calls _fire_projectile
 			try_fire(_aim_dir)
-
+			if _current_mag <= 0 or _is_reloading:
+				_wants_to_fire = false
 
 func _fire_projectile(dir: Vector2) -> void:
 	if data == null:

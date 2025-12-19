@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://taj55vxgq3ib"]
+
+[ext_resource type="Script" uid="uid://bv3468pk7uw8r" path="res://Scenes/UI/Weapons/weapon_hud.gd" id="1_5krtw"]
+[ext_resource type="PackedScene" uid="uid://epsx8iktmlse" path="res://Scenes/UI/Weapons/weapon_row.tscn" id="2_bjgba"]
+
+[node name="WeaponHUD" type="Control" node_paths=PackedStringArray("rows_root")]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -493.0
+offset_right = 260.0
+offset_bottom = -20.0
+grow_vertical = 0
+script = ExtResource("1_5krtw")
+rows_root = NodePath("RowsViewport/RowsRoot")
+row_scene = ExtResource("2_bjgba")
+spacing = 10.0
+inactive_height = 50.0
+active_height = 100.0
+active_scale = 1.5
+
+[node name="RowsViewport" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RowsRoot" type="Control" parent="RowsViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

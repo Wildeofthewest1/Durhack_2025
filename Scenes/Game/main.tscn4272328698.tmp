@@ -199,10 +199,6 @@ world_scale = 0.05
 margin_right = 40.0
 
 [node name="WeaponHUD" parent="CanvasLayer" instance=ExtResource("15_wipx2")]
-offset_left = 0.0
-offset_top = -463.0
-offset_right = 240.0
-offset_bottom = 0.0
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
 texture_filter = 1

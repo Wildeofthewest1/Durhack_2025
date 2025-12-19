@@ -1,17 +1,18 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://3u27m1s87iao"]
 
 [ext_resource type="PackedScene" uid="uid://bie6a5n0b6swa" path="res://Scenes/Weapons/railgun/railgun_beam.tscn" id="1_22ib8"]
-[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Data/WeaponData.gd" id="2_22ib8"]
+[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="2_g1cc3"]
 [ext_resource type="PackedScene" uid="uid://co8xie2qofhi1" path="res://Scenes/Weapons/railgun/railgun.tscn" id="3_yl3n1"]
 
 [resource]
-script = ExtResource("2_22ib8")
+script = ExtResource("2_g1cc3")
 display_name = "Railgun"
 weapon_scene = ExtResource("3_yl3n1")
 bullet_scene = ExtResource("1_22ib8")
-fire_cooldown = 1.0
+fire_cooldown = 0.1
 spread_deg = 0.0
 damage = 250.0
 max_magazine = 1
-reload_time = 0.0
+reload_time = 0.5
+mag_regen_time = 5.0
 metadata/_custom_type_script = "uid://brwtwnigrt0y7"
