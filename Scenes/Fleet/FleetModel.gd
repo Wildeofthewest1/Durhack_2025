@@ -130,7 +130,7 @@ func _physics_process(delta: float) -> void:
 		# ======================================================
 		elif dist < inner_radius:
 			#var safe_dist = max(dist, 1.0)  # avoid infinity explosion
-			var force_mag: float = follow_force_scale
+			var _force_mag: float = follow_force_scale
 			var accel := -dir * 500  # negative = repulsion
 			vel += accel * delta
 			

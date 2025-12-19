@@ -11,10 +11,13 @@ var _current_target: PlanetNPC = null
 var _last_target: PlanetNPC = null
 
 func _ready() -> void:
-	area_entered.connect(_on_area_entered)
-	area_exited.connect(_on_area_exited)
+	if not area_entered.is_connected(_on_area_entered):
+		area_entered.connect(_on_area_entered)
 
-func _physics_process(delta: float) -> void:
+	if not area_exited.is_connected(_on_area_exited):
+		area_exited.connect(_on_area_exited)
+
+func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed(interact_key):
 		if interaction_ui == null:
 			return

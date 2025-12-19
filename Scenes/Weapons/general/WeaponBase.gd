@@ -45,6 +45,6 @@ func _start_reload() -> void:
 	_current_mag = data.max_magazine
 	_is_reloading = false
 
-func _fire_projectile(dir: Vector2) -> void:
+func _fire_projectile(_dir: Vector2) -> void:
 	# overridden in child weapons
 	pass

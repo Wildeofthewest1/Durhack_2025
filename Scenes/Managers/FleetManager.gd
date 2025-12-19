@@ -58,9 +58,9 @@ func _scan_drone_scenes() -> void:
 			var scene: PackedScene = load(full_path)
 
 			if scene:
-				var name := file.get_basename()
-				drone_types[name] = scene
-				print("🔹 Loaded drone type:", name)
+				var name_ := file.get_basename()
+				drone_types[name_] = scene
+				print("🔹 Loaded drone type:", name_)
 
 	dir.list_dir_end()
 	print("✅ Loaded %d drone types." % drone_types.size())
