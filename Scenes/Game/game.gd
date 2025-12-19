@@ -1,7 +1,7 @@
 extends Node2D
 
 # Track which enemy to spawn next
-var enemy_types = ["Enemy1", "Enemy2", "Enemy3", "Enemy4", "Mothership1", "Mothership2"]
+var enemy_types = ["Enemy1", "Enemy2", "Enemy3", "Enemy4","Enemy5", "Mothership1", "Mothership2"]
 var current_enemy_index: int = 0
 
 # Store reusable data
@@ -121,6 +121,16 @@ func _ready() -> void:
 			"rotate_toward_player": true,
 			"detectionradius": 500
 		},
+		"Enemy5": {
+			"type": "Enemy5",
+			"position": Vector2(-100, 2000),
+			"behaviour": "pursuer",
+			"weapons": ["res://Scenes/Enemy_Weapons/CircleGun.tscn"],
+			"speed": 300,
+			"health": 750,
+			"rotate_toward_player": true,
+			"detectionradius": 500
+		},
 		"Mothership1": {
 			"type": "Mothership1",
 			"position": Vector2(-1000, 1000),
@@ -183,8 +193,8 @@ func _on_spawn_enemy_button_pressed() -> void:
 
 	# Cycle through defined enemy types
 	var enemy_type = enemy_types[current_enemy_index]
-	current_enemy_index = (current_enemy_index + 1) % (enemy_types.size()-2)
-
+	#current_enemy_index = (current_enemy_index + 1) % (enemy_types.size()-2)
+	current_enemy_index = 4
 	if not enemies.has(enemy_type):
 		push_warning("Enemy type %s not found in dictionary" % enemy_type)
 		return

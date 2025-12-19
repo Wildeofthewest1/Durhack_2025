@@ -1,0 +1,90 @@
+[gd_scene load_steps=12 format=3 uid="uid://q1vr0kgljwio"]
+
+[ext_resource type="Script" uid="uid://pdq2na4ntrsl" path="res://Scenes/Enemy_Weapons/circle_gun.gd" id="1_4asm2"]
+[ext_resource type="PackedScene" uid="uid://dgam4fixxso5l" path="res://Scenes/Enemy_Weapons/bullet_circle_small.tscn" id="2_1y3ip"]
+[ext_resource type="Texture2D" uid="uid://b05qjogtefagq" path="res://Enemy_designs/Enemy_designs.png" id="2_4guhr"]
+[ext_resource type="Texture2D" uid="uid://b3cyurdfvwhub" path="res://Assets/background/circle_telegraph-Sheet.png" id="3_4guhr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1y3ip"]
+atlas = ExtResource("3_4guhr")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ptsl5"]
+atlas = ExtResource("3_4guhr")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hw2q"]
+atlas = ExtResource("3_4guhr")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjggo"]
+atlas = ExtResource("3_4guhr")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pi1un"]
+atlas = ExtResource("3_4guhr")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v1cgh"]
+atlas = ExtResource("3_4guhr")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_56gn0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1y3ip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ptsl5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hw2q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bjggo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pi1un")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v1cgh")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"telegraph",
+"speed": 10.0
+}]
+
+[node name="Pistol" type="Node2D"]
+script = ExtResource("1_4asm2")
+bullet_scene = ExtResource("2_1y3ip")
+telegraph_time = 0.6
+telegraph_sprite_path = NodePath("AnimatedSprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 3)
+texture = ExtResource("2_4guhr")
+region_enabled = true
+region_rect = Rect2(107.92838, 27.938126, 5.1758804, 11.192841)
+
+[node name="FireTimer" type="Timer" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 32)
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_56gn0")
+animation = &"telegraph"
+autoplay = "idle"

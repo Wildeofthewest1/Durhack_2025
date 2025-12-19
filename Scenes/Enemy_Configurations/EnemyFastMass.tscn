@@ -1,0 +1,134 @@
+[gd_scene load_steps=12 format=3 uid="uid://d3v54dg8kom64"]
+
+[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_w36vh"]
+[ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_8ggvy"]
+[ext_resource type="Texture2D" uid="uid://cv0vt3m0of08i" path="res://Assets/fast_mass.png" id="3_w36vh"]
+[ext_resource type="Script" uid="uid://c3y0uvaeip3n8" path="res://Scenes/Enemy_Configurations/FastMass_llim.gd" id="4_8ggvy"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="4_fdr8q"]
+[ext_resource type="PackedScene" uid="uid://wcn2ccbx32uw" path="res://Scenes/particles/trail_particles.tscn" id="5_dx2vn"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="6_21orn"]
+[ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="7_ugcrw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gk74p"]
+shader = ExtResource("7_ugcrw")
+shader_parameter/base_color = Color(1, 0.27999997, 0.27999997, 0.078431375)
+shader_parameter/intensity = 1.5
+shader_parameter/spread = 1.0
+shader_parameter/pulse_speed = 5.0000002375
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ahgkp"]
+radius = 9.0
+height = 72.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7iebr"]
+radius = 1186.2849
+
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_w36vh")
+health = 750
+death_particles_scene = ExtResource("2_8ggvy")
+
+[node name="Trail" parent="." instance=ExtResource("6_21orn")]
+material = SubResource("ShaderMaterial_gk74p")
+position = Vector2(0, -67)
+width = 10.0
+body_path = NodePath("..")
+max_points = 50
+width = 10.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 1.7763568e-15)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_w36vh")
+region_enabled = true
+region_rect = Rect2(296, 176, 48, 48)
+
+[node name="Limb1" type="Sprite2D" parent="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("3_w36vh")
+offset = Vector2(0, -254)
+region_enabled = true
+region_rect = Rect2(496, 0, 16, 511)
+script = ExtResource("4_8ggvy")
+damping = 10.0
+
+[node name="TrailParticles2" parent="Sprite2D/Limb1" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
+position = Vector2(4, -508)
+scale = Vector2(4, 4)
+follower = NodePath(".")
+
+[node name="Limb3" type="Sprite2D" parent="Sprite2D"]
+texture_filter = 1
+rotation = -1.5707964
+texture = ExtResource("3_w36vh")
+offset = Vector2(-0.06253052, -111.59512)
+region_enabled = true
+region_rect = Rect2(448, 289, 16, 223)
+
+[node name="Limb4" type="Sprite2D" parent="Sprite2D"]
+texture_filter = 1
+rotation = 3.1415927
+texture = ExtResource("3_w36vh")
+offset = Vector2(-0.06253052, -111.59512)
+region_enabled = true
+region_rect = Rect2(448, 289, 16, 223)
+script = ExtResource("4_8ggvy")
+damping = 20.0
+max_lag_rad = 1.0
+
+[node name="TrailParticles" parent="Sprite2D/Limb4" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
+position = Vector2(-1.9073486e-05, -220)
+rotation = 3.1415925
+scale = Vector2(4, 4)
+follower = NodePath(".")
+
+[node name="Limb5" type="Sprite2D" parent="Sprite2D"]
+texture_filter = 1
+rotation = 3.9269907
+texture = ExtResource("3_w36vh")
+offset = Vector2(-0.06253052, -111.59512)
+region_enabled = true
+region_rect = Rect2(448, 289, 16, 223)
+script = ExtResource("4_8ggvy")
+damping = 30.0
+max_lag_rad = 0.7
+
+[node name="Nose" type="Sprite2D" parent="Sprite2D"]
+texture_filter = 1
+position = Vector2(88, 0)
+rotation = 1.5707964
+texture = ExtResource("3_w36vh")
+region_enabled = true
+region_rect = Rect2(240, 32, 32, 176)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_ahgkp")
+
+[node name="WeaponSlots" type="Node2D" parent="."]
+rotation = -1.5707964
+
+[node name="Slot1" type="Node2D" parent="WeaponSlots"]
+position = Vector2(-9.536743e-07, 34)
+
+[node name="Weapons" type="Node2D" parent="."]
+rotation = -1.5707964
+
+[node name="Minimap" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+rotation = -1.5707964
+script = ExtResource("4_fdr8q")
+target_node = NodePath("..")
+dot_shape = 2
+dot_color = Color(0.9823325, 0, 0.04619918, 1)
+
+[node name="VisionCone" type="Area2D" parent="."]
+rotation = -1.5707964
+collision_layer = 0
+collision_mask = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionCone"]
+shape = SubResource("CircleShape2D_7iebr")

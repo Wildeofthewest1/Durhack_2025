@@ -9,6 +9,7 @@ signal wave_enemy_died
 	"Enemy2": "res://Scenes/Enemy_Configurations/Enemy2.tscn",
 	"Enemy3": "res://Scenes/Enemy_Configurations/Enemy3.tscn",
 	"Enemy4": "res://Scenes/Enemy_Configurations/Enemy4.tscn",
+	"Enemy5": "res://Scenes/Enemy_Configurations/EnemyFastMass.tscn",
 	"Mothership1": "res://Scenes/Enemy_Configurations/Mothership1.tscn",
 	"Mothership2": "res://Scenes/Enemy_Configurations/Mothership2.tscn"
 }

@@ -82,7 +82,8 @@ func assign_behaviour() -> void:
 func attach_weapons() -> void:
 	var weapon_scenes: Array = [
 		preload("res://Scenes/Enemy_Weapons/Pistol.tscn"),
-		preload("res://Scenes/Enemy_Weapons/Shotgun.tscn")
+		preload("res://Scenes/Enemy_Weapons/Shotgun.tscn"),
+		preload("res://Scenes/Enemy_Weapons/CircleGun.tscn")
 	]
 
 	if not has_node("WeaponSlots"):
