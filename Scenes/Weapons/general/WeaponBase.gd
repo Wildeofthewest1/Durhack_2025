@@ -14,6 +14,12 @@ signal ammo_state_changed(
 	regen_progress: float
 )
 
+@export var reload_complete_sound: AudioStream
+@export var reload_complete_volume_db: float = -15
+@export var reload_complete_pitch: float = 1
+
+var _reload_audio: AudioStreamPlayer = null
+
 @export var data: WeaponData
 
 var _cooldown: float = 0.0
@@ -35,6 +41,19 @@ func _ready() -> void:
 	if data == null:
 		push_error("WeaponBase: data is not assigned!")
 		return
+	if reload_complete_sound == null:
+		_reload_audio = AudioStreamPlayer.new()
+		reload_complete_sound = preload("res://Assets/reload.wav")
+		_reload_audio.stream = reload_complete_sound
+		_reload_audio.volume_db = reload_complete_volume_db
+		_reload_audio.pitch_scale = reload_complete_pitch
+		add_child(_reload_audio)
+		_reload_audio.play()
+		print("stream:", _reload_audio.stream)
+		print("inside tree:", _reload_audio.is_inside_tree())
+
+		if _reload_audio != null:
+			_reload_audio.play()
 
 	_current_mag = data.max_magazine
 	_stored_mags = 0
@@ -136,6 +155,9 @@ func _tick_regen(delta: float) -> void:
 
 	var total: float = data.mag_regen_time
 	if total <= 0.01:
+		# 🔊 reload finished sound
+		
+
 		_is_regenerating = false
 		_regen_time_remaining = 0.0
 		_emit_ammo()
@@ -144,7 +166,7 @@ func _tick_regen(delta: float) -> void:
 	_regen_time_remaining -= delta
 	if _regen_time_remaining < 0.0:
 		_regen_time_remaining = 0.0
-
+	
 	_emit_ammo()
 
 	if _regen_time_remaining > 0.0:
@@ -166,6 +188,9 @@ func _tick_regen(delta: float) -> void:
 				return
 	else:
 		# Normal reserve growth
+		_reload_audio.pitch_scale *= randf_range(0.95,1.05)
+		_reload_audio.play()
+		_reload_audio.pitch_scale = reload_complete_pitch
 		_stored_mags += 1
 		if _stored_mags > data.max_stored_mags:
 			_stored_mags = data.max_stored_mags
