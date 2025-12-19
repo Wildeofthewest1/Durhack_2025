@@ -9,17 +9,19 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = -493.0
+offset_top = -852.0
 offset_right = 260.0
 offset_bottom = -20.0
 grow_vertical = 0
 script = ExtResource("1_5krtw")
 rows_root = NodePath("RowsViewport/RowsRoot")
 row_scene = ExtResource("2_bjgba")
-spacing = 10.0
-inactive_height = 50.0
-active_height = 100.0
+spacing = 20.0
+inactive_height = 40.0
+active_height = 75.0
+inactive_scale = 0.75
 active_scale = 1.5
+bottom_padding = 70.0
 
 [node name="RowsViewport" type="Control" parent="."]
 layout_mode = 1

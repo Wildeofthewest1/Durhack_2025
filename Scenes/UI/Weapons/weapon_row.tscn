@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://epsx8iktmlse"]
+[gd_scene load_steps=10 format=3 uid="uid://epsx8iktmlse"]
 
 [ext_resource type="Script" uid="uid://7vkj2l4kktxo" path="res://Scenes/UI/Weapons/weapon_row.gd" id="1_yrltk"]
 [ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="2_apva6"]
+[ext_resource type="Texture2D" uid="uid://d15mtu7xdudpy" path="res://Assets/background/missile_logo.png" id="2_tmauf"]
 
 [sub_resource type="Gradient" id="Gradient_tmauf"]
 colors = PackedColorArray(1, 1, 1, 0.39215687, 1, 1, 1, 0.039215688)
@@ -22,48 +23,71 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_tmauf"]
 gradient = SubResource("Gradient_apva6")
 
-[node name="WeaponRow" type="Control" node_paths=PackedStringArray("name_label", "ammo_bar", "regen_bar", "stored_label")]
+[node name="WeaponRow" type="Control" node_paths=PackedStringArray("icon_rect", "name_label", "ammo_bar", "regen_bar", "stored_label")]
 texture_filter = 1
-custom_minimum_size = Vector2(240, 100)
+custom_minimum_size = Vector2(240, 75)
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -100.0
-offset_right = 240.0
+offset_top = -75.0
+offset_right = 279.0
 grow_vertical = 0
 size_flags_horizontal = 3
 script = ExtResource("1_yrltk")
+icon_rect = NodePath("Content/Icon")
 name_label = NodePath("Content/Info/Name")
 ammo_bar = NodePath("Content/Info/AmmoBar")
 regen_bar = NodePath("TextureProgressBar")
-stored_label = NodePath("Content/StoredLabel")
+stored_label = NodePath("StoredLabel")
 fill_up_speed = 100.0
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 custom_minimum_size = Vector2(204, 0)
 layout_mode = 1
-anchors_preset = -1
-offset_left = 40.0
-offset_right = 204.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 2
 nine_patch_stretch = true
 texture_progress = SubResource("GradientTexture1D_araxr")
 
-[node name="Content" type="HBoxContainer" parent="."]
+[node name="StoredLabel" type="Label" parent="."]
 layout_mode = 0
-offset_right = 281.0
-offset_bottom = 40.0
+offset_left = 194.0
+offset_top = 16.0
+offset_right = 279.0
+offset_bottom = 58.0
+theme = ExtResource("2_apva6")
+theme_override_font_sizes/font_size = 42
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Content" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -75.0
+offset_right = 284.0
+grow_vertical = 0
 
 [node name="Icon" type="TextureRect" parent="Content"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
+texture = ExtResource("2_tmauf")
 
 [node name="Info" type="VBoxContainer" parent="Content"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="ColorRect" type="ColorRect" parent="Content/Info"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+color = Color(1, 1, 1, 0)
 
 [node name="Name" type="Label" parent="Content/Info"]
 layout_mode = 2
@@ -77,8 +101,3 @@ value = 100.0
 nine_patch_stretch = true
 texture_under = SubResource("GradientTexture1D_apva6")
 texture_progress = SubResource("GradientTexture1D_tmauf")
-
-[node name="StoredLabel" type="Label" parent="Content"]
-layout_mode = 2
-theme = ExtResource("2_apva6")
-vertical_alignment = 1

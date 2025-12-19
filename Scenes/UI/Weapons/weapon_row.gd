@@ -2,6 +2,7 @@
 extends Control
 class_name WeaponRow
 
+@export var icon_rect: TextureRect     # <-- ADD THIS (drag your TextureRect here in inspector)
 @export var name_label: Label
 @export var ammo_bar: Range            # ProgressBar / TextureProgressBar
 @export var regen_bar: Range           # ProgressBar / TextureProgressBar
@@ -29,9 +30,17 @@ func setup(slot_index: int, data: WeaponData) -> void:
 	_slot_index = slot_index
 	_data = data
 
+	# Icon
+	if icon_rect != null and _data != null:
+		icon_rect.texture = _data.icon
+		# Optional: keep consistent sizing behavior
+		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+
+	# Name
 	if name_label != null and _data != null:
 		name_label.text = _data.display_name.to_upper()
 
+	# Bars init
 	if ammo_bar != null:
 		ammo_bar.min_value = 0.0
 		ammo_bar.max_value = 100.0
@@ -74,7 +83,7 @@ func set_ammo_state(
 	if stored_label != null:
 		if stored_mags > 0:
 			stored_label.visible = true
-			stored_label.text = str(stored_mags) + "x"
+			stored_label.text = "x " + str(stored_mags) 
 		else:
 			stored_label.visible = false
 

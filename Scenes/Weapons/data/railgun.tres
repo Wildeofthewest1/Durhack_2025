@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://3u27m1s87iao"]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=5 format=3 uid="uid://3u27m1s87iao"]
 
 [ext_resource type="PackedScene" uid="uid://bie6a5n0b6swa" path="res://Scenes/Weapons/railgun/railgun_beam.tscn" id="1_22ib8"]
+[ext_resource type="Texture2D" uid="uid://t6hm3yenbpcv" path="res://Assets/background/rail_icon.png" id="2_22ib8"]
 [ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="2_g1cc3"]
 [ext_resource type="PackedScene" uid="uid://co8xie2qofhi1" path="res://Scenes/Weapons/railgun/railgun.tscn" id="3_yl3n1"]
 
 [resource]
 script = ExtResource("2_g1cc3")
 display_name = "Railgun"
+icon = ExtResource("2_22ib8")
 weapon_scene = ExtResource("3_yl3n1")
 bullet_scene = ExtResource("1_22ib8")
 fire_cooldown = 0.1
