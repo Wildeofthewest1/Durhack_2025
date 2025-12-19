@@ -229,11 +229,20 @@ func _home_towards_target(delta: float, target: Node2D, target_speed: float) -> 
 	if not is_instance_valid(target):
 		return
 
-	var aim_point: Vector2 = target.global_position
+	#var aim_point: Vector2 = target.global_position
+	var aim_point: Vector2 = _get_target_aim_position(target)
+
 
 	if predictive_aim:
 		var target_vel: Vector2 = _get_target_velocity(target, delta)
-		var predicted: Vector2 = _predict_intercept_point(global_position, target.global_position, target_vel, target_speed)
+		#var predicted: Vector2 = _predict_intercept_point(global_position, target.global_position, target_vel, target_speed)
+		var aim_origin := _get_target_aim_position(target)
+		var predicted: Vector2 = _predict_intercept_point(
+			global_position,
+			aim_origin,
+			target_vel,
+			target_speed
+		)
 		aim_point = aim_point.lerp(predicted, clampf(lead_blend, 0.0, 1.0))
 
 	var to_point: Vector2 = aim_point - global_position
@@ -250,11 +259,49 @@ func _home_towards_target(delta: float, target: Node2D, target_speed: float) -> 
 	var delta_angle: float = wrapf(desired_angle - current_angle, -PI, PI)
 	delta_angle = clampf(delta_angle, -max_step, max_step)
 	var new_angle: float = current_angle + delta_angle
-
 	_forward = Vector2.RIGHT.rotated(new_angle)
 	rotation = new_angle
-
 	_accelerate_forward(delta, target_speed)
+
+func _get_all_hitboxes(target: Node2D) -> Array[CollisionShape2D]:
+	var result: Array[CollisionShape2D] = []
+	if target == null or not is_instance_valid(target):
+		return result
+	# Fast path: direct children
+	for child in target.get_children():
+		if child is CollisionShape2D and child.name.begins_with("HitBox"):
+			result.append(child)
+	# Fallback: recursive search (only if none found directly)
+	if result.is_empty():
+		for node in target.find_children("*", "CollisionShape2D", true, false):
+			if node.name.begins_with("HitBox"):
+				result.append(node)
+	return result
+
+func _select_best_hitbox(target: Node2D, missile_pos: Vector2) -> CollisionShape2D:
+	var hitboxes := _get_all_hitboxes(target)
+	if hitboxes.is_empty():
+		return null
+	var best: CollisionShape2D = null
+	var best_dist_sq := INF
+	for hb in hitboxes:
+		if not is_instance_valid(hb):
+			continue
+		var d := hb.global_position.distance_squared_to(missile_pos)
+		if d < best_dist_sq:
+			best_dist_sq = d
+			best = hb
+	return best
+
+func _get_target_aim_position(target: Node2D) -> Vector2:
+	if target == null or not is_instance_valid(target):
+		return global_position
+
+	var hb := _select_best_hitbox(target, global_position)
+	if hb != null:
+		return hb.global_position
+
+	return target.global_position
 
 func _accelerate_forward(delta: float, target_speed: float) -> void:
 	var forward_vec: Vector2 = _forward.normalized()
