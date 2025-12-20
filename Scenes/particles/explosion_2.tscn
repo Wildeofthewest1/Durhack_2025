@@ -30,7 +30,7 @@ point_count = 1
 
 [sub_resource type="Curve" id="Curve_htcqd"]
 _limits = [0.0, 2.0, 0.0, 1.0]
-_data = [Vector2(0, 6), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 4), 0.0, 0.0, 0, 0]
 point_count = 1
 
 [sub_resource type="Curve" id="Curve_iq101"]
