@@ -30,7 +30,7 @@ point_count = 1
 
 [sub_resource type="Curve" id="Curve_htcqd"]
 _limits = [0.0, 2.0, 0.0, 1.0]
-_data = [Vector2(0, 4), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 6), 0.0, 0.0, 0, 0]
 point_count = 1
 
 [sub_resource type="Curve" id="Curve_iq101"]
@@ -49,11 +49,12 @@ particle_flag_disable_z = true
 emission_shape_offset = Vector3(-2, 0, 0)
 emission_shape = 1
 emission_sphere_radius = 1.0
-spread = 15.0
+spread = 10.0
 flatness = 0.06
-initial_velocity_max = 500.0
+initial_velocity_min = 100.0
+initial_velocity_max = 1000.0
 gravity = Vector3(0, 0, 0)
-scale_min = 0.29999998
+scale_min = 0.01
 scale_max = 0.5
 scale_curve = SubResource("CurveXYZTexture_052kw")
 color_ramp = SubResource("GradientTexture1D_htcqd")
@@ -88,8 +89,8 @@ particles_anim_loop = false
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_86ag7"]
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-10, 0, 0)
-emission_shape = 3
-emission_box_extents = Vector3(20, 1, 1)
+emission_shape = 1
+emission_sphere_radius = 30.0
 angle_min = 1.0728835e-05
 angle_max = 360.00003
 gravity = Vector3(0, 0, 0)
@@ -106,9 +107,9 @@ script = ExtResource("1_5hsui")
 
 [node name="particle1" type="GPUParticles2D" parent="."]
 emitting = false
-amount = 10
+amount = 50
 texture = ExtResource("1_jtw85")
-lifetime = 0.2
+lifetime = 0.25
 one_shot = true
 explosiveness = 0.9
 randomness = 0.16
@@ -133,7 +134,7 @@ z_index = 10
 texture_filter = 1
 material = SubResource("CanvasItemMaterial_htcqd")
 emitting = false
-amount = 10
+amount = 50
 texture = ExtResource("3_86ag7")
 lifetime = 3.0
 one_shot = true
