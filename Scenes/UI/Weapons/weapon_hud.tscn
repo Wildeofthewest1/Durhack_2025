@@ -16,12 +16,15 @@ grow_vertical = 0
 script = ExtResource("1_5krtw")
 rows_root = NodePath("RowsViewport/RowsRoot")
 row_scene = ExtResource("2_bjgba")
-spacing = 20.0
+spacing = 40.0
 inactive_height = 40.0
-active_height = 75.0
+active_height = 80.0
 inactive_scale = 0.75
 active_scale = 1.5
-bottom_padding = 70.0
+bottom_padding = 30.0
+inactive_alpha = 0.75
+ghost_alpha = 0.3
+ghost_gap = 5.0
 
 [node name="RowsViewport" type="Control" parent="."]
 layout_mode = 1

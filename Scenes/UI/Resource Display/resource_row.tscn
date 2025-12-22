@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://bv5g8xwkuhyhe"]
+
+[ext_resource type="Script" uid="uid://of186d2di33c" path="res://Scenes/UI/Resource Display/resource_row.gd" id="1_gulmy"]
+[ext_resource type="Texture2D" uid="uid://c1cgb3qsrc585" path="res://Assets/scrap.png" id="2_ek3ov"]
+[ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="3_h853q"]
+
+[node name="ResourceRow" type="Control" node_paths=PackedStringArray("icon", "label")]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 20.0
+size_flags_horizontal = 0
+script = ExtResource("1_gulmy")
+resource_id = "scrap"
+icon = NodePath("HBoxContainer/TextureRect")
+label = NodePath("HBoxContainer/Label")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 260.0
+offset_bottom = 42.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_ek3ov")
+stretch_mode = 5
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("3_h853q")
+text = "t"
+vertical_alignment = 1
+autowrap_mode = 1

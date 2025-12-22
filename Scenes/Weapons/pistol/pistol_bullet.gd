@@ -63,10 +63,10 @@ func _physics_process(delta: float) -> void:
 		if target != null:
 			if target.is_in_group("Enemy"):
 				if target.has_method("take_damage"):
-					target.take_damage(_damage)
+					target.take_damage(_damage,global_position)
 			elif "team" in target:
 				if String(target.team) == "Enemy" and target.has_method("take_damage"):
-					target.take_damage(_damage)
+					target.take_damage(_damage,global_position)
 		_spawn_explosion()
 		queue_free()
 		return

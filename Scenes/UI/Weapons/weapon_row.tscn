@@ -36,7 +36,7 @@ grow_vertical = 0
 size_flags_horizontal = 3
 script = ExtResource("1_yrltk")
 icon_rect = NodePath("Content/Icon")
-name_label = NodePath("Content/Info/Name")
+name_label = NodePath("Name")
 ammo_bar = NodePath("Content/Info/AmmoBar")
 regen_bar = NodePath("TextureProgressBar")
 stored_label = NodePath("StoredLabel")
@@ -55,14 +55,29 @@ nine_patch_stretch = true
 texture_progress = SubResource("GradientTexture1D_araxr")
 
 [node name="StoredLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 194.0
-offset_top = 16.0
-offset_right = 279.0
-offset_bottom = 58.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -85.0
+offset_top = 4.0
+offset_bottom = 88.0
+grow_horizontal = 0
 theme = ExtResource("2_apva6")
-theme_override_font_sizes/font_size = 42
+theme_override_font_sizes/font_size = 48
+text = "0"
 horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 80.0
+offset_top = 30.0
+offset_right = 300.0
+offset_bottom = 42.0
+theme = ExtResource("2_apva6")
+text = "Pistol"
 vertical_alignment = 2
 
 [node name="Content" type="HBoxContainer" parent="."]
@@ -85,18 +100,14 @@ layout_mode = 2
 size_flags_horizontal = 0
 
 [node name="ColorRect" type="ColorRect" parent="Content/Info"]
-custom_minimum_size = Vector2(0, 35)
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 color = Color(1, 1, 1, 0)
-
-[node name="Name" type="Label" parent="Content/Info"]
-layout_mode = 2
-theme = ExtResource("2_apva6")
-text = "PISTOL"
 
 [node name="AmmoBar" type="TextureProgressBar" parent="Content/Info"]
 layout_mode = 2
 size_flags_vertical = 3
+step = 0.1
 value = 100.0
 nine_patch_stretch = true
 texture_under = SubResource("GradientTexture1D_apva6")

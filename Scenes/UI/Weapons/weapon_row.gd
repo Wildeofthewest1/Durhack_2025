@@ -38,7 +38,7 @@ func setup(slot_index: int, data: WeaponData) -> void:
 
 	# Name
 	if name_label != null and _data != null:
-		name_label.text = _data.display_name.to_upper()
+		name_label.text = _data.display_name
 
 	# Bars init
 	if ammo_bar != null:
@@ -83,7 +83,7 @@ func set_ammo_state(
 	if stored_label != null:
 		if stored_mags > 0:
 			stored_label.visible = true
-			stored_label.text = "x " + str(stored_mags) 
+			stored_label.text =  str(stored_mags) 
 		else:
 			stored_label.visible = false
 

@@ -388,11 +388,11 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	if target != null:
 		if target.is_in_group(enemy_group):
 			if target.has_method("take_damage"):
-				target.call("take_damage", damage)
+				target.call("take_damage", damage,global_position)
 		elif "team" in target:
 			var team_string: String = String(target.team)
 			if team_string == String(enemy_group) and target.has_method("take_damage"):
-				target.call("take_damage", damage)
+				target.call("take_damage", damage,global_position)
 
 	_spawn_explosion()
 	_die()

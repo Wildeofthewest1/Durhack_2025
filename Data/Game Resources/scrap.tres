@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResourceType" load_steps=3 format=3 uid="uid://di1l4tli05rxl"]
+
+[ext_resource type="Script" uid="uid://chhtt6cmlb7nt" path="res://Data/Game Resources/ResourceType.gd" id="1_c1dph"]
+[ext_resource type="Texture2D" uid="uid://c1cgb3qsrc585" path="res://Assets/scrap.png" id="1_fovqo"]
+
+[resource]
+script = ExtResource("1_c1dph")
+id = "scrap"
+display_name = "Scrap"
+icon = ExtResource("1_fovqo")
+color = Color(0.92, 0.80806667, 0.24839999, 1)
+metadata/_custom_type_script = "uid://chhtt6cmlb7nt"

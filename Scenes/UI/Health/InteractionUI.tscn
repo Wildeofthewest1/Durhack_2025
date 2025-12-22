@@ -1,6 +1,47 @@
-[gd_scene load_steps=2 format=3 uid="uid://rp1733dafbo0"]
+[gd_scene load_steps=7 format=3 uid="uid://rp1733dafbo0"]
 
+[ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="1_6rneb"]
 [ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scenes/UI/Health/InteractionUI.gd" id="1_dekh7"]
+[ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="1_hl17m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl17m"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rneb"]
+
+[sub_resource type="Theme" id="Theme_6rneb"]
+default_font = ExtResource("1_hl17m")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 30
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 16
+Label/styles/focus = SubResource("StyleBoxFlat_hl17m")
+Label/styles/normal = SubResource("StyleBoxEmpty_6rneb")
+RichTextLabel/constants/line_separation = 5
+RichTextLabel/fonts/bold_font = ExtResource("1_6rneb")
 
 [node name="InteractionUI" type="Control" groups=["InteractUI"]]
 texture_filter = 1
@@ -10,6 +51,7 @@ anchors_preset = 0
 offset_right = 400.0
 size_flags_horizontal = 4
 size_flags_vertical = 3
+theme = SubResource("Theme_6rneb")
 script = ExtResource("1_dekh7")
 panel_bg_color = Color(0.35380003, 0.49044, 0.61, 1)
 

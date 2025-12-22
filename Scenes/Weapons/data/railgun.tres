@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("2_g1cc3")
-display_name = "Railgun"
+display_name = "Rail"
 icon = ExtResource("2_22ib8")
 weapon_scene = ExtResource("3_yl3n1")
 bullet_scene = ExtResource("1_22ib8")

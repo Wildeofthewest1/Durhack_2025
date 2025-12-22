@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=26 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -35,6 +35,9 @@ shader_parameter/pulse_speed = 5.0000002375
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f1ek2"]
 radius = 4.0
 height = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h8ma5"]
+radius = 30.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 self_modulate = Color(0.44313726, 0.28235295, 0.39607844, 1)
@@ -176,6 +179,14 @@ position = Vector2(-4, -3)
 
 [node name="TrailMarker2" type="Marker2D" parent="."]
 position = Vector2(-4, 3)
+
+[node name="PickupRadius" type="CharacterBody2D" parent="." groups=["pickup"]]
+collision_layer = 8388608
+collision_mask = 8388608
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupRadius"]
+shape = SubResource("CircleShape2D_h8ma5")
 
 [connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
 [connection signal="area_exited" from="Area2D" to="Area2D" method="_on_area_exited"]

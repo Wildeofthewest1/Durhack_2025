@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=23 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://b2is01dn5d4fu" path="res://Scenes/Camera/background.tscn" id="1_xqoiw"]
@@ -16,6 +16,7 @@
 [ext_resource type="Shader" uid="uid://op0uhga5faoc" path="res://Shaders/crater.gdshader" id="11_5fdju"]
 [ext_resource type="Script" uid="uid://bhdxekukr2r8h" path="res://Scenes/Bodies/asteroid_belt/asteroid_belt.gd" id="12_sw6w7"]
 [ext_resource type="PackedScene" uid="uid://taj55vxgq3ib" path="res://Scenes/UI/Weapons/weapon_hud.tscn" id="15_wipx2"]
+[ext_resource type="PackedScene" uid="uid://bv5g8xwkuhyhe" path="res://Scenes/UI/Resource Display/resource_row.tscn" id="17_nq4jv"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yyavk"]
 blend_mode = 4
@@ -213,6 +214,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(4, 4)
 texture = ExtResource("9_veifj")
+
+[node name="ResourceRow" parent="CanvasLayer" instance=ExtResource("17_nq4jv")]
+offset_left = 60.0
+offset_top = 120.0
 
 [node name="Instructions" type="Label" parent="."]
 texture_filter = 1

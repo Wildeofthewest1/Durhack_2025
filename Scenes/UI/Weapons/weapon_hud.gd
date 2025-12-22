@@ -15,6 +15,14 @@ class_name WeaponHUD
 @export var active_scale: float = 1.25
 @export var bottom_padding: float = 0.0
 
+# --- OPACITY ---
+@export var active_alpha: float = 1.0
+@export var inactive_alpha: float = 0.35
+@export var ghost_alpha: float = 0.15
+
+# --- GHOST "ATTACH" GAP (between active row and the ghost row) ---
+@export var ghost_gap: float = 0.0
+
 var _wm: WeaponManager = null
 var _slots: Array[WeaponData] = []
 var _rows: Dictionary = {} # int -> WeaponRow
@@ -79,7 +87,10 @@ func _rebuild_rows() -> void:
 		var row: WeaponRow = row_scene.instantiate() as WeaponRow
 		rows_root.add_child(row)
 		row.setup(i, data)
+
+		# default visuals
 		row.scale = Vector2(inactive_scale, inactive_scale)
+		row.modulate.a = inactive_alpha
 
 		_rows[i] = row
 		i += 1
@@ -111,12 +122,16 @@ func _relayout(snap: bool) -> void:
 	_apply_layout_bottom_up(order, snap)
 
 func _compute_revolver_order() -> Array[int]:
+	# Filled slots in normal index order...
 	var filled: Array[int] = []
 	var i: int = 0
 	while i < _slots.size():
 		if _slots[i] != null:
 			filled.append(i)
 		i += 1
+
+	# ...but you want slot 0 at the bottom, higher slots toward the top.
+	filled.reverse()
 
 	if filled.size() <= 0:
 		return []
@@ -135,6 +150,7 @@ func _compute_revolver_order() -> Array[int]:
 	if active_pos < 0:
 		return filled
 
+	# Keep your existing "revolver" behavior
 	var rotated: Array[int] = []
 
 	j = active_pos + 1
@@ -158,17 +174,40 @@ func _apply_layout_bottom_up(order: Array[int], snap: bool) -> void:
 	if count <= 0:
 		return
 
+	# --- "ghost wrap": move the top item to the bottom (forced inactive + extra faded) ---
+	var display_order: Array[int] = order.duplicate()
+	var ghost_slot: int = -1
+	var has_ghost: bool = (display_order.size() > 1)
+	if has_ghost:
+		ghost_slot = display_order[0]
+		display_order.remove_at(0)
+		display_order.append(ghost_slot)
+
+	var display_count: int = display_order.size()
+
+	# --- compute total "visual" height (size * scale) so scaled active row doesn't overlap ---
 	var total_h: float = 0.0
 	var i: int = 0
-	while i < count:
-		var slot_index: int = order[i]
-		var is_active: bool = (slot_index == _active_slot)
-		var h: float = active_height if is_active else inactive_height
-		total_h += h
+	while i < display_count:
+		var slot_index: int = display_order[i]
+		var is_ghost: bool = (has_ghost and i == display_count - 1 and slot_index == ghost_slot)
+		var is_active: bool = (slot_index == _active_slot) and (not is_ghost)
+
+		var base_h: float = active_height if is_active else inactive_height
+		var s_vis: float = active_scale if is_active else inactive_scale
+		if is_ghost:
+			s_vis = inactive_scale
+
+		total_h += base_h * s_vis
 		i += 1
 
-	if count > 1:
-		total_h += spacing * float(count - 1)
+	if display_count > 1:
+		total_h += spacing * float(display_count - 1)
+
+	# If we're attaching ghost to active, remove the normal spacing for that single seam
+	if has_ghost:
+		total_h -= spacing
+		total_h += ghost_gap
 
 	var root_h: float = rows_root.size.y
 	var start_y: float = root_h - total_h - bottom_padding
@@ -176,7 +215,7 @@ func _apply_layout_bottom_up(order: Array[int], snap: bool) -> void:
 		start_y = 0.0
 
 	if snap:
-		_place_rows_bottom_up(order, start_y)
+		_place_rows_bottom_up(display_order, start_y, ghost_slot, has_ghost)
 		return
 
 	_tween = create_tween()
@@ -184,38 +223,58 @@ func _apply_layout_bottom_up(order: Array[int], snap: bool) -> void:
 
 	var y: float = start_y
 	var k: int = 0
-	while k < count:
-		var slot_index2: int = order[k]
+	while k < display_count:
+		var slot_index2: int = display_order[k]
 		var row: WeaponRow = _rows.get(slot_index2, null) as WeaponRow
 		if row == null:
 			k += 1
 			continue
 
-		var is_active2: bool = (slot_index2 == _active_slot)
+		var is_ghost2: bool = (has_ghost and k == display_count - 1 and slot_index2 == ghost_slot)
+		var is_active2: bool = (slot_index2 == _active_slot) and (not is_ghost2)
+
+		# ghost is always inactive visually
 		row.set_active(is_active2)
 
 		var target_h: float = active_height if is_active2 else inactive_height
 		var s: float = active_scale if is_active2 else inactive_scale
+		if is_ghost2:
+			s = inactive_scale
 		var target_scale: Vector2 = Vector2(s, s)
+
+		var target_a: float = active_alpha if is_active2 else inactive_alpha
+		if is_ghost2:
+			target_a = ghost_alpha
 
 		_tween.tween_property(row, "position:y", y, anim_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		_tween.tween_property(row, "size:y", target_h, anim_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		_tween.tween_property(row, "scale", target_scale, anim_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		_tween.tween_property(row, "modulate:a", target_a, anim_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
-		y += target_h + spacing
+		# Advance by VISUAL height.
+		# For the seam between last real row and the ghost row, use ghost_gap.
+		var gap: float = spacing
+		if has_ghost and k == display_count - 2:
+			gap = ghost_gap
+
+		y += (target_h * s) + gap
 		k += 1
 
-func _place_rows_bottom_up(order: Array[int], start_y: float) -> void:
+func _place_rows_bottom_up(order: Array[int], start_y: float, ghost_slot: int, has_ghost: bool) -> void:
 	var y: float = start_y
 	var k: int = 0
-	while k < order.size():
+	var count: int = order.size()
+
+	while k < count:
 		var slot_index: int = order[k]
 		var row: WeaponRow = _rows.get(slot_index, null) as WeaponRow
 		if row == null:
 			k += 1
 			continue
 
-		var is_active: bool = (slot_index == _active_slot)
+		var is_ghost: bool = (has_ghost and k == count - 1 and slot_index == ghost_slot)
+		var is_active: bool = (slot_index == _active_slot) and (not is_ghost)
+
 		row.set_active(is_active)
 
 		var target_h: float = active_height if is_active else inactive_height
@@ -223,7 +282,18 @@ func _place_rows_bottom_up(order: Array[int], start_y: float) -> void:
 		row.size.y = target_h
 
 		var s: float = active_scale if is_active else inactive_scale
+		if is_ghost:
+			s = inactive_scale
 		row.scale = Vector2(s, s)
 
-		y += target_h + spacing
+		var a: float = active_alpha if is_active else inactive_alpha
+		if is_ghost:
+			a = ghost_alpha
+		row.modulate.a = a
+
+		var gap: float = spacing
+		if has_ghost and k == count - 2:
+			gap = ghost_gap
+
+		y += (target_h * s) + gap
 		k += 1

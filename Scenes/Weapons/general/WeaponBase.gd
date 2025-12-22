@@ -43,7 +43,7 @@ func _ready() -> void:
 		return
 	if reload_complete_sound == null:
 		_reload_audio = AudioStreamPlayer.new()
-		reload_complete_sound = preload("res://Assets/reload.wav")
+		reload_complete_sound = preload("res://Assets/reload.mp3")
 		_reload_audio.stream = reload_complete_sound
 		_reload_audio.volume_db = reload_complete_volume_db
 		_reload_audio.pitch_scale = reload_complete_pitch
