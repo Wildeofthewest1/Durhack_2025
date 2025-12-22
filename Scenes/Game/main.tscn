@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=24 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://b2is01dn5d4fu" path="res://Scenes/Camera/background.tscn" id="1_xqoiw"]
@@ -52,6 +52,9 @@ shader_parameter/global_intensity = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gbba"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nq4jv"]
+line_spacing = -5.0
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -121,12 +124,12 @@ min_spawn_distance_from_center = 0.3
 [node name="SpawnEnemyButton" type="Button" parent="CanvasLayer"]
 texture_filter = 1
 anchors_preset = -1
-anchor_right = 0.09739583
-anchor_bottom = 0.024074074
-offset_left = 1606.0
-offset_top = 426.0
-offset_right = 1657.0
-offset_bottom = 434.0
+anchor_right = 0.07083333
+anchor_bottom = 0.011111111
+offset_left = 1368.0
+offset_top = 104.0
+offset_right = 1419.0
+offset_bottom = 120.0
 theme = ExtResource("4_5fdju")
 theme_override_colors/font_color = Color(0.93, 0.89776003, 0.44640002, 1)
 theme_override_colors/font_focus_color = Color(0.92941177, 0.8980392, 0.44705883, 1)
@@ -139,12 +142,12 @@ metadata/_edit_use_anchors_ = true
 [node name="SpawnEnemyWaveButton" type="Button" parent="CanvasLayer"]
 texture_filter = 1
 anchors_preset = -1
-anchor_right = 0.09739583
-anchor_bottom = 0.024074074
-offset_left = 1606.0
-offset_top = 460.0
-offset_right = 1657.0
-offset_bottom = 468.0
+anchor_right = 0.06979167
+anchor_bottom = 0.011111111
+offset_left = 1371.0
+offset_top = 133.0
+offset_right = 1422.0
+offset_bottom = 149.0
 theme = ExtResource("4_5fdju")
 theme_override_colors/font_color = Color(0.93, 0.89776003, 0.44640002, 1)
 theme_override_colors/font_focus_color = Color(0.92941177, 0.8980392, 0.44705883, 1)
@@ -154,20 +157,6 @@ text = "Spawn Wave"
 flat = true
 script = ExtResource("9_yyavk")
 metadata/_edit_use_anchors_ = true
-
-[node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -320.0
-offset_right = 280.0
-grow_horizontal = 0
-grow_vertical = 2
-hidden_x = 500.0
-shown_x = -300.0
-panel_bg_color = Color(0.38340002, 0.40167004, 0.54, 1)
 
 [node name="400Years" parent="CanvasLayer" instance=ExtResource("5_kry3j")]
 visible = false
@@ -194,17 +183,27 @@ anchors_preset = -1
 offset_left = 50.0
 offset_top = 50.0
 
-[node name="Minimap" parent="CanvasLayer" instance=ExtResource("8_wrqr2")]
-minimap_size = Vector2(300, 300)
-world_scale = 0.05
-margin_right = 40.0
+[node name="MinimapContainer" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Minimap" parent="CanvasLayer/MinimapContainer" instance=ExtResource("8_wrqr2")]
+layout_mode = 1
+minimap_size = Vector2(200, 200)
+background_color = Color(0.1, 0.1, 0.15, 0.9)
+border_color = Color(0.3, 0.3, 0.4, 1)
 
 [node name="WeaponHUD" parent="CanvasLayer" instance=ExtResource("15_wipx2")]
 anchors_preset = -1
 offset_left = 40.0
 offset_top = -463.0
-offset_right = 220.0
-offset_bottom = -40.0
+offset_right = 342.0
+offset_bottom = -5.0
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
 texture_filter = 1
@@ -216,20 +215,27 @@ scale = Vector2(4, 4)
 texture = ExtResource("9_veifj")
 
 [node name="ResourceRow" parent="CanvasLayer" instance=ExtResource("17_nq4jv")]
+anchors_preset = -1
 offset_left = 60.0
 offset_top = 120.0
 
+[node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
+panel_hide_offset = 600.0
+panel_bg_color = Color(0.05882353, 0.05882353, 0.078431375, 1)
+
 [node name="Instructions" type="Label" parent="."]
 texture_filter = 1
-offset_left = 1606.0
-offset_top = 341.0
-offset_right = 1906.0
-offset_bottom = 416.0
+offset_left = 1371.0
+offset_top = 30.0
+offset_right = 1559.0
+offset_bottom = 104.0
 theme = ExtResource("4_5fdju")
 theme_override_constants/line_spacing = 7
 text = "Press E to interact
 Right-Click to boost
 Left-Click to shoot"
+label_settings = SubResource("LabelSettings_nq4jv")
+horizontal_alignment = 3
 
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyWaveButton" to="CanvasLayer/SpawnEnemyWaveButton" method="_on_pressed"]

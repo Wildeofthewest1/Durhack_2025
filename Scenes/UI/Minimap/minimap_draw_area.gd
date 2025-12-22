@@ -7,10 +7,10 @@ func _draw() -> void:
 		return
 	
 	# Draw background
-	draw_rect(Rect2(Vector2.ZERO, minimap.minimap_size), minimap.background_color)
+	draw_rect(Rect2(Vector2.ZERO, minimap.size), minimap.background_color)
 	
 	# Draw border
-	draw_rect(Rect2(Vector2.ZERO, minimap.minimap_size), minimap.border_color, false, minimap.border_width)
+	draw_rect(Rect2(Vector2.ZERO, minimap.size), minimap.border_color, false, minimap.border_width)
 	
 	# Draw tracked objects
 	var objects: Array[MinimapTrackedObject] = minimap.get_tracked_objects()

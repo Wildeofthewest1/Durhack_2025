@@ -43,49 +43,73 @@ Label/styles/normal = SubResource("StyleBoxEmpty_6rneb")
 RichTextLabel/constants/line_separation = 5
 RichTextLabel/fonts/bold_font = ExtResource("1_6rneb")
 
-[node name="InteractionUI" type="Control" groups=["InteractUI"]]
+[node name="InteractionUI" type="Control" node_paths=PackedStringArray("_panel", "_comms_page", "_fleet_page", "_shop_page", "_portrait_panel", "_portrait_texture_rect", "_planet_name_label", "_dialogue_text", "_reply_holder", "_fleet_list", "_assign_button", "_shop_list", "_buy_button", "_comms_tab_button", "_fleet_tab_button", "_shop_tab_button") groups=["InteractUI"]]
 texture_filter = 1
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(560, 0)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 400.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 theme = SubResource("Theme_6rneb")
 script = ExtResource("1_dekh7")
+_panel = NodePath("Panel")
+_comms_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage")
+_fleet_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
+_shop_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+_portrait_panel = NodePath("PortraitPanel")
+_portrait_texture_rect = NodePath("PortraitPanel/PortraitFrame/PortraitTexture")
+_planet_name_label = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/PlanetNameLabel")
+_dialogue_text = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/DialogueText")
+_reply_holder = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/ReplyButtonsHolder")
+_fleet_list = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox/FleetList")
+_assign_button = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox/AssignSelectedButton")
+_shop_list = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox/ShopList")
+_buy_button = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox/BuyButton")
+_comms_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
+_fleet_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
+_shop_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
+slow_scale = 0.1
 panel_bg_color = Color(0.35380003, 0.49044, 0.61, 1)
 
 [node name="PortraitPanel" type="Control" parent="."]
-custom_minimum_size = Vector2(1000, 1000)
 layout_direction = 2
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -1300.0
-offset_top = 600.0
-offset_right = -300.0
-offset_bottom = 1600.0
-grow_vertical = 2
-
-[node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
-layout_mode = 0
-
-[node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 0
-metadata/_edit_use_anchors_ = true
+grow_vertical = 2
+
+[node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
+layout_mode = 1
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 100.0
 
 [node name="Panel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(500, 0)
 layout_mode = 1
-offset_left = 800.0
-offset_right = 1350.0
-offset_bottom = 500.0
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
 
 [node name="MainVBox" type="VBoxContainer" parent="Panel"]
 custom_minimum_size = Vector2(300, 500)
@@ -142,13 +166,20 @@ size_flags_vertical = 3
 
 [node name="CommsPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
 layout_mode = 1
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="CommsVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
-offset_right = 500.0
-offset_bottom = 434.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 12
 
 [node name="PlanetNameLabel" type="Label" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
@@ -157,7 +188,6 @@ layout_mode = 2
 text = "Planet Name"
 
 [node name="DialogueText" type="RichTextLabel" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
-custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -166,16 +196,25 @@ text = "Dialogue will appear here..."
 [node name="ReplyButtonsHolder" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 8
 theme_override_constants/separation = 6
 
 [node name="FleetPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
 layout_mode = 1
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="FleetVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 12
 
 [node name="FleetList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
@@ -191,11 +230,20 @@ text = "Assign To Planet"
 
 [node name="ShopPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
 layout_mode = 1
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ShopVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 12
 
 [node name="ShopList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]

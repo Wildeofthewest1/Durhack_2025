@@ -1,14 +1,35 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7vqm8xh0jw8p"]
+[gd_scene load_steps=10 format=3 uid="uid://b7vqm8xh0jw8p"]
 
 [ext_resource type="Script" uid="uid://fv630meevy3x" path="res://Scenes/UI/Minimap/minimap.gd" id="1_minimap"]
 [ext_resource type="Script" uid="uid://dx77uasv6hmq3" path="res://Scenes/UI/Minimap/minimap_draw_area.gd" id="2_draw_area"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u8qo4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nm7ke"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ajwp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6pu11"]
+
+[sub_resource type="Theme" id="Theme_u8qo4"]
+Button/styles/disabled = SubResource("StyleBoxEmpty_u8qo4")
+Button/styles/focus = SubResource("StyleBoxEmpty_nm7ke")
+Button/styles/hover = SubResource("StyleBoxEmpty_2ajwp")
+Button/styles/normal = SubResource("StyleBoxEmpty_6pu11")
+
+[sub_resource type="InputEventKey" id="InputEventKey_u8qo4"]
+device = -1
+keycode = 77
+unicode = 109
+
+[sub_resource type="Shortcut" id="Shortcut_nm7ke"]
+events = [SubResource("InputEventKey_u8qo4")]
+
 [node name="Minimap" type="Control"]
 layout_mode = 3
-anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -250.0
+offset_left = -345.0
 offset_bottom = 250.0
 grow_horizontal = 0
 size_flags_horizontal = 0
@@ -17,17 +38,42 @@ script = ExtResource("1_minimap")
 minimap_size = Vector2(400, 300)
 background_color = Color(0.102000006, 0.102000006, 0.15, 0.39215687)
 border_color = Color(0.3, 0.3, 0.4, 0.39215687)
+toggle_button_path = NodePath("Button")
+world_bounds_enabled = true
 
 [node name="DrawArea" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -400.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 300.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(-108, -65)
 mouse_filter = 2
 script = ExtResource("2_draw_area")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_u8qo4")
+theme_type_variation = &"FlatButton"
+theme_override_colors/font_color = Color(0.8784314, 0.8784314, 0.8784314, 0)
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.9490196, 0)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 0)
+theme_override_colors/font_hover_color = Color(0.9490196, 0.9490196, 0.9490196, 0)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 0)
+theme_override_colors/font_disabled_color = Color(0.8784314, 0.8784314, 0.8784314, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 0)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 0)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 0)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 0)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 0)
+shortcut = SubResource("Shortcut_nm7ke")
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

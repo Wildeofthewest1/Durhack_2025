@@ -31,7 +31,7 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -75.0
-offset_right = 279.0
+offset_right = 240.0
 grow_vertical = 0
 size_flags_horizontal = 3
 script = ExtResource("1_yrltk")
@@ -39,7 +39,7 @@ icon_rect = NodePath("Content/Icon")
 name_label = NodePath("Name")
 ammo_bar = NodePath("Content/Info/AmmoBar")
 regen_bar = NodePath("TextureProgressBar")
-stored_label = NodePath("StoredLabel")
+stored_label = NodePath("TextureProgressBar/StoredLabel")
 fill_up_speed = 100.0
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
@@ -54,14 +54,13 @@ size_flags_horizontal = 2
 nine_patch_stretch = true
 texture_progress = SubResource("GradientTexture1D_araxr")
 
-[node name="StoredLabel" type="Label" parent="."]
+[node name="StoredLabel" type="Label" parent="TextureProgressBar"]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -85.0
-offset_top = 4.0
-offset_bottom = 88.0
+offset_bottom = 84.0
 grow_horizontal = 0
 theme = ExtResource("2_apva6")
 theme_override_font_sizes/font_size = 48
@@ -82,12 +81,11 @@ vertical_alignment = 2
 
 [node name="Content" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -75.0
-offset_right = 284.0
-grow_vertical = 0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Icon" type="TextureRect" parent="Content"]
 custom_minimum_size = Vector2(75, 75)
@@ -95,9 +93,9 @@ layout_mode = 2
 texture = ExtResource("2_tmauf")
 
 [node name="Info" type="VBoxContainer" parent="Content"]
-custom_minimum_size = Vector2(200, 0)
+clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 
 [node name="ColorRect" type="ColorRect" parent="Content/Info"]
 custom_minimum_size = Vector2(0, 60)
