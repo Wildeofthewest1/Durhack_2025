@@ -5,13 +5,13 @@ signal wave_enemy_died
 @onready var enemies_container: Node = get_parent().get_node("Enemies")
 
 @export var enemy_scenes: Dictionary = {
-	"Enemy1": "res://Scenes/Enemy_Configurations/Enemy1.tscn",
-	"Enemy2": "res://Scenes/Enemy_Configurations/Enemy2.tscn",
-	"Enemy3": "res://Scenes/Enemy_Configurations/Enemy3.tscn",
-	"Enemy4": "res://Scenes/Enemy_Configurations/Enemy4.tscn",
-	"Enemy5": "res://Scenes/Enemy_Configurations/EnemyFastMass.tscn",
-	"Mothership1": "res://Scenes/Enemy_Configurations/Mothership1.tscn",
-	"Mothership2": "res://Scenes/Enemy_Configurations/Mothership2.tscn"
+	"Enemy1": "res://Scenes/Enemy_Configurations/EnemyScenes/Enemy1.tscn",
+	"Enemy2": "res://Scenes/Enemy_Configurations/EnemyScenes/Enemy2.tscn",
+	"Enemy3": "res://Scenes/Enemy_Configurations/EnemyScenes/Enemy3.tscn",
+	"Enemy4": "res://Scenes/Enemy_Configurations/EnemyScenes/Enemy4.tscn",
+	"Enemy5": "res://Scenes/Enemy_Configurations/EnemyScenes/EnemyFastMass.tscn",
+	"Mothership1": "res://Scenes/Enemy_Configurations/EnemyScenes/Mothership1.tscn",
+	"Mothership2": "res://Scenes/Enemy_Configurations/EnemyScenes/Mothership2.tscn"
 }
 
 func spawn_enemy(
@@ -23,7 +23,8 @@ func spawn_enemy(
 	health: int = 100,
 	faceplayer: bool = true,
 	detectionradius: float = 1000,
-	is_wave_enemy: bool = false) -> CharacterBody2D:
+	is_wave_enemy: bool = false,
+	loot: String = "") -> CharacterBody2D:
 	# Ensure the type exists
 	if not enemy_scenes.has(enemy_type):
 		push_error("Unknown enemy type: " + enemy_type)
@@ -53,6 +54,8 @@ func spawn_enemy(
 		enemy.faceplayer = faceplayer
 	if "detectionradius" in enemy:
 		enemy.detectionradius = detectionradius
+	if "lootTable" in enemy:
+		enemy.lootTable = loot
 	
 	if is_wave_enemy:
 		enemy.tree_exited.connect(func():

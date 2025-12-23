@@ -1,24 +1,24 @@
-[gd_scene load_steps=11 format=3 uid="uid://cdva2uannw00y"]
+[gd_scene load_steps=11 format=3 uid="uid://cu2nr1w58lqbv"]
 
-[ext_resource type="Texture2D" uid="uid://cycmemfe803f" path="res://Assets/scrap_anim.png" id="1_d1w8h"]
-[ext_resource type="Script" uid="uid://bvbbx2skpl5yq" path="res://Scenes/Items/ItemPickup.gd" id="1_v5g34"]
-[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="2_6ox2l"]
-[ext_resource type="AudioStream" uid="uid://d2sm4ke64ryv0" path="res://Scenes/Bodies/Interactibles/money/money_pickup.mp3" id="2_xnlh6"]
+[ext_resource type="Script" uid="uid://bvbbx2skpl5yq" path="res://Scenes/Items/ItemPickup.gd" id="1_v4jdr"]
+[ext_resource type="Texture2D" uid="uid://cycmemfe803f" path="res://Assets/scrap_anim.png" id="2_o6ean"]
+[ext_resource type="AudioStream" uid="uid://bvo38fkhl6ct" path="res://Scenes/Items/PickupSounds/money_pickup.mp3" id="2_r4lll"]
+[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="3_r4lll"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5hirf"]
-atlas = ExtResource("1_d1w8h")
+atlas = ExtResource("2_o6ean")
 region = Rect2(0, 0, 12, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5eu2o"]
-atlas = ExtResource("1_d1w8h")
+atlas = ExtResource("2_o6ean")
 region = Rect2(12, 0, 12, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_540dk"]
-atlas = ExtResource("1_d1w8h")
+atlas = ExtResource("2_o6ean")
 region = Rect2(24, 0, 12, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_danc6"]
-atlas = ExtResource("1_d1w8h")
+atlas = ExtResource("2_o6ean")
 region = Rect2(36, 0, 12, 10)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ml5lf"]
@@ -45,17 +45,18 @@ animations = [{
 radius = 18.0
 height = 36.0
 
-[node name="Scrap" type="Area2D"]
+[node name="PickupArea" type="Area2D"]
 texture_filter = 1
 collision_layer = 8388609
 collision_mask = 8388609
-script = ExtResource("1_v5g34")
-item_id = "scrap"
-pickup_sound = ExtResource("2_xnlh6")
+script = ExtResource("1_v4jdr")
+item_id = "rareItem"
+pickup_sound = ExtResource("2_r4lll")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.846281, 0, 0.41373625, 1)
 sprite_frames = SubResource("SpriteFrames_ml5lf")
-script = ExtResource("2_6ox2l")
+script = ExtResource("3_r4lll")
 rot = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

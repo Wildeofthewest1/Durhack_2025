@@ -1,16 +1,16 @@
 [gd_scene load_steps=12 format=3 uid="uid://d3v54dg8kom64"]
 
-[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_w36vh"]
-[ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_8ggvy"]
-[ext_resource type="Texture2D" uid="uid://cv0vt3m0of08i" path="res://Assets/fast_mass.png" id="3_w36vh"]
-[ext_resource type="Script" uid="uid://c3y0uvaeip3n8" path="res://Scenes/Enemy_Configurations/FastMass_limb.gd" id="4_8ggvy"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="4_fdr8q"]
-[ext_resource type="PackedScene" uid="uid://wcn2ccbx32uw" path="res://Scenes/particles/trail_particles.tscn" id="5_dx2vn"]
-[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="6_21orn"]
-[ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="7_ugcrw"]
+[ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_73lbp"]
+[ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_ta0wb"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="3_spx6u"]
+[ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="4_ybigm"]
+[ext_resource type="Texture2D" uid="uid://cv0vt3m0of08i" path="res://Assets/fast_mass.png" id="5_sv6b7"]
+[ext_resource type="Script" uid="uid://c3y0uvaeip3n8" path="res://Scenes/Enemy_Configurations/EnemyScenes/FastMass_limb.gd" id="6_jglrn"]
+[ext_resource type="PackedScene" uid="uid://wcn2ccbx32uw" path="res://Scenes/particles/trail_particles.tscn" id="7_4f5df"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="8_ivk3i"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gk74p"]
-shader = ExtResource("7_ugcrw")
+shader = ExtResource("4_ybigm")
 shader_parameter/base_color = Color(1, 0.27999997, 0.27999997, 0.078431375)
 shader_parameter/intensity = 1.5
 shader_parameter/spread = 1.0
@@ -26,12 +26,19 @@ radius = 1186.2849
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_w36vh")
+script = ExtResource("1_73lbp")
+faceplayer = null
 speed = 250.0
 health = 750
-death_particles_scene = ExtResource("2_8ggvy")
+rotation_speed = null
+detectionradius = null
+death_particles_scene = ExtResource("2_ta0wb")
+death_particle_dir_jitter = null
+lootTablesFile = null
+lootTable = null
+item_db = null
 
-[node name="Trail" parent="." instance=ExtResource("6_21orn")]
+[node name="Trail" parent="." instance=ExtResource("3_spx6u")]
 material = SubResource("ShaderMaterial_gk74p")
 position = Vector2(0, -67)
 width = 10.0
@@ -43,21 +50,21 @@ width = 10.0
 texture_filter = 1
 position = Vector2(0, 1.7763568e-15)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("3_w36vh")
+texture = ExtResource("5_sv6b7")
 region_enabled = true
 region_rect = Rect2(296, 176, 48, 48)
 
 [node name="Limb1" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 scale = Vector2(1, 0.75)
-texture = ExtResource("3_w36vh")
+texture = ExtResource("5_sv6b7")
 offset = Vector2(0, -254)
 region_enabled = true
 region_rect = Rect2(496, 0, 16, 511)
-script = ExtResource("4_8ggvy")
+script = ExtResource("6_jglrn")
 damping = 10.0
 
-[node name="TrailParticles2" parent="Sprite2D/Limb1" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+[node name="TrailParticles2" parent="Sprite2D/Limb1" node_paths=PackedStringArray("follower") instance=ExtResource("7_4f5df")]
 self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
 position = Vector2(4, -508)
 scale = Vector2(4, 4)
@@ -67,7 +74,7 @@ follower = NodePath(".")
 self_modulate = Color(0.9, 0.9, 0.9, 1)
 texture_filter = 1
 rotation = -1.5707964
-texture = ExtResource("3_w36vh")
+texture = ExtResource("5_sv6b7")
 offset = Vector2(-0.06253052, -111.59512)
 region_enabled = true
 region_rect = Rect2(448, 289, 16, 223)
@@ -75,15 +82,15 @@ region_rect = Rect2(448, 289, 16, 223)
 [node name="Limb4" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 rotation = 2.6179938
-texture = ExtResource("3_w36vh")
+texture = ExtResource("5_sv6b7")
 offset = Vector2(-0.06253052, -111.59512)
 region_enabled = true
 region_rect = Rect2(448, 289, 16, 223)
-script = ExtResource("4_8ggvy")
+script = ExtResource("6_jglrn")
 damping = 10.0
 max_lag_rad = 1.0
 
-[node name="TrailParticles" parent="Sprite2D/Limb4" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+[node name="TrailParticles" parent="Sprite2D/Limb4" node_paths=PackedStringArray("follower") instance=ExtResource("7_4f5df")]
 self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
 position = Vector2(-1.9073486e-05, -220)
 rotation = 3.1415925
@@ -93,15 +100,15 @@ follower = NodePath(".")
 [node name="Limb5" type="Sprite2D" parent="Sprite2D"]
 texture_filter = 1
 rotation = 3.6651914
-texture = ExtResource("3_w36vh")
+texture = ExtResource("5_sv6b7")
 offset = Vector2(-0.06253052, -111.59512)
 region_enabled = true
 region_rect = Rect2(448, 289, 16, 223)
-script = ExtResource("4_8ggvy")
+script = ExtResource("6_jglrn")
 damping = 10.0
 max_lag_rad = 0.7
 
-[node name="TrailParticles3" parent="Sprite2D/Limb5" node_paths=PackedStringArray("follower") instance=ExtResource("5_dx2vn")]
+[node name="TrailParticles3" parent="Sprite2D/Limb5" node_paths=PackedStringArray("follower") instance=ExtResource("7_4f5df")]
 self_modulate = Color(1, 0.27058825, 0.27058825, 0.5686275)
 position = Vector2(-0.46924973, -216.81277)
 rotation = 2.6179938
@@ -112,7 +119,7 @@ follower = NodePath(".")
 texture_filter = 1
 position = Vector2(88, 0)
 rotation = 1.5707964
-texture = ExtResource("3_w36vh")
+texture = ExtResource("5_sv6b7")
 region_enabled = true
 region_rect = Rect2(240, 32, 32, 176)
 
@@ -130,7 +137,7 @@ rotation = -1.5707964
 
 [node name="Minimap" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
 rotation = -1.5707964
-script = ExtResource("4_fdr8q")
+script = ExtResource("8_ivk3i")
 target_node = NodePath("..")
 dot_shape = 2
 dot_color = Color(0.9823325, 0, 0.04619918, 1)

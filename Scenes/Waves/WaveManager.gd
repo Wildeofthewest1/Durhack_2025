@@ -107,7 +107,8 @@ func _spawn_enemy(enemy_template: Dictionary) -> void:
 		data.get("health", 100),
 		data.get("rotate_toward_player", true),
 		data.get("detectionradius", 1000.0),
-		true
+		true,
+		data.get("LootTable","")
 	)
 
 	active_wave_enemies += 1
