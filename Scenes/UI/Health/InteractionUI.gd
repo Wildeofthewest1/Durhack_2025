@@ -447,7 +447,7 @@ func _on_assign_pressed() -> void:
 	if _fleet_list == null:
 		return
 
-	var selected_items: Array[int] = _fleet_list.get_selected_items()
+	var selected_items: = _fleet_list.get_selected_items()
 	if selected_items.is_empty():
 		return
 
@@ -472,7 +472,7 @@ func _on_buy_pressed() -> void:
 	if _shop_list == null:
 		return
 
-	var sel_arr: Array[int] = _shop_list.get_selected_items()
+	var sel_arr:  = _shop_list.get_selected_items()
 	if sel_arr.is_empty():
 		return
 
