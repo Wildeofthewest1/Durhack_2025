@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_c1dph")
-id = "scrap"
+id = "Scrap"
 display_name = "Scrap"
 icon = ExtResource("1_fovqo")
 color = Color(0.92, 0.80806667, 0.24839999, 1)

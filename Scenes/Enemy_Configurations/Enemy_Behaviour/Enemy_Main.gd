@@ -14,30 +14,24 @@ extends CharacterBody2D
 @export var death_particle_dir_jitter: float = 0.15
 
 # -----------------------------
-# SCRAP DROP
+# ITEM DROP
 # -----------------------------
-@export var scrap_pickup_scene: PackedScene = preload("res://Scenes/Bodies/Interactibles/money/scrap.tscn")
+const ITEM_CONFIG := {
+	"spawn_radius": 24.0,
+	"push_distance": 18.0,
+	"push_jitter": 10.0,
+	"side_spread": 18.0,
+	"impulse_min": 140.0,
+	"impulse_max": 260.0,
+	"impulse_side_bias": 0.6
+}
 
-@export var scrap_drop_min: int = 2
-@export var scrap_drop_max: int = 6
+#@export var scrap_value_min: int = 1
+#@export var scrap_value_max: int = 3
 
-@export var scrap_spawn_radius: float = 24.0
-
-@export var scrap_push_distance: float = 18.0
-@export var scrap_push_jitter: float = 10.0
-@export var scrap_side_spread: float = 18.0
-
-# IMPULSE CONTROL (enemy-owned)
-@export var scrap_impulse_min: float = 140.0
-@export var scrap_impulse_max: float = 260.0
-@export var scrap_impulse_side_bias: float = 0.6
-
-@export var scrap_value_min: int = 1
-@export var scrap_value_max: int = 3
-
-@export var lootTablesFile: GDScript = preload("res://Scenes/Waves/EnemyLootTables.gd")
-
+@export var lootTablesFile: GDScript = preload("res://Scenes/Enemy_Configurations/EnemyLootTables.gd")
 @export var lootTable: String = ""
+@export var item_db: GDScript = preload("res://Scenes/Items/ItemConfig.gd")
 
 # -----------------------------
 # STATE
@@ -95,7 +89,7 @@ func die() -> void:
 	var push_dir: Vector2 = _get_death_dir()
 
 	_spawn_death_particles(push_dir)
-	_drop_scrap(push_dir)
+	_drop_items(push_dir)
 
 	queue_free()
 
@@ -152,23 +146,11 @@ func _spawn_death_particles(push_dir: Vector2) -> void:
 		(p as CPUParticles2D).emitting = true
 
 # ----------------------------------------------------
-# SCRAP DROP (SINGLE IMPULSE SOURCE)
+# ITEM DROP (SINGLE IMPULSE SOURCE)
 # ----------------------------------------------------
-func _drop_scrap(push_dir: Vector2) -> void:
-	if scrap_pickup_scene == null:
+func _drop_items(push_dir: Vector2) -> void:
+	if lootTablesFile == null or lootTable == "" or item_db == null:
 		return
-	
-	if lootTablesFile == null or lootTable == "":
-		return
-	
-	#var count: int = randi_range(scrap_drop_min, scrap_drop_max)
-	var count: int = lootTablesFile.roll_scrap_amount(lootTable)
-
-	if count <= 0:
-		return
-	
-	print("🎁 Loot tier:", lootTable)
-	print("🪙 Scrap rolled:", count)
 
 	var parent_node: Node = get_parent()
 	if parent_node == null:
@@ -176,35 +158,65 @@ func _drop_scrap(push_dir: Vector2) -> void:
 	if parent_node == null:
 		parent_node = get_tree().root
 
-	var dir: Vector2 = push_dir.normalized()
-	var perp: Vector2 = Vector2(-dir.y, dir.x)
+	var dir := push_dir.normalized()
+	if dir == Vector2.ZERO:
+		dir = Vector2.RIGHT
+	var perp := Vector2(-dir.y, dir.x)
 
-	for i in range(count):
-		var pickup: Node2D = scrap_pickup_scene.instantiate() as Node2D
-		parent_node.call_deferred("add_child", pickup)
+	# For now, only Scrap — later this can iterate keys dynamically
+	for item_key in lootTablesFile.LOOT[lootTable].keys():
+		if not item_db.ITEMS.has(item_key):
+			continue
 
-		# Spawn position
-		var u: float = randf()
-		var theta: float = randf_range(0.0, TAU)
-		var r: float = sqrt(u) * scrap_spawn_radius
-		var radial_offset: Vector2 = Vector2(cos(theta), sin(theta)) * r
+		var count = lootTablesFile.roll_item_amount(lootTable, item_key)
+		if count <= 0:
+			continue
 
-		var forward: float = scrap_push_distance + randf_range(-scrap_push_jitter, scrap_push_jitter)
-		var side: float = randf_range(-scrap_side_spread, scrap_side_spread)
-		var directional_offset: Vector2 = dir * forward + perp * side
+		var item_def = item_db.ITEMS[item_key]
+		var scene: PackedScene = item_def.scene
+		var value_per_pickup: int = item_def.value_per_pickup
 
-		pickup.global_position = global_position + radial_offset + directional_offset
+		print("🎁 Loot tier:", lootTable)
+		print("📦 Item:", item_key, "x", count)
 
-		pickup.set("scrap_amount", 1)#randi_range(scrap_value_min, scrap_value_max))
+		for i in range(count):
+			var pickup := scene.instantiate() as Node2D
+			parent_node.call_deferred("add_child", pickup)
 
-		# Single impulse (enemy-owned)
-		if pickup.has_method("apply_impulse"):
-			var impulse_dir: Vector2 = dir + perp * randf_range(
-				-scrap_impulse_side_bias,
-				scrap_impulse_side_bias
+			# --- spawn position ---
+			var u := randf()
+			var theta := randf_range(0.0, TAU)
+			var r := sqrt(u) * ITEM_CONFIG.spawn_radius
+			var radial_offset := Vector2(cos(theta), sin(theta)) * r
+
+			var forward := ITEM_CONFIG.push_distance + randf_range(
+				-ITEM_CONFIG.push_jitter,
+				ITEM_CONFIG.push_jitter
 			)
-			var impulse_strength: float = randf_range(scrap_impulse_min, scrap_impulse_max)
-			pickup.call("apply_impulse", impulse_dir, impulse_strength)
+			var side := randf_range(
+				-ITEM_CONFIG.side_spread,
+				ITEM_CONFIG.side_spread
+			)
+			var directional_offset := dir * forward + perp * side
+
+			pickup.global_position = global_position + radial_offset + directional_offset
+
+			if pickup is ItemPickup:
+				var item := pickup as ItemPickup
+				item.item_id = item_key
+				item.item_amount = value_per_pickup
+
+			# --- impulse ---
+			if pickup.has_method("apply_impulse"):
+				var impulse_dir := dir + perp * randf_range(
+					-ITEM_CONFIG.impulse_side_bias,
+					ITEM_CONFIG.impulse_side_bias
+				)
+				var impulse_strength := randf_range(
+					ITEM_CONFIG.impulse_min,
+					ITEM_CONFIG.impulse_max
+				)
+				pickup.call("apply_impulse", impulse_dir, impulse_strength)
 
 
 # ----------------------------------------------------

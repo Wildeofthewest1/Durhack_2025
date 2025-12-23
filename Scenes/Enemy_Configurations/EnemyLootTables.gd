@@ -2,37 +2,40 @@ extends Node
 
 const LOOT := {
 	"Small": {
-		"Scrap": [
+		"scrap": [
 			{ "weight": 1.0, "amount": Vector2i(1, 3) },
 			{ "weight": 0.3, "amount": Vector2i(2, 3) },
 			{ "weight": 0.1, "amount": Vector2i(5, 5) }
 		]
 	},
 	"Medium": {
-		"Scrap": [
+		"scrap": [
 			{ "weight": 1.0, "amount": Vector2i(5, 10) },
 			{ "weight": 0.3, "amount": Vector2i(2, 3) },
 			{ "weight": 0.1, "amount": Vector2i(5, 5) }
 		]
 	},
 	"Large": {
-		"Scrap": [
+		"scrap": [
 			{ "weight": 1.0, "amount": Vector2i(10, 15) },
 			{ "weight": 0.3, "amount": Vector2i(2, 3) },
 			{ "weight": 0.1, "amount": Vector2i(5, 5) }
 		],
-		"RareItem": [
+		"rareItem": [
+			{ "weight": 1.0, "amount": Vector2i(1, 1) }
+		],
+		"rareItem2": [
 			{ "weight": 1.0, "amount": Vector2i(1, 1) }
 		]
 	}
 }
 
-static func roll_scrap_amount(tier: String) -> int:
+static func roll_item_amount(tier: String, item_key: String) -> int:
 	if not LOOT.has(tier):
 		push_warning("Loot: Unknown tier '%s'" % tier)
 		return 0
 
-	var table = LOOT[tier].get("Scrap", [])
+	var table = LOOT[tier].get(item_key, [])
 	if table.is_empty():
 		return 0
 
