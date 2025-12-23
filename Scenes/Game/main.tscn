@@ -194,6 +194,7 @@ grow_horizontal = 0
 
 [node name="Minimap" parent="CanvasLayer/MinimapContainer" instance=ExtResource("8_wrqr2")]
 layout_mode = 1
+anchors_preset = 1
 minimap_size = Vector2(200, 200)
 background_color = Color(0.1, 0.1, 0.15, 0.9)
 border_color = Color(0.3, 0.3, 0.4, 1)

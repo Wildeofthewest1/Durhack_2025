@@ -89,7 +89,9 @@ func _ready() -> void:
 			"speed": 200,
 			"health": 80,
 			"rotate_toward_player": true,
-			"detectionradius": 500
+			"detectionradius": 500,
+			"is_wave_enemy": false,
+			"loot": "Small"
 		},
 		"Enemy2": {
 			"type": "Enemy2",
@@ -99,7 +101,9 @@ func _ready() -> void:
 			"speed": 190,
 			"health": 100,
 			"rotate_toward_player": true,
-			"detectionradius": 500
+			"detectionradius": 500,
+			"is_wave_enemy": false,
+			"loot": "Small"
 		},
 		"Enemy3": {
 			"type": "Enemy3",
@@ -109,7 +113,9 @@ func _ready() -> void:
 			"speed": 700,
 			"health": 500,
 			"rotate_toward_player": true,
-			"detectionradius": 1000
+			"detectionradius": 1000,
+			"is_wave_enemy": false,
+			"loot": "Small"
 		},
 		"Enemy4": {
 			"type": "Enemy4",
@@ -119,7 +125,9 @@ func _ready() -> void:
 			"speed": 180,
 			"health": 750,
 			"rotate_toward_player": true,
-			"detectionradius": 500
+			"detectionradius": 500,
+			"is_wave_enemy": false,
+			"loot": "Medium"
 		},
 		"Enemy5": {
 			"type": "Enemy5",
@@ -129,7 +137,9 @@ func _ready() -> void:
 			"speed": 250,
 			"health": 750,
 			"rotate_toward_player": true,
-			"detectionradius": 500
+			"detectionradius": 500,
+			"is_wave_enemy": false,
+			"loot": "Medium"
 		},
 		"Mothership1": {
 			"type": "Mothership1",
@@ -139,7 +149,9 @@ func _ready() -> void:
 			"speed": 10,
 			"health": 2000,
 			"rotate_toward_player": false,
-			"detectionradius": 1000
+			"detectionradius": 1000,
+			"is_wave_enemy": false,
+			"loot": "Large"
 		},
 		"Mothership2": {
 			"type": "Mothership2",
@@ -149,7 +161,9 @@ func _ready() -> void:
 			"speed": 20,
 			"health": 1000,
 			"rotate_toward_player": false,
-			"detectionradius": 1000
+			"detectionradius": 1000,
+			"is_wave_enemy": false,
+			"loot": "Large"
 		}
 	}
 
@@ -163,7 +177,9 @@ func _ready() -> void:
 			e["speed"],
 			e["health"],
 			e["rotate_toward_player"],
-			e["detectionradius"]
+			e["detectionradius"],
+			e["is_wave_enemy"],
+			e["loot"]
 		)
 		
 	spawn_timer.wait_time = 3.0
@@ -220,5 +236,7 @@ func _on_spawn_enemy_button_pressed() -> void:
 		e["speed"],
 		e["health"],
 		e["rotate_toward_player"],
-		e["detectionradius"]
+		e["detectionradius"],
+		e["is_wave_enemy"],
+		e["loot"]
 	)

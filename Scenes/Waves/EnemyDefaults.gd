@@ -11,6 +11,7 @@ const Enemies := {
 		"health": 80,
 		"rotate_toward_player": true,
 		"detectionradius": 500,
+		"LootTable": "Small"
 	},
 	"Enemy2": {
 		"type": "Enemy2",
@@ -21,6 +22,7 @@ const Enemies := {
 		"health": 80,
 		"rotate_toward_player": true,
 		"detectionradius": 500,
+		"LootTable": "Small"
 	},
 	"Enemy3": {
 		"type": "Enemy3",
@@ -30,7 +32,8 @@ const Enemies := {
 		"speed": 700,
 		"health": 500,
 		"rotate_toward_player": true,
-		"detectionradius": 1000
+		"detectionradius": 1000,
+		"LootTable": "Small"
 	},
 	"Enemy4": {
 		"type": "Enemy4",
@@ -40,7 +43,8 @@ const Enemies := {
 		"speed": 180,
 		"health": 750,
 		"rotate_toward_player": true,
-		"detectionradius": 500
+		"detectionradius": 500,
+		"LootTable": "Medium"
 	},
 	"Enemy5": {
 		"type": "Enemy5",
@@ -50,7 +54,8 @@ const Enemies := {
 		"speed": 300,
 		"health": 750,
 		"rotate_toward_player": true,
-		"detectionradius": 500
+		"detectionradius": 500,
+		"LootTable": "Medium"
 	},
 	"Mothership1": {
 		"type": "Mothership1",
@@ -60,7 +65,8 @@ const Enemies := {
 		"speed": 10,
 		"health": 2000,
 		"rotate_toward_player": false,
-		"detectionradius": 1000
+		"detectionradius": 1000,
+		"LootTable": "Large"
 	},
 	"Mothership2": {
 		"type": "Mothership2",
@@ -70,6 +76,7 @@ const Enemies := {
 		"speed": 20,
 		"health": 1000,
 		"rotate_toward_player": false,
-		"detectionradius": 1000
+		"detectionradius": 1000,
+		"LootTable": "Large"
 	}
 }

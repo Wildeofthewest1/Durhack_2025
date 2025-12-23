@@ -23,7 +23,8 @@ func spawn_enemy(
 	health: int = 100,
 	faceplayer: bool = true,
 	detectionradius: float = 1000,
-	is_wave_enemy: bool = false) -> CharacterBody2D:
+	is_wave_enemy: bool = false,
+	loot: String = "") -> CharacterBody2D:
 	# Ensure the type exists
 	if not enemy_scenes.has(enemy_type):
 		push_error("Unknown enemy type: " + enemy_type)
@@ -53,6 +54,8 @@ func spawn_enemy(
 		enemy.faceplayer = faceplayer
 	if "detectionradius" in enemy:
 		enemy.detectionradius = detectionradius
+	if "lootTable" in enemy:
+		enemy.lootTable = loot
 	
 	if is_wave_enemy:
 		enemy.tree_exited.connect(func():

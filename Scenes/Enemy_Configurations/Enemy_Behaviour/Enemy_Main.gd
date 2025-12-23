@@ -35,6 +35,10 @@ extends CharacterBody2D
 @export var scrap_value_min: int = 1
 @export var scrap_value_max: int = 3
 
+@export var lootTablesFile: GDScript = preload("res://Scenes/Waves/EnemyLootTables.gd")
+
+@export var lootTable: String = ""
+
 # -----------------------------
 # STATE
 # -----------------------------
@@ -153,10 +157,18 @@ func _spawn_death_particles(push_dir: Vector2) -> void:
 func _drop_scrap(push_dir: Vector2) -> void:
 	if scrap_pickup_scene == null:
 		return
+	
+	if lootTablesFile == null or lootTable == "":
+		return
+	
+	#var count: int = randi_range(scrap_drop_min, scrap_drop_max)
+	var count: int = lootTablesFile.roll_scrap_amount(lootTable)
 
-	var count: int = randi_range(scrap_drop_min, scrap_drop_max)
 	if count <= 0:
 		return
+	
+	print("🎁 Loot tier:", lootTable)
+	print("🪙 Scrap rolled:", count)
 
 	var parent_node: Node = get_parent()
 	if parent_node == null:
@@ -169,7 +181,7 @@ func _drop_scrap(push_dir: Vector2) -> void:
 
 	for i in range(count):
 		var pickup: Node2D = scrap_pickup_scene.instantiate() as Node2D
-		parent_node.add_child(pickup)
+		parent_node.call_deferred("add_child", pickup)
 
 		# Spawn position
 		var u: float = randf()
@@ -183,7 +195,7 @@ func _drop_scrap(push_dir: Vector2) -> void:
 
 		pickup.global_position = global_position + radial_offset + directional_offset
 
-		pickup.set("scrap_amount", randi_range(scrap_value_min, scrap_value_max))
+		pickup.set("scrap_amount", 1)#randi_range(scrap_value_min, scrap_value_max))
 
 		# Single impulse (enemy-owned)
 		if pickup.has_method("apply_impulse"):
@@ -193,6 +205,7 @@ func _drop_scrap(push_dir: Vector2) -> void:
 			)
 			var impulse_strength: float = randf_range(scrap_impulse_min, scrap_impulse_max)
 			pickup.call("apply_impulse", impulse_dir, impulse_strength)
+
 
 # ----------------------------------------------------
 # BEHAVIOUR SYSTEM
