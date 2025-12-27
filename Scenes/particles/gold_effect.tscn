@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://bokdx0l7ow74y"]
 
-[ext_resource type="Texture2D" uid="uid://crpeiiw7lq1jn" path="res://Assets/sparkle_particle.png" id="1_xpd4h"]
+[ext_resource type="Texture2D" uid="uid://dbf6xgefd65ct" path="res://Assets/sparkle_particle-export.png" id="1_xpd4h"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_b43k1"]
 particles_animation = true
-particles_anim_h_frames = 4
+particles_anim_h_frames = 3
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
