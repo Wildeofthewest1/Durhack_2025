@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bokdx0l7ow74y"]
+
+[ext_resource type="Texture2D" uid="uid://crpeiiw7lq1jn" path="res://Assets/sparkle_particle.png" id="1_xpd4h"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_b43k1"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_kxhg0"]
+_data = [Vector2(0.023569025, 1), 0.0, 0.0, 0, 0, Vector2(0.25084177, 0.4901961), 0.0, 0.0, 0, 0, Vector2(0.496633, 1), 0.0, 0.0, 0, 0, Vector2(0.7441077, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.50682014), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_7gcl7"]
+curve = SubResource("Curve_kxhg0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ltjjc"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 15.0
+emission_ring_inner_radius = 12.0
+emission_ring_cone_angle = 90.0
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0.9882353, 0.85882354, 1)
+alpha_curve = SubResource("CurveTexture_7gcl7")
+anim_offset_max = 1.0
+
+[node name="Gold Effect" type="GPUParticles2D"]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_b43k1")
+amount = 4
+texture = ExtResource("1_xpd4h")
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_ltjjc")
