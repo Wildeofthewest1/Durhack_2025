@@ -4,8 +4,6 @@ class_name PlanetNPC
 @export var dialogue_data: DialogueData
 @export var shop_data: ShopData
 
-@export var dialogic_timeline: Resource = null
-
 # This just makes it easy to show the planet name without digging.
 func get_planet_name() -> String:
 	if dialogue_data != null:
