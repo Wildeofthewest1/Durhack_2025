@@ -16,11 +16,15 @@ class_name PlayerMovement
 @export var fuel_use_rate: float = 20.0
 @export var fuel_recharge_rate: float = 15.0
 @export var fuel_fulluse_recharge: float = 0.05
+# Slower recharge when in full-use lockout
 @export var fuel_recharge_rate_fulluse: float = 10.0
 
 # --- Thrust curve settings ---
+# How strongly thrust power ramps up the longer you hold thrust
 @export var thrust_curve_strength: float = 1.0
+# How fast the “spool” / intensity decays when you stop thrusting
 @export var thrust_curve_decay: float = 1.5
+# Maximum spool value so it does not explode to infinity
 @export var thrust_intensity_max: float = 1.5
 
 # --- Dynamic speed limit settings ---
@@ -32,14 +36,12 @@ var player: CharacterBody2D = null
 var fuel: float = 0.0
 var current_speed_limit: float = 0.0
 var was_fully_depleted: bool = false
-var thrust_intensity: float = 0.0
+var thrust_intensity: float = 0.0  # grows while holding thrust, decays when not
 
 func _ready() -> void:
 	player = get_parent() as CharacterBody2D
 	if player == null:
 		push_error("PlayerMovement must be a child of a CharacterBody2D.")
-		return
-
 	fuel = fuel_max
 	current_speed_limit = max_speed
 
@@ -47,38 +49,31 @@ func _physics_process(delta: float) -> void:
 	if player == null:
 		return
 
-	var gameplay_enabled: bool = InputLock.is_gameplay_enabled()
-
 	# 1) Build total acceleration
 	var a_total_local: Vector2 = Vector2.ZERO
 
 	# --- Gravity toward all planets ---
-	var planet_list: Array[Node] = get_tree().get_nodes_in_group("Planets")
-	for planet: Node in planet_list:
-		if not ("mass" in planet) or not ("radius" in planet):
+	var planet_list: Array = get_tree().get_nodes_in_group("Planets")
+	for planet in planet_list:
+		if not "mass" in planet or not "radius" in planet:
 			continue
 
-		var to_planet: Vector2 = (planet as Node2D).global_position - player.global_position
+		var to_planet: Vector2 = planet.global_position - player.global_position
 		var distance: float = to_planet.length()
 		if distance == 0.0:
 			continue
 
-		var min_distance: float = float(planet.get("radius"))
+		var min_distance: float = planet.radius
 		if distance < min_distance:
 			continue
 
 		var direction: Vector2 = to_planet / distance
-		var mass_value: float = float(planet.get("mass"))
-		var force: float = gravitational_constant * gravity_multiplier * mass_value / pow(distance, 2.0)
+		var force: float = gravitational_constant * gravity_multiplier * planet.mass / pow(distance, 2)
 		a_total_local += direction * force
 	# -----------------------------------
 
 	# --- Thrust / fuel logic ---
-	# IMPORTANT: input-only lock: when locked, treat thrust as NOT pressed.
-	var is_thrusting: bool = false
-	if gameplay_enabled:
-		is_thrusting = Input.is_action_pressed("thrust_mouse")
-
+	var is_thrusting: bool = Input.is_action_pressed("thrust_mouse")
 	var applied_thrust: bool = false
 
 	# Update thrust intensity (engine spool)
@@ -105,39 +100,43 @@ func _physics_process(delta: float) -> void:
 	var can_use_thrust: bool = not was_fully_depleted
 
 	# Thrust multiplier: engine gets more powerful as it spools up.
+	# Example: intensity 0 → ×1, intensity = 1.5, strength = 1 → ×(1 + 1*1.5) = ×2.5
 	var thrust_multiplier: float = 1.0 + thrust_curve_strength * thrust_intensity
 	if thrust_multiplier < 1.0:
 		thrust_multiplier = 1.0
 
 	# --- Apply thrust if allowed (normal mode only) ---
 	if is_thrusting and fuel > 0.0 and can_use_thrust:
-		# Mouse aiming is also "input"; only use it if gameplay is enabled.
-		var mouse_world: Vector2 = player.global_position
-		if gameplay_enabled:
-			mouse_world = player.get_global_mouse_position()
-
+		var mouse_world: Vector2 = player.get_global_mouse_position()
 		var to_mouse: Vector2 = mouse_world - player.global_position
 		var d: float = to_mouse.length()
 
 		if d > deadzone_px:
 			var thrust_dir: Vector2 = to_mouse / d
+			# Thrust power scaled by engine spool
 			a_total_local += thrust_dir * thrust_accel * thrust_multiplier
 			applied_thrust = true
 
+		# Fuel consumption: constant rate, independent of thrust_multiplier
 		var fuel_spent: float = fuel_use_rate * delta
 		fuel -= fuel_spent
 		if fuel < 0.0:
 			fuel = 0.0
 
 		if fuel == 0.0:
+			# Enter lockout: bar must recharge up to threshold
 			was_fully_depleted = true
 	else:
 		applied_thrust = false
 
 	# --- Recharge fuel ---
 	if was_fully_depleted:
+		# FULLUSE RECHARGE PHASE:
+		# Always recharge, even if the player is holding thrust,
+		# but at a slightly slower rate.
 		fuel += fuel_recharge_rate_fulluse * delta
 	elif not is_thrusting:
+		# Normal recharge only when not thrusting.
 		fuel += fuel_recharge_rate * delta
 
 	if fuel > fuel_max:
@@ -147,9 +146,13 @@ func _physics_process(delta: float) -> void:
 	if was_fully_depleted and fuel >= recharge_threshold:
 		was_fully_depleted = false
 
-	# --- Thrust particles ---
+	# --- Thrust particles and Screenshake---
 	if thrust_particles != null:
-		thrust_particles.emitting = applied_thrust
+		if applied_thrust:
+			#Screenshake.shake(0.02)
+			thrust_particles.emitting = true
+		else:
+			thrust_particles.emitting = false
 
 	# 2) Integrate velocity
 	player.velocity += a_total_local * delta
@@ -169,14 +172,13 @@ func _physics_process(delta: float) -> void:
 	if speed > current_speed_limit:
 		player.velocity = player.velocity.normalized() * current_speed_limit
 
-	# 5) Move (always)
+	# 5) Move
 	player.move_and_slide()
 
 	# 6) Rotate with motion or face mouse
-	# If locked, DO NOT face mouse (mouse is input). Keep rotate_with_motion behavior.
 	if rotate_with_motion and player.velocity.length() > 0.001:
 		player.rotation = player.velocity.angle() + deg_to_rad(rotate_offset_deg)
-	elif gameplay_enabled:
+	else:
 		player.look_at(player.get_global_mouse_position())
 
 func get_fuel_ratio() -> float:

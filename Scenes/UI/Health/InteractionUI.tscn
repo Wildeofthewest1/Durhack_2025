@@ -1,11 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://rp1733dafbo0"]
+[gd_scene load_steps=7 format=3 uid="uid://rp1733dafbo0"]
 
 [ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="1_6rneb"]
+[ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scenes/UI/Health/InteractionUI.gd" id="1_dekh7"]
 [ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="1_hl17m"]
-[ext_resource type="Script" uid="uid://b0wiw3828eupx" path="res://Scenes/UI/Interaction/Dialogic/Interaction_Main.gd" id="3_1sjti"]
-[ext_resource type="Script" uid="uid://b81f5dpp0sdaa" path="res://Scenes/UI/Interaction/Dialogic/vertical_label.gd" id="4_qv6ex"]
-[ext_resource type="Script" uid="uid://dxmiyin5t4vfd" path="res://Scenes/UI/Interaction/Dialogic/FleetPage.gd" id="6_mf7aw"]
-[ext_resource type="Script" uid="uid://b4kqth48q84g7" path="res://Scenes/UI/Interaction/Dialogic/ShopPage.gd" id="7_s8qdh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl17m"]
 content_margin_left = 4.0
@@ -30,34 +27,23 @@ expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rneb"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1sjti"]
-
 [sub_resource type="Theme" id="Theme_6rneb"]
-resource_local_to_scene = true
 default_font = ExtResource("1_hl17m")
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/colors/font_shadow_color = Color(0, 0, 0, 0)
-Label/constants/line_spacing = 31
+Label/constants/line_spacing = 30
 Label/constants/outline_size = 0
-Label/constants/paragraph_spacing = 5
 Label/constants/shadow_offset_x = 1
 Label/constants/shadow_offset_y = 1
 Label/constants/shadow_outline_size = 1
 Label/font_sizes/font_size = 16
 Label/styles/focus = SubResource("StyleBoxFlat_hl17m")
 Label/styles/normal = SubResource("StyleBoxEmpty_6rneb")
-Panel/styles/panel = SubResource("StyleBoxFlat_1sjti")
-RichTextLabel/constants/line_separation = 10
+RichTextLabel/constants/line_separation = 5
 RichTextLabel/fonts/bold_font = ExtResource("1_6rneb")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qv6ex"]
-bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6rqb"]
-bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
-
-[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "tab_container", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "close_button") groups=["InteractUI"]]
+[node name="InteractionUI" type="Control" node_paths=PackedStringArray("_panel", "_comms_page", "_fleet_page", "_shop_page", "_portrait_panel", "_portrait_texture_rect", "_planet_name_label", "_dialogue_text", "_reply_holder", "_fleet_list", "_assign_button", "_shop_list", "_buy_button", "_comms_tab_button", "_fleet_tab_button", "_shop_tab_button") groups=["InteractUI"]]
 texture_filter = 1
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 3
@@ -69,17 +55,25 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 theme = SubResource("Theme_6rneb")
-script = ExtResource("3_1sjti")
-panel = NodePath("HBoxContainer")
-tab_container = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer")
-fleet_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
-shop_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
-comms_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
-fleet_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
-shop_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
-close_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CloseButton")
-tween_time = 0.1
-slow_scale = 0.0
+script = ExtResource("1_dekh7")
+_panel = NodePath("Panel")
+_comms_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage")
+_fleet_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
+_shop_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+_portrait_panel = NodePath("PortraitPanel")
+_portrait_texture_rect = NodePath("PortraitPanel/PortraitFrame/PortraitTexture")
+_planet_name_label = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/PlanetNameLabel")
+_dialogue_text = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/DialogueText")
+_reply_holder = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/ReplyButtonsHolder")
+_fleet_list = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox/FleetList")
+_assign_button = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox/AssignSelectedButton")
+_shop_list = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox/ShopList")
+_buy_button = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox/BuyButton")
+_comms_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
+_fleet_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
+_shop_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
+slow_scale = 0.1
+panel_bg_color = Color(0.35380003, 0.49044, 0.61, 1)
 
 [node name="PortraitPanel" type="Control" parent="."]
 layout_direction = 2
@@ -91,14 +85,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
-self_modulate = Color(1, 1, 1, 0.39215687)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-rotation = 0.00026254842
 
 [node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
 layout_mode = 1
@@ -107,45 +99,25 @@ offset_top = 100.0
 offset_right = 100.0
 offset_bottom = 100.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 1400.0
-offset_top = 20.0
-offset_right = 1900.0
-offset_bottom = 1060.0
-theme_override_constants/separation = 0
-
-[node name="Control" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="PlanetNameLabel" type="Label" parent="HBoxContainer/Control"]
+[node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -145.0
-offset_bottom = 70.0
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
 grow_horizontal = 0
-rotation = -1.5707964
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_qv6ex")
-text = "NAME"
-horizontal_alignment = 2
-vertical_alignment = 1
-script = ExtResource("4_qv6ex")
 
-[node name="Panel" type="PanelContainer" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_h6rqb")
-
-[node name="MainVBox" type="VBoxContainer" parent="HBoxContainer/Panel"]
+[node name="MainVBox" type="VBoxContainer" parent="Panel"]
 custom_minimum_size = Vector2(300, 500)
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panel/MainVBox"]
-custom_minimum_size = Vector2(300, 70)
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 16
@@ -153,54 +125,54 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 12
 
-[node name="TopBar" type="HBoxContainer" parent="HBoxContainer/Panel/MainVBox/MarginContainer"]
+[node name="TopBar" type="HBoxContainer" parent="Panel/MainVBox/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="CommsTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+[node name="CommsTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Comms"
 
-[node name="FleetTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+[node name="FleetTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Fleet"
 
-[node name="ShopTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+[node name="ShopTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Shop"
 
-[node name="CloseButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+[node name="CloseButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 text = "X (E)"
 
-[node name="ContentMarginContainer" type="MarginContainer" parent="HBoxContainer/Panel/MainVBox"]
+[node name="ContentMarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="TabContainer" type="TabContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer"]
+[node name="TabContainer" type="Control" parent="Panel/MainVBox/ContentMarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
 
-[node name="FleetPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("fleet_list", "assign_selected_button")]
-layout_mode = 2
-script = ExtResource("6_mf7aw")
-fleet_list = NodePath("FleetVBox/FleetList")
-assign_selected_button = NodePath("FleetVBox/AssignSelectedButton")
-metadata/_tab_index = 0
+[node name="CommsPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="FleetVBox" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage"]
+[node name="CommsVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -210,26 +182,61 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="FleetList" type="ItemList" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+[node name="PlanetNameLabel" type="Label" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Planet Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Dialogue will appear here..."
+
+[node name="ReplyButtonsHolder" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 6
+
+[node name="FleetPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FleetVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="FleetList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AssignSelectedButton" type="Button" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+[node name="AssignSelectedButton" type="Button" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Switch Drone"
 
-[node name="ShopPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("shop_list", "buy_button")]
-visible = false
-layout_mode = 2
-script = ExtResource("7_s8qdh")
-shop_list = NodePath("ShopVBox/ShopList")
-buy_button = NodePath("ShopVBox/BuyButton")
-metadata/_tab_index = 1
+[node name="ShopPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="ShopVBox" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
+[node name="ShopVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -239,18 +246,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="ShopList" type="ItemList" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+[node name="ShopList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BuyButton" type="Button" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+[node name="BuyButton" type="Button" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Buy Item"
 
-[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CommsTabButton" to="." method="show_comms_tab"]
-[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/FleetTabButton" to="." method="show_fleet_tab"]
-[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/ShopTabButton" to="." method="show_shop_tab"]
-[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CloseButton" to="." method="close_button_pressed"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/CommsTabButton" to="." method="show_comms_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/FleetTabButton" to="." method="show_fleet_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/ShopTabButton" to="." method="show_shop_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/CloseButton" to="." method="close_button_pressed"]
