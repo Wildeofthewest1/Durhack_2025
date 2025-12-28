@@ -35,5 +35,5 @@ texture_filter = 1
 material = SubResource("CanvasItemMaterial_b43k1")
 amount = 4
 texture = ExtResource("1_xpd4h")
-lifetime = 2.0
+lifetime = 1.5
 process_material = SubResource("ParticleProcessMaterial_ltjjc")
