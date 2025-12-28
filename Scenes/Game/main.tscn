@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=30 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://b2is01dn5d4fu" path="res://Scenes/Camera/background.tscn" id="1_xqoiw"]
@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://bhdxekukr2r8h" path="res://Scenes/Bodies/asteroid_belt/asteroid_belt.gd" id="12_sw6w7"]
 [ext_resource type="PackedScene" uid="uid://taj55vxgq3ib" path="res://Scenes/UI/Weapons/weapon_hud.tscn" id="15_wipx2"]
 [ext_resource type="PackedScene" uid="uid://bv5g8xwkuhyhe" path="res://Scenes/UI/Resource Display/resource_row.tscn" id="17_nq4jv"]
+[ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="18_2dqcq"]
+[ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="19_vbfs4"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yyavk"]
 blend_mode = 4
@@ -52,6 +54,49 @@ shader_parameter/global_intensity = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gbba"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl17m"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rneb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1sjti"]
+
+[sub_resource type="Theme" id="Theme_6xnnf"]
+resource_local_to_scene = true
+default_font = ExtResource("19_vbfs4")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 30
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 16
+Label/styles/focus = SubResource("StyleBoxFlat_hl17m")
+Label/styles/normal = SubResource("StyleBoxEmpty_6rneb")
+Panel/styles/panel = SubResource("StyleBoxFlat_1sjti")
+RichTextLabel/constants/line_separation = 5
+RichTextLabel/fonts/bold_font = ExtResource("18_2dqcq")
 
 [sub_resource type="LabelSettings" id="LabelSettings_nq4jv"]
 line_spacing = -5.0
@@ -183,22 +228,6 @@ anchors_preset = -1
 offset_left = 50.0
 offset_top = 50.0
 
-[node name="MinimapContainer" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-
-[node name="Minimap" parent="CanvasLayer/MinimapContainer" instance=ExtResource("8_wrqr2")]
-layout_mode = 1
-anchors_preset = 1
-minimap_size = Vector2(200, 200)
-background_color = Color(0.1, 0.1, 0.15, 0.9)
-border_color = Color(0.3, 0.3, 0.4, 1)
-
 [node name="WeaponHUD" parent="CanvasLayer" instance=ExtResource("15_wipx2")]
 anchors_preset = -1
 offset_left = 40.0
@@ -220,9 +249,24 @@ anchors_preset = -1
 offset_left = 60.0
 offset_top = 120.0
 
+[node name="MinimapContainer" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Minimap" parent="CanvasLayer/MinimapContainer" instance=ExtResource("8_wrqr2")]
+layout_mode = 1
+minimap_size = Vector2(200, 200)
+background_color = Color(0.1, 0.1, 0.15, 0.9)
+border_color = Color(0.3, 0.3, 0.4, 1)
+
 [node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
+theme = SubResource("Theme_6xnnf")
 panel_hide_offset = 600.0
-panel_bg_color = Color(0.05882353, 0.05882353, 0.078431375, 1)
 
 [node name="Instructions" type="Label" parent="."]
 texture_filter = 1

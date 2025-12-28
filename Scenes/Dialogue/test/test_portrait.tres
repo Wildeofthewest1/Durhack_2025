@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PortraitSet" load_steps=2 format=3 uid="uid://cu4l6wwcj1lux"]
+
+[ext_resource type="Script" uid="uid://cd81g75gxi7ss" path="res://Scenes/Dialogue/PortraitSet.gd" id="1_24xw7"]
+
+[resource]
+script = ExtResource("1_24xw7")
+metadata/_custom_type_script = "uid://cd81g75gxi7ss"
