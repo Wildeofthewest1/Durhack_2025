@@ -61,7 +61,7 @@ color_ramp = SubResource("GradientTexture1D_htcqd")
 alpha_curve = SubResource("CurveTexture_qkjam")
 
 [sub_resource type="Curve" id="Curve_fltp7"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.46405226, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.464, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_8v450"]
@@ -97,16 +97,12 @@ lifetime_randomness = 0.21
 particle_flag_align_y = true
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-2, 0, 0)
-emission_shape = 6
-emission_ring_axis = Vector3(0, 0, 1)
-emission_ring_height = 1.0
-emission_ring_radius = 20.0
-emission_ring_inner_radius = 19.0
-emission_ring_cone_angle = 0.0
+emission_shape = 3
+emission_box_extents = Vector3(1, 10, 1)
 spread = 30.0
 flatness = 0.06
-initial_velocity_min = 900.0
-initial_velocity_max = 1000.0
+initial_velocity_min = 300.0
+initial_velocity_max = 300.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.19999999
 scale_max = 0.5
@@ -224,7 +220,7 @@ process_material = SubResource("ParticleProcessMaterial_5hsui")
 [node name="Forward2" type="GPUParticles2D" parent="."]
 rotation = -3.1415925
 emitting = false
-amount = 25
+amount = 10
 texture = ExtResource("1_jtw85")
 lifetime = 0.35000000000000003
 one_shot = true

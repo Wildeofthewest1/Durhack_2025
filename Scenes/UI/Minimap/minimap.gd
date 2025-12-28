@@ -2,7 +2,7 @@ extends Control
 class_name Minimap
 
 ## Minimap display settings
-@export var minimap_size: Vector2 = Vector2(250.0, 250.0) # used only if you call set_minimap_size()
+@export var minimap_size: Vector2 = Vector2(250.0, 250.0)
 @export var world_scale: float = 0.1
 @export var background_color: Color = Color(0.1, 0.1, 0.15, 0.9)
 @export var border_color: Color = Color(0.3, 0.3, 0.4, 1.0)
@@ -14,7 +14,7 @@ class_name Minimap
 
 ## Expanded mode (DO NOT change anchors; we only override offsets)
 @export var expanded_enabled: bool = true
-@export var expanded_margin: Vector2 = Vector2(32.0, 32.0) # x=right margin, y=top margin
+@export var expanded_margin: Vector2 = Vector2(32.0, 32.0)
 @export var toggle_action: StringName = &"toggle_map"
 
 ## Optional overlay button/control on top of minimap for clicking to toggle
@@ -26,30 +26,31 @@ class_name Minimap
 @export var max_zoom: float = 6.0
 @export var zoom_step: float = 1.12
 
-## Optional world bounds clamping (prevents panning into nonsense when zoomed out)
+## Optional world bounds clamping
 @export var world_bounds_enabled: bool = false
 @export var world_bounds: Rect2 = Rect2(Vector2(-5000.0, -5000.0), Vector2(10000.0, 10000.0))
 
 ## Reference to the player/camera to center the minimap on
 @export var follow_node: Node2D
 
+## --- Slow time while expanded ---
+@export var fast_scale: float = 1.0
+@export var slow_scale: float = 0.05
+@export var time_lerp_speed: float = 0.12
+
 ## Internal tracking
 var tracked_objects: Array[MinimapTrackedObject] = []
 
 @onready var draw_area: MinimapDrawArea = $DrawArea as MinimapDrawArea
 
-# -------------------------------------------------
 # Cached minimized layout (EXACT editor offsets)
-# -------------------------------------------------
 var _min_offset_left: float = 0.0
 var _min_offset_right: float = 0.0
 var _min_offset_top: float = 0.0
 var _min_offset_bottom: float = 0.0
 var _min_size: Vector2 = Vector2.ZERO
 
-# -------------------------------------------------
 # View state
-# -------------------------------------------------
 var _expanded: bool = false
 var _zoom: float = 1.0
 var _view_center_world: Vector2 = Vector2.ZERO
@@ -62,8 +63,13 @@ var _drag_start_center_world: Vector2 = Vector2.ZERO
 # Optional overlay
 var _toggle_button: Control = null
 
+# Time scale state
+var _current_time_scale: float = 1.0
+
+# Tracks whether THIS minimap currently holds the gameplay lock
+var _holds_gameplay_lock: bool = false
+
 func _ready() -> void:
-	# DO NOT change anchors here. Use your editor anchors (top-right).
 	# Cache EXACT minimized offsets from the editor.
 	_min_offset_left = offset_left
 	_min_offset_right = offset_right
@@ -89,7 +95,20 @@ func _ready() -> void:
 		draw_area.offset_right = 0.0
 		draw_area.offset_bottom = 0.0
 
+	# Ensure minimap can intercept inputs when expanded
+	mouse_filter = Control.MOUSE_FILTER_STOP
+
+	set_process(true)
 	set_process_unhandled_input(true)
+
+func _process(_delta: float) -> void:
+	# Only slow time while expanded
+	var target_scale: float = fast_scale
+	if _expanded == true:
+		target_scale = slow_scale
+
+	_current_time_scale = lerp(_current_time_scale, target_scale, time_lerp_speed)
+	Engine.time_scale = _current_time_scale
 
 func _physics_process(_delta: float) -> void:
 	# Minimized mode follows player.
@@ -139,7 +158,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var denom: float = world_scale * _zoom
 		if denom > 0.000001:
 			var delta_world: Vector2 = delta_px / denom
-			# grab-map feel
 			_view_center_world = _drag_start_center_world - delta_world
 			_clamp_view_center_world()
 
@@ -156,14 +174,18 @@ func toggle_expanded() -> void:
 	_expanded = not _expanded
 
 	if _expanded:
-		_disable_toggle_overlay_for_pan(true)
+		# Lock gameplay + slow time
+		_acquire_gameplay_lock()
 
+		_disable_toggle_overlay_for_pan(true)
 		_zoom = 1.0
 		_sync_center_to_follow()
 		_apply_expanded_layout_top_right()
 	else:
-		_disable_toggle_overlay_for_pan(false)
+		# Unlock gameplay + restore time
+		_release_gameplay_lock()
 
+		_disable_toggle_overlay_for_pan(false)
 		_zoom = 1.0
 		_sync_center_to_follow()
 		_apply_minimized_layout_exact()
@@ -174,10 +196,29 @@ func toggle_expanded() -> void:
 		draw_area.queue_redraw()
 
 # =========================================================
+# Lock / Unlock helpers
+# =========================================================
+func _acquire_gameplay_lock() -> void:
+	if _holds_gameplay_lock == false:
+		InputLock.lock_gameplay()
+		_holds_gameplay_lock = true
+
+func _release_gameplay_lock() -> void:
+	if _holds_gameplay_lock == true:
+		InputLock.unlock_gameplay()
+		_holds_gameplay_lock = false
+
+	_current_time_scale = 1.0
+	Engine.time_scale = 1.0
+
+func _exit_tree() -> void:
+	# Safety: if this node is removed while expanded, don't leave the game locked/slow.
+	_release_gameplay_lock()
+
+# =========================================================
 # Layout
 # =========================================================
 func _apply_minimized_layout_exact() -> void:
-	# Restore EXACT editor layout (from your screenshot)
 	offset_left = _min_offset_left
 	offset_right = _min_offset_right
 	offset_top = _min_offset_top
@@ -185,7 +226,6 @@ func _apply_minimized_layout_exact() -> void:
 	size = _min_size
 
 func _apply_expanded_layout_top_right() -> void:
-	# Still top-right anchored. Only override offsets + size.
 	var vp: Vector2 = get_viewport_rect().size
 	var m: Vector2 = expanded_margin
 
@@ -195,8 +235,6 @@ func _apply_expanded_layout_top_right() -> void:
 	if expanded_size.y < 64.0:
 		expanded_size.y = 64.0
 
-	# If you want the expanded mode to also respect your margin_top/right,
-	# add them into the offsets here. Otherwise it uses expanded_margin only.
 	var right_margin: float = m.x
 	var top_margin: float = m.y
 
@@ -208,12 +246,9 @@ func _apply_expanded_layout_top_right() -> void:
 
 	size = expanded_size
 
-## If you want to resize minimized in code, call this (it updates cached minimized layout too)
 func set_minimap_size(new_size: Vector2) -> void:
 	minimap_size = new_size
 
-	# Keep the same top-right anchoring logic the editor uses:
-	# right stays at cached right (usually 0), left becomes right - width
 	_min_size = new_size
 	_min_offset_right = _min_offset_right
 	_min_offset_left = _min_offset_right - new_size.x
@@ -295,7 +330,6 @@ func _zoom_at_mouse(factor: float) -> void:
 	if abs(new_zoom - old_zoom) < 0.00001:
 		return
 
-	# Keep world point under cursor stable
 	var mouse_local: Vector2 = get_local_mouse_position()
 	var center_px: Vector2 = size * 0.5
 	var from_center_px: Vector2 = mouse_local - center_px
@@ -326,7 +360,6 @@ func _clamp_view_center_world() -> void:
 	if denom <= 0.000001:
 		return
 
-	# Visible half-size in world units
 	var half_w: float = (size.x * 0.5) / denom
 	var half_h: float = (size.y * 0.5) / denom
 

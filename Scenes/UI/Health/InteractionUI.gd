@@ -1,5 +1,5 @@
 extends Control
-class_name InteractionUI
+#class_name InteractionUI
 
 @export var _panel: Control
 @export var _comms_page: Control

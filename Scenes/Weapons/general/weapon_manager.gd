@@ -32,11 +32,11 @@ var _instances: Array[WeaponBase] = []
 var _equipped_index: int = -1
 var _equipped_instance: WeaponBase = null
 
-var _cached_current_mag: Dictionary = {}     # int -> int
-var _cached_stored_mags: Dictionary = {}     # int -> int
-var _cached_is_reloading: Dictionary = {}    # int -> bool
-var _cached_is_regenerating: Dictionary = {} # int -> bool
-var _cached_ammo_model: Dictionary = {}      # int -> int (WeaponData.AmmoModel)
+var _cached_current_mag: Dictionary = {}
+var _cached_stored_mags: Dictionary = {}
+var _cached_is_reloading: Dictionary = {}
+var _cached_is_regenerating: Dictionary = {}
+var _cached_ammo_model: Dictionary = {}
 
 func _ready() -> void:
 	_socket = get_node(socket_path) as Node2D
@@ -53,6 +53,15 @@ func _ready() -> void:
 		i += 1
 
 func _physics_process(delta: float) -> void:
+	# --- GLOBAL GAMEPLAY LOCK (UI up, etc.) ---
+	if not InputLock.is_gameplay_enabled():
+		# If fire was held, make sure we "release" once so weapons don't get stuck charging
+		if _equipped_instance != null:
+			if _equipped_instance.has_method("release_fire"):
+				_equipped_instance.release_fire()
+		return
+
+	# --- Fire input ---
 	if _equipped_instance != null:
 		if Input.is_action_pressed("fire"):
 			_equipped_instance.request_fire()
@@ -60,6 +69,7 @@ func _physics_process(delta: float) -> void:
 			if _equipped_instance.has_method("release_fire"):
 				_equipped_instance.release_fire()
 
+	# --- Direct slot keys ---
 	if Input.is_action_just_pressed("weapon_1"):
 		_equip_slot(0)
 	if Input.is_action_just_pressed("weapon_2"):
@@ -71,6 +81,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("weapon_5"):
 		_equip_slot(4)
 
+	# --- Cycling ---
 	if Input.is_action_just_pressed(input_cycle_next):
 		_cycle(+1)
 	if Input.is_action_just_pressed(input_cycle_prev):
@@ -114,7 +125,6 @@ func _spawn_all() -> void:
 		_cached_is_reloading[i] = false
 		_cached_is_regenerating[i] = false
 
-		# now includes reload_progress + regen_progress
 		instance.ammo_state_changed.connect(_on_weapon_ammo_state_changed.bind(i))
 
 		i += 1
