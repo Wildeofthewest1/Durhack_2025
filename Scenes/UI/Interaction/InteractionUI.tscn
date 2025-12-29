@@ -1,0 +1,304 @@
+[gd_scene load_steps=12 format=3 uid="uid://rp1733dafbo0"]
+
+[ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="1_6rneb"]
+[ext_resource type="Script" uid="uid://c3c421urpfyr2" path="res://Scenes/UI/Interaction/InteractionUI.gd" id="1_dekh7"]
+[ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="1_hl17m"]
+[ext_resource type="Script" uid="uid://coainnxauvvmc" path="res://Scenes/UI/Interaction/portrait_panel.gd" id="4_bffip"]
+[ext_resource type="Script" uid="uid://cb15f7wpp6eh3" path="res://Scenes/UI/Interaction/fleet_page.gd" id="4_l3h20"]
+[ext_resource type="Script" uid="uid://ddoikfhq5mc46" path="res://Scenes/UI/Interaction/shop_page.gd" id="5_1nyff"]
+[ext_resource type="Script" uid="uid://dgul76im4orwd" path="res://Scenes/UI/Interaction/comms_page.gd" id="5_d4h0c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl17m"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rneb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4h0c"]
+
+[sub_resource type="Theme" id="Theme_6rneb"]
+default_font = ExtResource("1_hl17m")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 30
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 16
+Label/styles/focus = SubResource("StyleBoxFlat_hl17m")
+Label/styles/normal = SubResource("StyleBoxEmpty_6rneb")
+Panel/styles/panel = SubResource("StyleBoxFlat_d4h0c")
+RichTextLabel/constants/line_separation = 5
+RichTextLabel/fonts/bold_font = ExtResource("1_6rneb")
+
+[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "comms_page", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "portrait_controller", "comms_controller", "fleet_controller", "shop_controller") groups=["InteractUI"]]
+texture_filter = 1
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme = SubResource("Theme_6rneb")
+script = ExtResource("1_dekh7")
+panel = NodePath("Panel")
+comms_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage")
+fleet_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
+shop_page = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+comms_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
+fleet_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
+shop_tab_button = NodePath("Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
+portrait_controller = NodePath("PortraitPanel")
+comms_controller = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage")
+fleet_controller = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
+shop_controller = NodePath("Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+
+[node name="PortraitPanel" type="Control" parent="." node_paths=PackedStringArray("portrait_panel", "portrait_texture_rect")]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_bffip")
+portrait_panel = NodePath(".")
+portrait_texture_rect = NodePath("PortraitFrame/PortraitTexture")
+
+[node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
+layout_mode = 1
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+
+[node name="MainVBox" type="VBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(300, 500)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="HBoxContainer" parent="Panel/MainVBox/MarginContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="CommsTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Comms"
+
+[node name="FleetTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fleet"
+
+[node name="ShopTabButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Shop"
+
+[node name="CloseButton" type="Button" parent="Panel/MainVBox/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "X (E)"
+
+[node name="ContentMarginContainer" type="MarginContainer" parent="Panel/MainVBox"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="TabContainer" type="Control" parent="Panel/MainVBox/ContentMarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CommsPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("planet_name_label", "history_scroll", "history_label", "choices_label", "reply_holder")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_d4h0c")
+planet_name_label = NodePath("CommsVBox/PlanetNameLabel")
+history_scroll = NodePath("CommsVBox/ScrollContainer")
+history_label = NodePath("CommsVBox/ScrollContainer/History")
+choices_label = NodePath("CommsVBox/Replies")
+reply_holder = NodePath("CommsVBox/ReplyButtonsHolder")
+player_name = "You "
+continue_color = " #8ee6c7"
+
+[node name="CommsVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="PlanetNameLabel" type="Label" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Planet Name"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="History" type="RichTextLabel" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/paragraph_separation = 10
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Dialogue will appear here..."
+
+[node name="DialogueText" type="RichTextLabel" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Dialogue will appear here..."
+
+[node name="Replies" type="RichTextLabel" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+layout_mode = 2
+theme_override_constants/line_separation = 20
+theme_override_constants/paragraph_separation = 20
+theme_override_font_sizes/normal_font_size = 20
+
+[node name="ReplyButtonsHolder" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+visible = false
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 6
+
+[node name="FleetPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("fleet_list", "assign_button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_l3h20")
+fleet_list = NodePath("FleetVBox/FleetList")
+assign_button = NodePath("FleetVBox/AssignSelectedButton")
+
+[node name="FleetVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="FleetList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AssignSelectedButton" type="Button" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Switch Drone"
+
+[node name="ShopPage" type="Control" parent="Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("shop_list", "buy_button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_1nyff")
+shop_list = NodePath("ShopVBox/ShopList")
+buy_button = NodePath("ShopVBox/BuyButton")
+
+[node name="ShopVBox" type="VBoxContainer" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="ShopList" type="ItemList" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BuyButton" type="Button" parent="Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Buy Item"
+
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/CommsTabButton" to="." method="show_comms_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/FleetTabButton" to="." method="show_fleet_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/ShopTabButton" to="." method="show_shop_tab"]
+[connection signal="pressed" from="Panel/MainVBox/MarginContainer/TopBar/CloseButton" to="." method="close_button_pressed"]

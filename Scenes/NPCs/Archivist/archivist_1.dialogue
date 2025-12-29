@@ -1,0 +1,18 @@
+~ start
+Archivist: [[Hi, Captain|Hail, Captain|Data... OH! Sorry, Captain!]].
+Archivist: We store an immense amount of data here.
+Archivist: Lines, pictures, notes, ingesting one millionth of a percent would drive you insane.
+Archivist: Pretty lucky to have all these machines to assist us in the task.
+- First one
+	You: Glory be to us.
+	Archivist: Glory be to all.
+- Second one
+	You: We would like to learn about the asteroid belt.
+	Archivist: Yes, you would.
+	You: We would.
+	Archivist: Hmm. We rarely donate such prizes charitably, but here we'll make an exception. 
+	Archivist: ...Just go straight in. I doubt the debris can harm you if you pass through fast enough. Though, I'm not sure if you're capable of going at such speeds yet.
+- Start again => start
+- End the conversation => END
+Nathan: For more information see the online documentation.
+=> END

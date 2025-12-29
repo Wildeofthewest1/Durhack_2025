@@ -21,7 +21,7 @@ PlayerVariables="*res://Scenes/Player/PlayerVariables.gd"
 Screenshake="*res://Scenes/Camera/Screenshake.gd"
 WaveManager="*res://Scenes/Waves/WaveManager.gd"
 ResourceManager="*res://Data/Game Resources/ResourceManager.gd"
-Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
+DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 
 [dialogic]
 
@@ -34,6 +34,10 @@ layout/style_directory={
 layout/style_list=["res://Scenes/Dialogue/Dialogue_Style_test.tres"]
 layout/default_style="res://Scenes/Dialogue/Dialogue_Style_test.tres"
 
+[dialogue_manager]
+
+runtime/balloon_path="res://Scenes/Dialogue/balloon.tscn"
+
 [display]
 
 window/size/viewport_width=1920
@@ -43,7 +47,7 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
 
 [global_group]
 
@@ -161,6 +165,10 @@ dialogic_default_action={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+
+[internationalization]
+
+locale/translations_pot_files=PackedStringArray("res://Scenes/Dialogue/test.dialogue", "res://Scenes/NPCs/Archivist/archivist_1.dialogue")
 
 [rendering]
 

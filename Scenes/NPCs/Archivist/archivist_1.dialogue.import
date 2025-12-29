@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://bbah8n58j60jf"
+path="res://.godot/imported/archivist_1.dialogue-5b50354b87114eb9952bb6149b619c93.tres"
+
+[deps]
+
+source_file="res://Scenes/NPCs/Archivist/archivist_1.dialogue"
+dest_files=["res://.godot/imported/archivist_1.dialogue-5b50354b87114eb9952bb6149b619c93.tres"]
+
+[params]
+
+defaults=true

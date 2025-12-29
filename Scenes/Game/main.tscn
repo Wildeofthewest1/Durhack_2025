@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://bh6xbk3b5rc8q" path="res://Scenes/Camera/PixelZoomViewport.gd" id="2_cwscw"]
 [ext_resource type="Script" uid="uid://btuyc1djn4djp" path="res://Scenes/UI/UI_Manager.gd" id="3_wrqr2"]
 [ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="4_5fdju"]
-[ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/Health/InteractionUI.tscn" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://rp1733dafbo0" path="res://Scenes/UI/Interaction/InteractionUI.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://dibs8io4xu6dn" path="res://Scenes/UI/400_years.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://btrdmogpntkxv" path="res://Scenes/UI/thrust/thrust_ui.tscn" id="6_21xkr"]
 [ext_resource type="PackedScene" uid="uid://vj635ptco6m2" path="res://Scenes/UI/Health/health_ui.tscn" id="7_6bp64"]
@@ -194,7 +194,6 @@ grow_horizontal = 0
 
 [node name="Minimap" parent="CanvasLayer/MinimapContainer" instance=ExtResource("8_wrqr2")]
 layout_mode = 1
-anchors_preset = 1
 minimap_size = Vector2(200, 200)
 background_color = Color(0.1, 0.1, 0.15, 0.9)
 border_color = Color(0.3, 0.3, 0.4, 1)
