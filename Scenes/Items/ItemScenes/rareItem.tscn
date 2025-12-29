@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bvbbx2skpl5yq" path="res://Scenes/Items/ItemPickup.gd" id="1_v4jdr"]
 [ext_resource type="Texture2D" uid="uid://cycmemfe803f" path="res://Assets/scrap_anim.png" id="2_o6ean"]
 [ext_resource type="AudioStream" uid="uid://bvo38fkhl6ct" path="res://Scenes/Items/PickupSounds/money_pickup.mp3" id="2_r4lll"]
-[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="3_r4lll"]
+[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/NPCs/Satellite/satellite2_rotate.gd" id="3_r4lll"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5hirf"]
 atlas = ExtResource("2_o6ean")

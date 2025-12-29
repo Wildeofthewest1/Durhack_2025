@@ -22,6 +22,7 @@ Screenshake="*res://Scenes/Camera/Screenshake.gd"
 WaveManager="*res://Scenes/Waves/WaveManager.gd"
 ResourceManager="*res://Data/Game Resources/ResourceManager.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+PauseManager="*res://Scenes/Game/PauseManager.gd"
 
 [dialogic]
 

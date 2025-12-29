@@ -3,14 +3,11 @@ class_name InteractionCommsController
 
 @export var planet_name_label: Label
 
-# History is the main (only) display
 @export var history_scroll: ScrollContainer
 @export var history_label: RichTextLabel
 
-# Disco-style choices/continue rendered as URLs
 @export var choices_label: RichTextLabel
 
-# Kept for compatibility with your scene, not used by comms now
 @export var reply_holder: VBoxContainer
 
 @export var next_action: StringName = &"ui_accept"
@@ -18,13 +15,14 @@ class_name InteractionCommsController
 @export var show_continue_link: bool = true
 @export var continue_text: String = "→ Continue"
 
-# Speaker styling
-@export var npc_name_color: String = "#d9d4ff"
-@export var player_name_color: String = "#f3d38b"
-@export var player_name: String = "YOU"
+# Speaker styling (only affects the "SPEAKER:" part)
+@export var npc_speaker_color: String = "#d9d4ff"
+@export var you_speaker_color: String = "#f3d38b"
+@export var you_name: String = "YOU"
 
-@export var continue_color: String = "#8ee6c7"
+# Choice list styling (the numbered options)
 @export var choice_color: String = "#e8e1c9"
+@export var continue_color: String = "#8ee6c7"
 
 var _planet: Node = null
 var _dialogue_resource: DialogueResource = null
@@ -34,13 +32,11 @@ var _dialogue_line: DialogueLine = null
 var _is_waiting_for_input: bool = false
 var _is_running: bool = false
 
-# Dialogue Manager expects an Array here (extra game states)
 var _extra_game_states: Array = []
 
 const META_CONTINUE: String = "dm_continue"
-const META_CHOICE_PREFIX: String = "dm_choice:" # dm_choice:<next_id>
+const META_CHOICE_IDX_PREFIX: String = "dm_choice_idx:"
 
-# Keep current responses so we can log the chosen one
 var _current_responses: Array[DialogueResponse] = []
 
 func _ready() -> void:
@@ -94,7 +90,6 @@ func handle_input(event: InputEvent) -> void:
 	if not _is_waiting_for_input:
 		return
 
-	# Keyboard continue only when there are no responses
 	if event.is_action_pressed(next_action):
 		if _dialogue_line == null:
 			return
@@ -138,39 +133,30 @@ func _present_line() -> void:
 		_is_running = false
 		return
 
-	var speaker: String = ""
-	if _dialogue_line.character != "":
-		speaker = _dialogue_line.character
-	elif _dialogue_line.speaker != "":
-		speaker = _dialogue_line.speaker
-
+	var speaker: String = _get_line_speaker(_dialogue_line)
 	var text_bbcode: String = _dialogue_line.text
 	var stripped_text: String = text_bbcode.strip_edges()
 
-	# Mutation-only line: empty + no responses => auto-advance (DM3-safe)
+	# Mutation-only line: empty + no responses => auto-advance
 	if stripped_text.is_empty() and _dialogue_line.responses.size() == 0:
 		await get_tree().process_frame
 		_advance_async(_dialogue_line.next_id)
 		return
 
-	# Append the line ONLY to history (main display)
+	# Log to history (single label)
 	if speaker.is_empty():
-		# Narration/system text
 		_append_history(text_bbcode)
 	else:
-		_append_history(
-			"[color=%s][b]%s[/b][/color]  %s"
-			% [npc_name_color, speaker, text_bbcode]
-		)
+		_append_history(_format_spoken_line(speaker, text_bbcode))
 
-	# Responses -> URL list
+	# Show responses (clickable)
 	if _dialogue_line.responses.size() > 0:
 		_current_responses = _dialogue_line.responses.duplicate()
 		_render_choice_urls(_current_responses)
 		_is_waiting_for_input = true
 		return
 
-	# Timed lines -> auto advance
+	# Timed lines
 	if _dialogue_line.time != "":
 		var seconds: float = 0.0
 		if _dialogue_line.time == "auto":
@@ -181,14 +167,14 @@ func _present_line() -> void:
 		_advance_async(_dialogue_line.next_id)
 		return
 
-	# No responses -> show Continue URL
+	# Continue
 	if show_continue_link:
 		_render_continue_url()
 
 	_is_waiting_for_input = true
 
 # -----------------------
-# URL rendering + logging choice
+# Choice rendering / clicking
 # -----------------------
 
 func _render_continue_url() -> void:
@@ -203,11 +189,16 @@ func _render_choice_urls(responses: Array[DialogueResponse]) -> void:
 		return
 
 	var bb: String = "\n"
-	var i: int = 1
+	var index: int = 0
+	var display_num: int = 1
+
 	for r in responses:
-		var meta: String = META_CHOICE_PREFIX + r.next_id
-		bb += "[color=%s][url=%s]%d. %s[/url][/color]\n" % [choice_color, meta, i, r.text]
-		i += 1
+		var meta: String = META_CHOICE_IDX_PREFIX + String.num_int64(index)
+		# We color the choice line; the response text itself stays plain (unless your DM text already has bbcode)
+		bb += "[color=%s][url=%s]%d. %s[/url][/color]\n" % [choice_color, meta, display_num, r.text]
+		index += 1
+		display_num += 1
+
 	choices_label.text = bb
 
 func _on_choices_meta_clicked(meta: Variant) -> void:
@@ -228,31 +219,53 @@ func _on_choices_meta_clicked(meta: Variant) -> void:
 		_advance_async(_dialogue_line.next_id)
 		return
 
-	if m.begins_with(META_CHOICE_PREFIX):
-		var next_id: String = m.substr(META_CHOICE_PREFIX.length())
+	if m.begins_with(META_CHOICE_IDX_PREFIX):
+		var idx_str: String = m.substr(META_CHOICE_IDX_PREFIX.length())
+		var idx: int = idx_str.to_int()
 
-		# Log chosen response into history (player colored)
-		var chosen_text: String = _find_response_text_by_next_id(next_id)
-		if not chosen_text.is_empty():
-			_append_history(
-				"[color=%s][b]%s[/b][/color]  %s"
-				% [player_name_color, player_name, chosen_text]
-			)
+		if idx < 0 or idx >= _current_responses.size():
+			return
+
+		var r: DialogueResponse = _current_responses[idx]
+
+		# Log player choice as "YOU: ..." with colored YOU
+		_append_history(_format_spoken_line(you_name, r.text))
 
 		_is_waiting_for_input = false
 		_current_responses.clear()
 		_clear_choices()
-		_advance_async(next_id)
+		_advance_async(r.next_id)
 		return
 
-func _find_response_text_by_next_id(next_id: String) -> String:
-	for r in _current_responses:
-		if r.next_id == next_id:
-			return r.text
+# -----------------------
+# Formatting helpers
+# -----------------------
+
+func _get_line_speaker(line: DialogueLine) -> String:
+	if line.character != "":
+		return line.character
+	if line.speaker != "":
+		return line.speaker
 	return ""
 
+func _format_spoken_line(speaker: String, text_bbcode: String) -> String:
+	var s: String = speaker.strip_edges()
+	if s.is_empty():
+		return text_bbcode
+
+	var is_you: bool = _is_you_speaker(s)
+
+	var color_hex: String = you_speaker_color if is_you else npc_speaker_color
+	var prefix: String = "[color=%s][b]%s:[/b][/color] " % [color_hex, s]
+	return prefix + text_bbcode
+
+func _is_you_speaker(speaker: String) -> bool:
+	var a: String = speaker.strip_edges().to_lower()
+	var b: String = you_name.strip_edges().to_lower()
+	return a == b or a == "you"
+
 # -----------------------
-# History helpers (scroll + input)
+# UI helpers
 # -----------------------
 
 func _setup_rich_text(rtl: RichTextLabel, mouse_filter_value: int) -> void:

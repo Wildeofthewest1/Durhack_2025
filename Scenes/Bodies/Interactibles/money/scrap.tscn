@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cycmemfe803f" path="res://Assets/scrap_anim.png" id="1_d1w8h"]
 [ext_resource type="Script" uid="uid://bvbbx2skpl5yq" path="res://Scenes/Items/ItemPickup.gd" id="1_v5g34"]
-[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/Satellite/satellite2_rotate.gd" id="2_6ox2l"]
+[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/NPCs/Satellite/satellite2_rotate.gd" id="2_6ox2l"]
 [ext_resource type="AudioStream" uid="uid://d2sm4ke64ryv0" path="res://Scenes/Bodies/Interactibles/money/money_pickup.mp3" id="2_xnlh6"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="5_xnlh6"]
 

@@ -3,7 +3,7 @@ class_name InteractionUI
 
 # =====================================================================
 # ROOT ORCHESTRATOR
-# - owns open/close animation + time scale
+# - owns open/close animation
 # - switches tabs
 # - delegates page logic to child controllers
 # =====================================================================
@@ -20,9 +20,6 @@ class_name InteractionUI
 @export var panel_hide_offset: float = 400.0
 @export var tween_time: float = 0.18
 
-@export var fast_scale: float = 1.0
-@export var slow_scale: float = 0.1
-
 # Child controllers (drag from scene tree)
 @export var portrait_controller: Node
 @export var comms_controller: Node
@@ -33,7 +30,6 @@ var _open: bool = false
 var _active_tab: String = "COMMS"
 var _panel_shown_x: float = 0.0
 var _panel_hidden_x: float = 0.0
-var _current_time_scale: float = 1.0
 
 # close gating
 var _pending_close_anims: int = 0
@@ -45,6 +41,9 @@ var _current_planet: Node = null
 func _ready() -> void:
 	if panel == null:
 		return
+
+	# UI ignores pause
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	_panel_shown_x = panel.position.x
 	_panel_hidden_x = _panel_shown_x + panel_hide_offset
@@ -59,21 +58,12 @@ func _ready() -> void:
 	_set_ui_active(false)
 
 	# Hook up tab buttons (scene already has connections, but this makes it resilient)
-	if comms_tab_button != null and comms_tab_button.pressed.is_connected(show_comms_tab) == false:
+	if comms_tab_button != null and not comms_tab_button.pressed.is_connected(show_comms_tab):
 		comms_tab_button.pressed.connect(show_comms_tab)
-	if fleet_tab_button != null and fleet_tab_button.pressed.is_connected(show_fleet_tab) == false:
+	if fleet_tab_button != null and not fleet_tab_button.pressed.is_connected(show_fleet_tab):
 		fleet_tab_button.pressed.connect(show_fleet_tab)
-	if shop_tab_button != null and shop_tab_button.pressed.is_connected(show_shop_tab) == false:
+	if shop_tab_button != null and not shop_tab_button.pressed.is_connected(show_shop_tab):
 		shop_tab_button.pressed.connect(show_shop_tab)
-
-func _process(_delta: float) -> void:
-	# Only runs while UI active (we disable processing when closed)
-	var target_scale: float = fast_scale
-	if _open == true:
-		target_scale = slow_scale
-
-	_current_time_scale = lerp(_current_time_scale, target_scale, 0.1)
-	Engine.time_scale = _current_time_scale
 
 # =====================================================================
 # PUBLIC API (called from your PlayerInteraction)
@@ -91,6 +81,9 @@ func open_for_planet(planet: Node) -> void:
 
 	_closing = false
 	_current_planet = planet
+
+	# Pause the game
+	get_tree().paused = true
 
 	# Reactivate BEFORE populating / animating
 	_set_ui_active(true)
@@ -124,20 +117,20 @@ func close_ui() -> void:
 	_closing = true
 	_pending_close_anims = 0
 
+	# Resume the game immediately
+	get_tree().paused = false
+
 	_slide_closed_and_count()
 
 	if portrait_controller != null:
-		# portrait controller will call back into _on_one_close_anim_done via signal OR we just count a tween here
 		_pending_close_anims += 1
 		portrait_controller.call("fade_out")
-		# portrait controller will emit "fade_out_finished" when done
 
 	_current_planet = null
 
 func is_open() -> bool:
 	return _open
 
-# Called by portrait controller when its fade finishes
 func notify_close_anim_done() -> void:
 	_on_one_close_anim_done()
 
@@ -154,9 +147,6 @@ func _set_ui_active(active: bool) -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 		set_process(false)
 
-		_current_time_scale = 1.0
-		Engine.time_scale = 1.0
-
 # =====================================================================
 # PANEL SLIDE ANIMATION
 # =====================================================================
@@ -168,8 +158,8 @@ func _slide_open() -> void:
 	_open = true
 
 	var tw: Tween = create_tween()
-	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.set_ignore_time_scale(true)
+	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_property(panel, "position:x", _panel_shown_x, tween_time)
 
 func _slide_closed_and_count() -> void:
@@ -180,8 +170,8 @@ func _slide_closed_and_count() -> void:
 	_pending_close_anims += 1
 
 	var tw: Tween = create_tween()
-	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	tw.set_ignore_time_scale(true)
+	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	tw.tween_property(panel, "position:x", _panel_hidden_x, tween_time)
 	tw.finished.connect(_on_one_close_anim_done)
 
@@ -211,31 +201,18 @@ func _show_tab(tab_name: String) -> void:
 	if shop_page != null:
 		shop_page.visible = show_shop
 
-	var comms_alpha: float = 0.6
-	var fleet_alpha: float = 0.6
-	var shop_alpha: float = 0.6
+	_update_tab_button_alpha("COMMS", show_comms, comms_tab_button)
+	_update_tab_button_alpha("FLEET", show_fleet, fleet_tab_button)
+	_update_tab_button_alpha("SHOP", show_shop, shop_tab_button)
 
-	if show_comms == true:
-		comms_alpha = 1.0
-	if show_fleet == true:
-		fleet_alpha = 1.0
-	if show_shop == true:
-		shop_alpha = 1.0
+func _update_tab_button_alpha(tab_name: String, is_active: bool, button: Button) -> void:
+	if button == null:
+		return
 
-	if comms_tab_button != null:
-		var c_mod: Color = comms_tab_button.modulate
-		c_mod.a = comms_alpha
-		comms_tab_button.modulate = c_mod
-
-	if fleet_tab_button != null:
-		var f_mod: Color = fleet_tab_button.modulate
-		f_mod.a = fleet_alpha
-		fleet_tab_button.modulate = f_mod
-
-	if shop_tab_button != null:
-		var s_mod: Color = shop_tab_button.modulate
-		s_mod.a = shop_alpha
-		shop_tab_button.modulate = s_mod
+	var target_alpha: float = 1.0 if is_active else 0.6
+	var c_mod: Color = button.modulate
+	c_mod.a = target_alpha
+	button.modulate = c_mod
 
 # =====================================================================
 # TAB SWITCH HELPERS (hook these to the top bar tab buttons)
