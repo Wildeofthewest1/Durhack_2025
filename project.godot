@@ -169,7 +169,7 @@ dialogic_default_action={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://Scenes/Dialogue/test.dialogue", "res://Scenes/NPCs/Archivist/archivist_1.dialogue")
+locale/translations_pot_files=PackedStringArray("res://Scenes/Dialogue/test.dialogue", "res://Scenes/NPCs/Archivist/archivist_1.dialogue", "res://Scenes/NPCs/PassengerAccelerator/PassengerAccel.dialogue")
 
 [rendering]
 

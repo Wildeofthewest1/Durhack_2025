@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cprm4857am47k"
+path="res://.godot/imported/PassengerAccel.dialogue-0019179384d6efad2527d792442a02df.tres"
+
+[deps]
+
+source_file="res://Scenes/NPCs/PassengerAccelerator/PassengerAccel.dialogue"
+dest_files=["res://.godot/imported/PassengerAccel.dialogue-0019179384d6efad2527d792442a02df.tres"]
+
+[params]
+
+defaults=true

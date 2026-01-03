@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://dxf6ileuq40rj"]
+
+[ext_resource type="Script" uid="uid://dey46lgeplngn" path="res://Scenes/UI/Interaction/Bubble/speech_bubble.gd" id="1_rufh5"]
+[ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="2_w7ukr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rufh5"]
+bg_color = Color(0.9411765, 0.9411765, 0.9411765, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 50
+shadow_color = Color(1, 1, 1, 0.27450982)
+shadow_size = 1
+shadow_offset = Vector2(5, 5)
+
+[node name="SpeechBubble" type="PanelContainer" node_paths=PackedStringArray("speaker_label", "dialogue_label")]
+custom_minimum_size = Vector2(400, 50)
+offset_right = 400.0
+offset_bottom = 4.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_rufh5")
+script = ExtResource("1_rufh5")
+speaker_label = NodePath("MarginContainer/VBoxContainer/RichTextLabel")
+dialogue_label = NodePath("MarginContainer/VBoxContainer/DialogueLabel")
+you_name = "You"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="DialogueLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.015686275, 0.015686275, 0.011764706, 1)
+bbcode_enabled = true
+fit_content = true
+script = ExtResource("2_w7ukr")
+skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
+metadata/_custom_type_script = "uid://g32um0mltv5d"

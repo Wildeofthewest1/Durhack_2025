@@ -3,11 +3,18 @@ class_name InteractionCommsController
 
 @export var planet_name_label: Label
 
+# --- CURRENT (speaker + typed text) ---
+@export var current_speaker_label: RichTextLabel
+@export var current_dialogue_label: DialogueLabel
+
+# --- HISTORY (transcript) ---
 @export var history_scroll: ScrollContainer
 @export var history_label: RichTextLabel
 
+# --- Choices / Continue (clickable URLs) ---
 @export var choices_label: RichTextLabel
 
+# kept for compatibility (unused)
 @export var reply_holder: VBoxContainer
 
 @export var next_action: StringName = &"ui_accept"
@@ -15,14 +22,17 @@ class_name InteractionCommsController
 @export var show_continue_link: bool = true
 @export var continue_text: String = "→ Continue"
 
-# Speaker styling (only affects the "SPEAKER:" part)
+# Speaker styling
 @export var npc_speaker_color: String = "#d9d4ff"
 @export var you_speaker_color: String = "#f3d38b"
 @export var you_name: String = "YOU"
 
-# Choice list styling (the numbered options)
+# Choice styling
 @export var choice_color: String = "#e8e1c9"
 @export var continue_color: String = "#8ee6c7"
+
+# optional click sound
+@export var click_sfx: AudioStreamPlayer
 
 var _planet: Node = null
 var _dialogue_resource: DialogueResource = null
@@ -32,31 +42,51 @@ var _dialogue_line: DialogueLine = null
 var _is_waiting_for_input: bool = false
 var _is_running: bool = false
 
+var _current_responses: Array[DialogueResponse] = []
 var _extra_game_states: Array = []
+
+# staged current line (what will be committed to history)
+var _staged_speaker: String = ""
+var _staged_text_bbcode: String = ""
+var _staged_has_line: bool = false
+
+# typing tracking
+var _typing: bool = false
 
 const META_CONTINUE: String = "dm_continue"
 const META_CHOICE_IDX_PREFIX: String = "dm_choice_idx:"
 
-var _current_responses: Array[DialogueResponse] = []
-
 func _ready() -> void:
-	_setup_rich_text(history_label, Control.MOUSE_FILTER_IGNORE)
-	_setup_rich_text(choices_label, Control.MOUSE_FILTER_STOP)
+	_setup_rich_text(history_label, Control.MOUSE_FILTER_IGNORE, false)
+	_setup_rich_text(choices_label, Control.MOUSE_FILTER_STOP, true)
+	_setup_rich_text(current_speaker_label, Control.MOUSE_FILTER_IGNORE, false)
+
+	if current_dialogue_label != null:
+		current_dialogue_label.process_mode = Node.PROCESS_MODE_ALWAYS
 
 	if history_scroll != null:
 		history_scroll.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	if choices_label != null:
-		choices_label.meta_clicked.connect(_on_choices_meta_clicked)
+		if not choices_label.meta_clicked.is_connected(_on_choices_meta_clicked):
+			choices_label.meta_clicked.connect(_on_choices_meta_clicked)
+
+	_clear_current()
+	_clear_history()
+	_clear_choices()
+	_clear_stage()
 
 func setup_for_planet(planet: Node) -> void:
 	_planet = planet
 	_refresh_planet_header()
+
+	_clear_current()
 	_clear_history()
 	_clear_choices()
 	_clear_replies()
 
 	_current_responses.clear()
+	_clear_stage()
 
 	_dialogue_resource = _extract_dialogue_resource_from_planet(_planet)
 	_start_title = _extract_start_title_from_planet(_planet)
@@ -83,6 +113,8 @@ func stop() -> void:
 	_current_responses.clear()
 	_clear_choices()
 	_clear_replies()
+	_clear_current()
+	_clear_stage()
 
 func handle_input(event: InputEvent) -> void:
 	if not _is_running:
@@ -91,20 +123,23 @@ func handle_input(event: InputEvent) -> void:
 		return
 
 	if event.is_action_pressed(next_action):
+		# keyboard-continue only when there are no responses
 		if _dialogue_line == null:
 			return
 		if _dialogue_line.responses.size() > 0:
 			return
-		_is_waiting_for_input = false
-		_clear_choices()
-		_advance_async(_dialogue_line.next_id)
+		_on_continue_activated()
 
 func _start_async() -> void:
 	call_deferred("_start_async_deferred")
 
 func _start_async_deferred() -> void:
 	_is_running = true
-	_dialogue_line = await DialogueManager.get_next_dialogue_line(_dialogue_resource, _start_title, _extra_game_states)
+	_dialogue_line = await DialogueManager.get_next_dialogue_line(
+		_dialogue_resource,
+		_start_title,
+		_extra_game_states
+	)
 	await _present_line()
 
 func _advance_async(next_id: String) -> void:
@@ -120,62 +155,133 @@ func _goto_next(next_id: String) -> void:
 		_is_running = false
 		return
 
-	_dialogue_line = await DialogueManager.get_next_dialogue_line(_dialogue_resource, next_id, _extra_game_states)
+	_dialogue_line = await DialogueManager.get_next_dialogue_line(
+		_dialogue_resource,
+		next_id,
+		_extra_game_states
+	)
 	await _present_line()
+
+# ============================================================
+# Present line:
+# - show speaker label now
+# - type using DialogueLabel (keeps pause behavior)
+# - do NOT append to history yet
+# ============================================================
 
 func _present_line() -> void:
 	_clear_choices()
 	_is_waiting_for_input = false
 	_current_responses.clear()
+	_clear_stage()
 
 	if _dialogue_line == null:
+		_clear_current()
 		_append_history("[i]End of dialogue.[/i]")
 		_is_running = false
 		return
 
 	var speaker: String = _get_line_speaker(_dialogue_line)
-	var text_bbcode: String = _dialogue_line.text
-	var stripped_text: String = text_bbcode.strip_edges()
+	var raw_text: String = _dialogue_line.text
+	var stripped_text: String = raw_text.strip_edges()
 
-	# Mutation-only line: empty + no responses => auto-advance
+	# mutation-only line
 	if stripped_text.is_empty() and _dialogue_line.responses.size() == 0:
 		await get_tree().process_frame
 		_advance_async(_dialogue_line.next_id)
 		return
 
-	# Log to history (single label)
-	if speaker.is_empty():
-		_append_history(text_bbcode)
-	else:
-		_append_history(_format_spoken_line(speaker, text_bbcode))
+	_staged_speaker = speaker
+	_staged_text_bbcode = raw_text
+	_staged_has_line = true
 
-	# Show responses (clickable)
+	_set_current_speaker(speaker)
+	await _type_current_dialogue(_dialogue_line)
+
 	if _dialogue_line.responses.size() > 0:
 		_current_responses = _dialogue_line.responses.duplicate()
 		_render_choice_urls(_current_responses)
 		_is_waiting_for_input = true
 		return
 
-	# Timed lines
 	if _dialogue_line.time != "":
 		var seconds: float = 0.0
 		if _dialogue_line.time == "auto":
 			seconds = float(_dialogue_line.text.length()) * 0.02
 		else:
 			seconds = _dialogue_line.time.to_float()
-		await get_tree().create_timer(seconds).timeout
-		_advance_async(_dialogue_line.next_id)
+
+		await get_tree().create_timer(seconds, true).timeout
+		_on_continue_activated(true)
 		return
 
-	# Continue
 	if show_continue_link:
 		_render_continue_url()
 
 	_is_waiting_for_input = true
 
-# -----------------------
-# Choice rendering / clicking
-# -----------------------
+func _type_current_dialogue(line_for_ui: DialogueLine) -> void:
+	_typing = false
+
+	if current_dialogue_label == null:
+		return
+
+	current_dialogue_label.hide()
+	current_dialogue_label.dialogue_line = line_for_ui
+	current_dialogue_label.show()
+
+	if line_for_ui == null:
+		return
+	if line_for_ui.text.strip_edges().is_empty():
+		return
+
+	_typing = true
+	current_dialogue_label.type_out()
+	await current_dialogue_label.finished_typing
+	_typing = false
+
+# ============================================================
+# Continue / choice
+# ============================================================
+
+func _on_continue_activated(from_timer: bool = false) -> void:
+	if _dialogue_line == null:
+		return
+
+	# if typing, finish instantly
+	if _typing and current_dialogue_label != null:
+		current_dialogue_label.visible_characters = -1
+		_typing = false
+		return
+
+	_commit_staged_line_to_history()
+
+	_is_waiting_for_input = false
+	_clear_choices()
+	_clear_current()
+
+	_advance_async(_dialogue_line.next_id)
+
+func _commit_staged_line_to_history() -> void:
+	if not _staged_has_line:
+		return
+
+	var speaker: String = _staged_speaker.strip_edges()
+	if speaker.is_empty():
+		_append_history(_staged_text_bbcode)
+	else:
+		_append_history(_format_spoken_line(speaker, _staged_text_bbcode))
+
+	_clear_stage()
+
+func _clear_stage() -> void:
+	_staged_speaker = ""
+	_staged_text_bbcode = ""
+	_staged_has_line = false
+
+# ============================================================
+# Choices
+# ============================================================
 
 func _render_continue_url() -> void:
 	if choices_label == null:
@@ -193,8 +299,7 @@ func _render_choice_urls(responses: Array[DialogueResponse]) -> void:
 	var display_num: int = 1
 
 	for r in responses:
-		var meta: String = META_CHOICE_IDX_PREFIX + String.num_int64(index)
-		# We color the choice line; the response text itself stays plain (unless your DM text already has bbcode)
+		var meta: String = META_CHOICE_IDX_PREFIX + str(index)
 		bb += "[color=%s][url=%s]%d. %s[/url][/color]\n" % [choice_color, meta, display_num, r.text]
 		index += 1
 		display_num += 1
@@ -207,16 +312,13 @@ func _on_choices_meta_clicked(meta: Variant) -> void:
 	if not _is_waiting_for_input:
 		return
 
-	var m: String = String(meta)
+	if click_sfx != null:
+		click_sfx.play()
+
+	var m: String = str(meta)
 
 	if m == META_CONTINUE:
-		if _dialogue_line == null:
-			return
-		if _dialogue_line.responses.size() > 0:
-			return
-		_is_waiting_for_input = false
-		_clear_choices()
-		_advance_async(_dialogue_line.next_id)
+		_on_continue_activated()
 		return
 
 	if m.begins_with(META_CHOICE_IDX_PREFIX):
@@ -226,20 +328,50 @@ func _on_choices_meta_clicked(meta: Variant) -> void:
 		if idx < 0 or idx >= _current_responses.size():
 			return
 
+		# commit current NPC line first
+		_commit_staged_line_to_history()
+
 		var r: DialogueResponse = _current_responses[idx]
 
-		# Log player choice as "YOU: ..." with colored YOU
+		# append YOU choice line to history
 		_append_history(_format_spoken_line(you_name, r.text))
 
 		_is_waiting_for_input = false
 		_current_responses.clear()
 		_clear_choices()
+		_clear_current()
+		_clear_stage()
+
 		_advance_async(r.next_id)
 		return
 
-# -----------------------
+# ============================================================
+# Current display helpers
+# ============================================================
+
+func _set_current_speaker(speaker: String) -> void:
+	if current_speaker_label == null:
+		return
+
+	var s: String = speaker.strip_edges()
+	if s.is_empty():
+		current_speaker_label.text = ""
+		return
+
+	var color_hex: String = you_speaker_color if _is_you_speaker(s) else npc_speaker_color
+	current_speaker_label.text = "[color=%s][b]%s:[/b][/color]" % [color_hex, s]
+
+func _clear_current() -> void:
+	if current_speaker_label != null:
+		current_speaker_label.text = ""
+	if current_dialogue_label != null:
+		current_dialogue_label.text = ""
+		current_dialogue_label.visible_characters = -1
+	_typing = false
+
+# ============================================================
 # Formatting helpers
-# -----------------------
+# ============================================================
 
 func _get_line_speaker(line: DialogueLine) -> String:
 	if line.character != "":
@@ -254,27 +386,27 @@ func _format_spoken_line(speaker: String, text_bbcode: String) -> String:
 		return text_bbcode
 
 	var is_you: bool = _is_you_speaker(s)
-
 	var color_hex: String = you_speaker_color if is_you else npc_speaker_color
-	var prefix: String = "[color=%s][b]%s:[/b][/color] " % [color_hex, s]
-	return prefix + text_bbcode
+	return "[color=%s][b]%s:[/b][/color] %s" % [color_hex, s, text_bbcode]
 
 func _is_you_speaker(speaker: String) -> bool:
 	var a: String = speaker.strip_edges().to_lower()
 	var b: String = you_name.strip_edges().to_lower()
 	return a == b or a == "you"
 
-# -----------------------
+# ============================================================
 # UI helpers
-# -----------------------
+# ============================================================
 
-func _setup_rich_text(rtl: RichTextLabel, mouse_filter_value: int) -> void:
+func _setup_rich_text(rtl: RichTextLabel, mouse_filter_value: int, show_hand_cursor: bool) -> void:
 	if rtl == null:
 		return
 	rtl.bbcode_enabled = true
 	rtl.fit_content = true
 	rtl.scroll_active = false
 	rtl.mouse_filter = mouse_filter_value
+	if show_hand_cursor:
+		rtl.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 func _clear_history() -> void:
 	if history_label == null:
@@ -325,19 +457,19 @@ func _refresh_planet_header() -> void:
 
 	var n1: Variant = _safe_get(_planet, &"planet_name")
 	if n1 != null:
-		planet_name_label.text = String(n1)
+		planet_name_label.text = str(n1)
 		return
 
 	var n2: Variant = _safe_get(_planet, &"display_name")
 	if n2 != null:
-		planet_name_label.text = String(n2)
+		planet_name_label.text = str(n2)
 		return
 
 	planet_name_label.text = _planet.name
 
-# -----------------------
+# ============================================================
 # Dialogue extraction helpers
-# -----------------------
+# ============================================================
 
 func _has_property(obj: Object, prop: StringName) -> bool:
 	if obj == null:
@@ -351,7 +483,7 @@ func _has_property(obj: Object, prop: StringName) -> bool:
 
 func _safe_get(obj: Object, prop: StringName) -> Variant:
 	if _has_property(obj, prop):
-		return obj.get(String(prop))
+		return obj.get(str(prop))
 	return null
 
 func _extract_dialogue_resource_from_planet(planet: Node) -> DialogueResource:
@@ -376,16 +508,16 @@ func _extract_start_title_from_planet(planet: Node) -> String:
 
 	var st: Variant = _safe_get(planet, &"dialogue_start_title")
 	if st != null:
-		return String(st)
+		return str(st)
 
 	var data: Variant = _safe_get(planet, &"dialogue_data")
 	if data is Object:
 		var st2: Variant = _safe_get(data as Object, &"start_title")
 		if st2 != null:
-			return String(st2)
+			return str(st2)
 
 		var st3: Variant = _safe_get(data as Object, &"dialogue_start_title")
 		if st3 != null:
-			return String(st3)
+			return str(st3)
 
 	return ""

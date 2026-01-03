@@ -220,8 +220,6 @@ offset_left = 60.0
 offset_top = 120.0
 
 [node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
-panel_hide_offset = 600.0
-panel_bg_color = Color(0.05882353, 0.05882353, 0.078431375, 1)
 
 [node name="Instructions" type="Label" parent="."]
 texture_filter = 1

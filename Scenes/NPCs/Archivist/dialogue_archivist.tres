@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("3_om56f")
+display_name = "Archivist"
 portrait_texture = ExtResource("2_vr0pb")
 dialogue_resource = ExtResource("1_ou6y7")
 metadata/_custom_type_script = "uid://droqswt3u80yn"

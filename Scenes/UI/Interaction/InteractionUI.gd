@@ -1,5 +1,5 @@
 extends Control
-class_name InteractionUI
+class_name InteractionUI2
 
 # =====================================================================
 # ROOT ORCHESTRATOR
@@ -38,6 +38,7 @@ var _closing: bool = false
 # data
 var _current_planet: Node = null
 
+
 func _ready() -> void:
 	if panel == null:
 		return
@@ -65,6 +66,25 @@ func _ready() -> void:
 	if shop_tab_button != null and not shop_tab_button.pressed.is_connected(show_shop_tab):
 		shop_tab_button.pressed.connect(show_shop_tab)
 
+
+# =====================================================================
+# SAFE PAUSE HELPER (fixes: get_tree() null instance)
+# =====================================================================
+
+func _set_game_paused(paused: bool) -> void:
+	# If someone calls open/close before this node is in the scene tree,
+	# defer the pause toggle to the next frame.
+	if is_inside_tree() == false:
+		call_deferred("_set_game_paused", paused)
+		return
+
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return
+
+	tree.paused = paused
+
+
 # =====================================================================
 # PUBLIC API (called from your PlayerInteraction)
 # =====================================================================
@@ -75,6 +95,7 @@ func toggle_for_planet(planet: Node) -> void:
 		return
 	open_for_planet(planet)
 
+
 func open_for_planet(planet: Node) -> void:
 	if panel == null:
 		return
@@ -82,8 +103,8 @@ func open_for_planet(planet: Node) -> void:
 	_closing = false
 	_current_planet = planet
 
-	# Pause the game
-	get_tree().paused = true
+	# Pause the game (safe even if called too early)
+	_set_game_paused(true)
 
 	# Reactivate BEFORE populating / animating
 	_set_ui_active(true)
@@ -105,6 +126,7 @@ func open_for_planet(planet: Node) -> void:
 	_show_tab("COMMS")
 	_slide_open()
 
+
 func close_ui() -> void:
 	if _open == false:
 		_set_ui_active(false)
@@ -117,8 +139,8 @@ func close_ui() -> void:
 	_closing = true
 	_pending_close_anims = 0
 
-	# Resume the game immediately
-	get_tree().paused = false
+	# Resume the game immediately (safe)
+	_set_game_paused(false)
 
 	_slide_closed_and_count()
 
@@ -128,11 +150,14 @@ func close_ui() -> void:
 
 	_current_planet = null
 
+
 func is_open() -> bool:
 	return _open
 
+
 func notify_close_anim_done() -> void:
 	_on_one_close_anim_done()
+
 
 # =====================================================================
 # FULL UI ENABLE/DISABLE (prevents clashing with other UI)
@@ -146,6 +171,7 @@ func _set_ui_active(active: bool) -> void:
 	else:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 		set_process(false)
+
 
 # =====================================================================
 # PANEL SLIDE ANIMATION
@@ -162,6 +188,7 @@ func _slide_open() -> void:
 	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_property(panel, "position:x", _panel_shown_x, tween_time)
 
+
 func _slide_closed_and_count() -> void:
 	if _open == false:
 		return
@@ -175,6 +202,7 @@ func _slide_closed_and_count() -> void:
 	tw.tween_property(panel, "position:x", _panel_hidden_x, tween_time)
 	tw.finished.connect(_on_one_close_anim_done)
 
+
 func _on_one_close_anim_done() -> void:
 	_pending_close_anims -= 1
 	if _pending_close_anims > 0:
@@ -182,6 +210,7 @@ func _on_one_close_anim_done() -> void:
 
 	_closing = false
 	_set_ui_active(false)
+
 
 # =====================================================================
 # TAB / PAGE HANDLING
@@ -205,14 +234,19 @@ func _show_tab(tab_name: String) -> void:
 	_update_tab_button_alpha("FLEET", show_fleet, fleet_tab_button)
 	_update_tab_button_alpha("SHOP", show_shop, shop_tab_button)
 
+
 func _update_tab_button_alpha(tab_name: String, is_active: bool, button: Button) -> void:
 	if button == null:
 		return
 
-	var target_alpha: float = 1.0 if is_active else 0.6
+	var target_alpha: float = 1.0
+	if is_active == false:
+		target_alpha = 0.6
+
 	var c_mod: Color = button.modulate
 	c_mod.a = target_alpha
 	button.modulate = c_mod
+
 
 # =====================================================================
 # TAB SWITCH HELPERS (hook these to the top bar tab buttons)
@@ -221,15 +255,18 @@ func _update_tab_button_alpha(tab_name: String, is_active: bool, button: Button)
 func show_comms_tab() -> void:
 	_show_tab("COMMS")
 
+
 func show_fleet_tab() -> void:
 	if fleet_controller != null:
 		fleet_controller.call("refresh")
 	_show_tab("FLEET")
 
+
 func show_shop_tab() -> void:
 	if shop_controller != null:
 		shop_controller.call("refresh")
 	_show_tab("SHOP")
+
 
 func close_button_pressed() -> void:
 	close_ui()

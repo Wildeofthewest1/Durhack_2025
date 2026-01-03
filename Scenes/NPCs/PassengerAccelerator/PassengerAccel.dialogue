@@ -1,0 +1,22 @@
+~ start
+Passenger: [[Hail!|Finally, a helping hand|We're so fucked... Wait, you!]]
+Passenger: Stop! Don't leave us! We've been stranded here for weeks.
+~ questions
+- What happened?
+	Passenger: We messed up. Well, THEY messed up. [Passenger points to an observation deck attached to one of the rings, it's fully destroyed.]
+	Passenger: Texcorp fuckers who ran this station knocked us off course and now we're fifty clicks closer to the asteroid belt than we should be. Most of the station staff died in the collision, otherwise we would've straight up canibalized on them. We're a little short on food, you see. => questions
+- What is this structure? 
+	Passenger: It's the Passenger accelerator, it's supposed to fling civilian ships across the solar system. It won't be doing that anymore though => questions
+- How can we help?
+	Passenger: I was afrait you wouldn't ask! It would be pretty metal to have our last encounter be with an uncaring sadist who watches us die from-
+	Passenger: Ahem! Our number one priority is to GTFO. Sadly, our shuttle cannot clear the accelerator due to all the debris.
+	Passenger: We have our own synthesizers onboard so the simplest solution would be to craft a makeshift cleaning equipment, but that would take upwards of  [wave amp=25 freq=5]1000 scrap[/wave].
+	Passenger: You could try shooting the debris away but I'm not sure if you have the correct equipment for that. It probably needs something that can target each tiny piece of asteroid and station junk.
+	Passenger: Or if you don't want to bother with any of those, we can simply come aboard to your ship!
+	- 1000 Scrap it is.
+	- We have guided missiles, it should do the trick [80% Success]
+	- You MAY NOT come aboard the stellar government issue, state of the art generational ship that costs seven billion credits a second to run.
+		Passenger: Gee, thanks for nothing.
+	- End the conversation => END
+Passenger: We hold hope that you're not stone cold killers or centrists, so see you soon!
+=> END

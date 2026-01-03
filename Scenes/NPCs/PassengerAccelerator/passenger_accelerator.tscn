@@ -1,0 +1,100 @@
+[gd_scene load_steps=9 format=3 uid="uid://d4jf4jjcudwxj"]
+
+[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_a0mby"]
+[ext_resource type="Resource" uid="uid://b1fddra0v0fi5" path="res://Scenes/NPCs/PassengerAccelerator/PassengerAccelerator.tres" id="2_klu5g"]
+[ext_resource type="Texture2D" uid="uid://ms18a1x7ysnq" path="res://Assets/passenger_accelerator.png" id="2_m6iax"]
+[ext_resource type="Script" path="res://Data/ShopData.gd" id="3_klu5g"]
+[ext_resource type="Script" uid="uid://dyweiipnmdgl7" path="res://Scenes/NPCs/Satellite/oscillate_rotation.gd" id="4_qmkbt"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="5_m6iax"]
+
+[sub_resource type="Resource" id="Resource_qmkbt"]
+script = ExtResource("3_klu5g")
+metadata/_custom_type_script = "uid://bsrtutykre48g"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_klu5g"]
+radius = 105.0
+height = 376.0
+
+[node name="PassengerAccelerator" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_a0mby")
+dialogue_data = ExtResource("2_klu5g")
+shop_data = SubResource("Resource_qmkbt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(74, 6, 232, 65)
+script = ExtResource("4_qmkbt")
+frequency_hz = 0.05
+
+[node name="glow" type="Sprite2D" parent="Sprite2D"]
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(34, 74, 292, 62)
+script = ExtResource("4_qmkbt")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(133, 17.999996)
+rotation = 0.36546388
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(319, 4, 21, 28)
+script = ExtResource("4_qmkbt")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(151.00002, -18.999998)
+rotation = 0.065770715
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(410, 6, 29, 14)
+script = ExtResource("4_qmkbt")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(131.99998, 48.999996)
+rotation = 0.75794744
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(388, 17, 25, 9)
+script = ExtResource("4_qmkbt")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(155, 58.999996)
+rotation = 0.7387996
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(350, 13, 29, 2)
+script = ExtResource("4_qmkbt")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(121, -71)
+rotation = -1.1766771
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(353, 22, 20, 4)
+script = ExtResource("4_qmkbt")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(113.00001, -37)
+rotation = -1.9792317
+texture = ExtResource("2_m6iax")
+region_enabled = true
+region_rect = Rect2(320, 34, 25, 20)
+script = ExtResource("4_qmkbt")
+
+[node name="TalkArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
+position = Vector2(13, 1)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_klu5g")
+
+[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("5_m6iax")
+target_node = NodePath("")
+dot_shape = 1
+dot_size = 5.0
+dot_color = Color(0.4117647, 0.75686276, 0.81960785, 1)
