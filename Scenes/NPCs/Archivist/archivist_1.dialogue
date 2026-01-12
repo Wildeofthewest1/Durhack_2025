@@ -9,10 +9,9 @@ Archivist: Pretty lucky to have all these machines to assist us in the task.
 	Archivist: Yes, you would.
 	You: We would.
 	Archivist: Hmm. We rarely donate such prizes charitably, but we'll make an exception for our beloved captain. 
-	Archivist: ...
-	Archivist: Just go straight in. 
-	Archivist: I doubt the debris can harm you if you pass through fast enough.[wait=1] Probably
-	Archivist: Though, I'm not sure if you're capable of going at such speeds yet
+	Archivist: [speed=0.2]...[speed=0.5] [wait=0.5]Just [wait=0.5]go[wait=0.5] straight [wait=0.5]in. 
+	Archivist: The debris can't harm you if you pass through fast enough.[wait=1] Probably
+	Archivist: Only one way to find out.
 - [Repeat Log] => start
 - Bye => END
 => END

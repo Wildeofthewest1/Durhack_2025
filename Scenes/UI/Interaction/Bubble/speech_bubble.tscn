@@ -19,9 +19,9 @@ shadow_size = 1
 shadow_offset = Vector2(5, 5)
 
 [node name="SpeechBubble" type="PanelContainer" node_paths=PackedStringArray("speaker_label", "dialogue_label")]
-custom_minimum_size = Vector2(400, 50)
+custom_minimum_size = Vector2(500, 50)
 offset_right = 400.0
-offset_bottom = 4.0
+offset_bottom = 54.0
 size_flags_horizontal = 0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_rufh5")
@@ -42,6 +42,8 @@ layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
 fit_content = true
 scroll_following = true
@@ -49,6 +51,8 @@ scroll_following = true
 [node name="DialogueLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.015686275, 0.015686275, 0.011764706, 1)
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
 fit_content = true
 script = ExtResource("2_w7ukr")

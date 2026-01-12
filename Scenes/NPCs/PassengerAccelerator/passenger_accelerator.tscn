@@ -92,9 +92,8 @@ position = Vector2(13, 1)
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_klu5g")
 
-[node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
+[node name="MinimapTracker" type="Node2D" parent="."]
 script = ExtResource("5_m6iax")
-target_node = NodePath("")
 dot_shape = 1
 dot_size = 5.0
 dot_color = Color(0.4117647, 0.75686276, 0.81960785, 1)
