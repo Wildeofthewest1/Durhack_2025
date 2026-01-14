@@ -55,6 +55,7 @@ bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_nq4jv"]
 line_spacing = -5.0
+font_size = 22
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -219,9 +220,7 @@ anchors_preset = -1
 offset_left = 60.0
 offset_top = 120.0
 
-[node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
-
-[node name="Instructions" type="Label" parent="."]
+[node name="Instructions" type="Label" parent="CanvasLayer"]
 texture_filter = 1
 offset_left = 1371.0
 offset_top = 30.0
@@ -234,6 +233,8 @@ Right-Click to boost
 Left-Click to shoot"
 label_settings = SubResource("LabelSettings_nq4jv")
 horizontal_alignment = 3
+
+[node name="InteractionUI" parent="CanvasLayer" instance=ExtResource("4_jjvhh")]
 
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyButton" to="SubViewportContainer/SubViewport/Game" method="_on_spawn_enemy_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SpawnEnemyWaveButton" to="CanvasLayer/SpawnEnemyWaveButton" method="_on_pressed"]

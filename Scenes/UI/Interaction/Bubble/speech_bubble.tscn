@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxf6ileuq40rj"]
+[gd_scene load_steps=6 format=3 uid="uid://dxf6ileuq40rj"]
 
 [ext_resource type="Script" uid="uid://dey46lgeplngn" path="res://Scenes/UI/Interaction/Bubble/speech_bubble.gd" id="1_rufh5"]
+[ext_resource type="FontFile" uid="uid://dd7w7hj78m7te" path="res://Assets/ari-w9500.ttf" id="2_tu6mo"]
 [ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="2_w7ukr"]
+[ext_resource type="FontFile" uid="uid://btrqx1dyumfkn" path="res://Assets/ari-w9500-display.ttf" id="3_tu6mo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rufh5"]
 bg_color = Color(0.9411765, 0.9411765, 0.9411765, 1)
@@ -19,6 +21,7 @@ shadow_size = 1
 shadow_offset = Vector2(5, 5)
 
 [node name="SpeechBubble" type="PanelContainer" node_paths=PackedStringArray("speaker_label", "dialogue_label")]
+texture_filter = 1
 custom_minimum_size = Vector2(500, 50)
 offset_right = 400.0
 offset_bottom = 54.0
@@ -42,18 +45,23 @@ layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-theme_override_font_sizes/bold_font_size = 24
+theme_override_fonts/normal_font = ExtResource("3_tu6mo")
+theme_override_fonts/bold_font = ExtResource("3_tu6mo")
+theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true
+text = "title"
 fit_content = true
 scroll_following = true
 
 [node name="DialogueLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.015686275, 0.015686275, 0.011764706, 1)
-theme_override_font_sizes/normal_font_size = 24
-theme_override_font_sizes/bold_font_size = 24
+theme_override_fonts/normal_font = ExtResource("2_tu6mo")
+theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/bold_font_size = 30
 bbcode_enabled = true
+text = "hello"
 fit_content = true
 script = ExtResource("2_w7ukr")
 skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
