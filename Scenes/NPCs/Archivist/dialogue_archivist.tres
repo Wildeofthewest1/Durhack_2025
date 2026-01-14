@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="DialogueData" load_steps=4 format=3 uid="uid://brtujxc7eu2e5"]
 
 [ext_resource type="Resource" uid="uid://bbah8n58j60jf" path="res://Scenes/NPCs/Archivist/archivist_1.dialogue" id="1_ou6y7"]
-[ext_resource type="Texture2D" uid="uid://doyhe8tmuovo7" path="res://Assets/Archivist.png" id="2_vr0pb"]
+[ext_resource type="Texture2D" uid="uid://bnf7n8mt8pfi6" path="res://Assets/cyber_thing.png" id="2_ou6y7"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="3_om56f"]
 
 [resource]
 script = ExtResource("3_om56f")
 display_name = "Archivist"
-portrait_texture = ExtResource("2_vr0pb")
+portrait_texture = ExtResource("2_ou6y7")
 dialogue_resource = ExtResource("1_ou6y7")
 metadata/_custom_type_script = "uid://droqswt3u80yn"
