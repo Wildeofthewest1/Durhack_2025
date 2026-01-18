@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://rp1733dafbo0"]
+[gd_scene load_steps=27 format=3 uid="uid://rp1733dafbo0"]
 
 [ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="1_6rneb"]
 [ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="1_hl17m"]
@@ -68,6 +68,9 @@ bg_color = Color(0.18431373, 0.2, 0.2, 1)
 border_width_left = 10
 border_color = Color(0.184, 0.2, 0.2, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqfo7"]
+bg_color = Color(0.18431373, 0.2, 0.2, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_te2gg"]
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -77,7 +80,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="Theme" id="Theme_epk0l"]
 Button/styles/disabled = SubResource("StyleBoxFlat_te2gg")
 
-[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "portrait_panel", "comms_page", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "portrait_controller", "bubble_dialogue_controller", "fleet_controller", "shop_controller") groups=["InteractUI"]]
+[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "portrait_panel", "comms_page", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "portrait_controller", "bubble_dialogue_controller", "fleet_controller", "shop_controller", "drag_handle_main", "drag_handle_portrait") groups=["InteractUI"]]
 texture_filter = 1
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 3
@@ -99,12 +102,16 @@ shop_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabCon
 comms_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
 fleet_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
 shop_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
-panel_hide_offset = 1000.0
-tween_time = 0.3
+panel_hide_offset = 1500.0
+tween_time = 0.4
 portrait_controller = NodePath("PortraitPanel")
 bubble_dialogue_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage/SpeechBubble")
 fleet_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
 shop_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+drag_handle_main = NodePath("HBoxContainer/Panel/Control/TextureRect")
+drag_handle_portrait = NodePath("PortraitPanel/PortraitFrame")
+drag_range_px_main = 150.0
+drag_range_px_portrait = 300.0
 
 [node name="PortraitPanel" type="Control" parent="." node_paths=PackedStringArray("portrait_panel", "portrait_texture_rect")]
 layout_direction = 2
@@ -178,6 +185,12 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vmdcp")
 
 [node name="Control" type="Control" parent="HBoxContainer/Panel"]
 layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="HBoxContainer/Panel/Control"]
+layout_mode = 0
+offset_right = 1396.6799
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dqfo7")
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/Panel/Control"]
 layout_mode = 1

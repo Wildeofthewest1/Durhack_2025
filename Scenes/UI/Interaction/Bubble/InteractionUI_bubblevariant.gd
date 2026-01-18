@@ -12,7 +12,7 @@ class_name InteractionUI
 
 @export var panel: Control
 
-# Portrait panel slide (NEW)
+# Portrait panel slide
 @export var portrait_panel: Control
 @export var portrait_hide_offset: float = 400.0
 
@@ -35,11 +35,26 @@ class_name InteractionUI
 @export var fleet_controller: Node
 @export var shop_controller: Node
 
+# =====================================================================
+# DRAGGABLE HANDLES (NEW)
+# - drag_handle_main moves ONLY "panel"
+# - drag_handle_portrait moves ONLY "portrait_panel"
+# =====================================================================
+
+@export var drag_handle_main: Control
+@export var drag_handle_portrait: Control
+
+@export var drag_range_px_main: float = 60.0
+@export var drag_range_px_portrait: float = 60.0
+
+@export var drag_return_time: float = 0.12
+@export var drag_require_left_button: bool = true
+
 var _open: bool = false
 var _panel_shown_x: float = 0.0
 var _panel_hidden_x: float = 0.0
 
-# Portrait slide cached positions (NEW)
+# Portrait slide cached positions
 var _portrait_shown_x: float = 0.0
 var _portrait_hidden_x: float = 0.0
 
@@ -52,6 +67,20 @@ var _current_planet: Node = null
 
 # active page
 var _active_page: StringName = &"none" # "none" | "comms" | "fleet" | "shop"
+
+# Drag state (main)
+var _dragging_main: bool = false
+var _drag_main_mouse_start_x: float = 0.0
+var _drag_main_delta_current: float = 0.0
+
+# Drag state (portrait)
+var _dragging_portrait: bool = false
+var _drag_portrait_mouse_start_x: float = 0.0
+var _drag_portrait_delta_current: float = 0.0
+
+# Tween guards
+var _active_tween_panel: Tween = null
+var _active_tween_portrait: Tween = null
 
 
 func _ready() -> void:
@@ -69,7 +98,7 @@ func _ready() -> void:
 	ppos.x = _panel_hidden_x
 	panel.position = ppos
 
-	# Cache portrait positions + start hidden (NEW)
+	# Cache portrait positions + start hidden
 	if portrait_panel != null:
 		_portrait_shown_x = portrait_panel.position.x
 		_portrait_hidden_x = _portrait_shown_x + portrait_hide_offset
@@ -89,6 +118,21 @@ func _ready() -> void:
 		fleet_tab_button.pressed.connect(show_fleet_page)
 	if shop_tab_button != null and not shop_tab_button.pressed.is_connected(show_shop_page):
 		shop_tab_button.pressed.connect(show_shop_page)
+
+	# Drag handle hookups
+	_setup_drag_handles()
+
+
+func _setup_drag_handles() -> void:
+	if drag_handle_main != null:
+		drag_handle_main.mouse_filter = Control.MOUSE_FILTER_STOP
+		if not drag_handle_main.gui_input.is_connected(_on_drag_handle_main_gui_input):
+			drag_handle_main.gui_input.connect(_on_drag_handle_main_gui_input)
+
+	if drag_handle_portrait != null:
+		drag_handle_portrait.mouse_filter = Control.MOUSE_FILTER_STOP
+		if not drag_handle_portrait.gui_input.is_connected(_on_drag_handle_portrait_gui_input):
+			drag_handle_portrait.gui_input.connect(_on_drag_handle_portrait_gui_input)
 
 
 # =====================================================================
@@ -117,6 +161,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if visible == false:
 		return
 
+	# While dragging, don't forward inputs (prevents accidental skip/choice)
+	if _dragging_main == true or _dragging_portrait == true:
+		return
+
 	if bubble_dialogue_controller != null and _has_method(bubble_dialogue_controller, &"handle_input"):
 		bubble_dialogue_controller.call("handle_input", event)
 
@@ -125,6 +173,178 @@ func _has_method(obj: Object, method_name: StringName) -> bool:
 	if obj == null:
 		return false
 	return obj.has_method(String(method_name))
+
+
+# =====================================================================
+# DRAG LOGIC (MAIN)
+# =====================================================================
+
+func _on_drag_handle_main_gui_input(event: InputEvent) -> void:
+	if _open == false:
+		return
+	if panel == null:
+		return
+	if _closing == true:
+		return
+
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.button_index != MouseButton.MOUSE_BUTTON_LEFT:
+			return
+
+		if mb.pressed == true:
+			if drag_require_left_button == true and mb.button_index != MouseButton.MOUSE_BUTTON_LEFT:
+				return
+			_begin_drag_main(mb.position.x)
+			accept_event()
+			return
+		else:
+			if _dragging_main == true:
+				_end_drag_main()
+				accept_event()
+				return
+
+	if event is InputEventMouseMotion:
+		if _dragging_main == false:
+			return
+		var mm: InputEventMouseMotion = event as InputEventMouseMotion
+		_update_drag_main(mm.position.x)
+		accept_event()
+		return
+
+
+func _begin_drag_main(mouse_x: float) -> void:
+	_dragging_main = true
+	_drag_main_mouse_start_x = mouse_x
+	_drag_main_delta_current = 0.0
+	_kill_panel_tween()
+
+
+func _update_drag_main(mouse_x: float) -> void:
+	var dx: float = mouse_x - _drag_main_mouse_start_x
+	var clamped_dx: float = clampf(dx, -drag_range_px_main, drag_range_px_main)
+	_drag_main_delta_current = clamped_dx
+	_apply_main_drag_delta(_drag_main_delta_current)
+
+
+func _end_drag_main() -> void:
+	_dragging_main = false
+	_kill_panel_tween()
+
+	var tw: Tween = create_tween()
+	_active_tween_panel = tw
+	tw.set_ignore_time_scale(true)
+	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	tw.tween_property(panel, "position:x", _panel_shown_x, drag_return_time)
+	tw.finished.connect(_on_panel_tween_finished)
+
+
+func _apply_main_drag_delta(delta_x: float) -> void:
+	var target_x: float = _panel_shown_x + delta_x
+	var ppos: Vector2 = panel.position
+	ppos.x = target_x
+	panel.position = ppos
+
+
+func _kill_panel_tween() -> void:
+	if _active_tween_panel == null:
+		return
+	if is_instance_valid(_active_tween_panel) == false:
+		_active_tween_panel = null
+		return
+	_active_tween_panel.kill()
+	_active_tween_panel = null
+
+
+func _on_panel_tween_finished() -> void:
+	_active_tween_panel = null
+
+
+# =====================================================================
+# DRAG LOGIC (PORTRAIT)
+# =====================================================================
+
+func _on_drag_handle_portrait_gui_input(event: InputEvent) -> void:
+	if _open == false:
+		return
+	if portrait_panel == null:
+		return
+	if _closing == true:
+		return
+
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.button_index != MouseButton.MOUSE_BUTTON_LEFT:
+			return
+
+		if mb.pressed == true:
+			if drag_require_left_button == true and mb.button_index != MouseButton.MOUSE_BUTTON_LEFT:
+				return
+			_begin_drag_portrait(mb.position.x)
+			accept_event()
+			return
+		else:
+			if _dragging_portrait == true:
+				_end_drag_portrait()
+				accept_event()
+				return
+
+	if event is InputEventMouseMotion:
+		if _dragging_portrait == false:
+			return
+		var mm: InputEventMouseMotion = event as InputEventMouseMotion
+		_update_drag_portrait(mm.position.x)
+		accept_event()
+		return
+
+
+func _begin_drag_portrait(mouse_x: float) -> void:
+	_dragging_portrait = true
+	_drag_portrait_mouse_start_x = mouse_x
+	_drag_portrait_delta_current = 0.0
+	_kill_portrait_tween()
+
+
+func _update_drag_portrait(mouse_x: float) -> void:
+	var dx: float = mouse_x - _drag_portrait_mouse_start_x
+	var clamped_dx: float = clampf(dx, -drag_range_px_portrait, drag_range_px_portrait)
+	_drag_portrait_delta_current = clamped_dx
+	_apply_portrait_drag_delta(_drag_portrait_delta_current)
+
+
+func _end_drag_portrait() -> void:
+	_dragging_portrait = false
+	_kill_portrait_tween()
+
+	var tw: Tween = create_tween()
+	_active_tween_portrait = tw
+	tw.set_ignore_time_scale(true)
+	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	tw.tween_property(portrait_panel, "position:x", _portrait_shown_x, drag_return_time)
+	tw.finished.connect(_on_portrait_tween_finished)
+
+
+func _apply_portrait_drag_delta(delta_x: float) -> void:
+	var target_x: float = _portrait_shown_x + delta_x
+	var ppos: Vector2 = portrait_panel.position
+	ppos.x = target_x
+	portrait_panel.position = ppos
+
+
+func _kill_portrait_tween() -> void:
+	if _active_tween_portrait == null:
+		return
+	if is_instance_valid(_active_tween_portrait) == false:
+		_active_tween_portrait = null
+		return
+	_active_tween_portrait.kill()
+	_active_tween_portrait = null
+
+
+func _on_portrait_tween_finished() -> void:
+	_active_tween_portrait = null
 
 
 # =====================================================================
@@ -154,7 +374,7 @@ func open_for_planet(planet: Node) -> void:
 	# Default page: comms
 	_show_page(&"comms")
 
-	# Portrait setup (content) stays here
+	# Portrait setup (content)
 	if portrait_controller != null and planet != null and is_instance_valid(planet):
 		if _has_method(portrait_controller, &"setup_for_planet"):
 			portrait_controller.call("setup_for_planet", planet)
@@ -202,7 +422,16 @@ func close_ui() -> void:
 	_closing = true
 	_pending_close_anims = 0
 
-	# Stop controllers (cancels flows cleanly)
+	# Stop dragging if active
+	if _dragging_main == true:
+		_dragging_main = false
+	if _dragging_portrait == true:
+		_dragging_portrait = false
+
+	_kill_panel_tween()
+	_kill_portrait_tween()
+
+	# Stop controllers
 	if bubble_dialogue_controller != null and _has_method(bubble_dialogue_controller, &"stop"):
 		bubble_dialogue_controller.call("stop")
 
@@ -249,7 +478,7 @@ func _set_ui_active(active: bool) -> void:
 
 
 # =====================================================================
-# PANEL SLIDE ANIMATION (now includes portrait panel)
+# PANEL SLIDE ANIMATION (includes portrait panel)
 # =====================================================================
 
 func _slide_open() -> void:
@@ -258,16 +487,27 @@ func _slide_open() -> void:
 
 	_open = true
 
+	_kill_panel_tween()
+	_kill_portrait_tween()
+
 	var tw: Tween = create_tween()
+	_active_tween_panel = tw
 	tw.set_ignore_time_scale(true)
 	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	# Main panel
 	tw.tween_property(panel, "position:x", _panel_shown_x, tween_time)
 
-	# Portrait panel (NEW)
+	# Portrait panel
 	if portrait_panel != null:
-		tw.parallel().tween_property(portrait_panel, "position:x", _portrait_shown_x, tween_time)
+		var tw2: Tween = create_tween()
+		_active_tween_portrait = tw2
+		tw2.set_ignore_time_scale(true)
+		tw2.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tw2.tween_property(portrait_panel, "position:x", _portrait_shown_x, tween_time)
+		tw2.finished.connect(_on_portrait_tween_finished)
+
+	tw.finished.connect(_on_panel_tween_finished)
 
 
 func _slide_closed_and_count() -> void:
@@ -277,18 +517,28 @@ func _slide_closed_and_count() -> void:
 	_open = false
 	_pending_close_anims += 1
 
+	_kill_panel_tween()
+	_kill_portrait_tween()
+
 	var tw: Tween = create_tween()
+	_active_tween_panel = tw
 	tw.set_ignore_time_scale(true)
 	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 
 	# Main panel
 	tw.tween_property(panel, "position:x", _panel_hidden_x, tween_time)
 
-	# Portrait panel (NEW)
+	# Portrait panel
 	if portrait_panel != null:
-		tw.parallel().tween_property(portrait_panel, "position:x", _portrait_hidden_x, tween_time)
+		var tw2: Tween = create_tween()
+		_active_tween_portrait = tw2
+		tw2.set_ignore_time_scale(true)
+		tw2.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		tw2.tween_property(portrait_panel, "position:x", _portrait_hidden_x, tween_time)
+		tw2.finished.connect(_on_portrait_tween_finished)
 
 	tw.finished.connect(_on_one_close_anim_done)
+	tw.finished.connect(_on_panel_tween_finished)
 
 
 func _on_one_close_anim_done() -> void:
@@ -346,7 +596,7 @@ func close_button_pressed() -> void:
 
 
 # =====================================================================
-# Dialogue detection (same convention you've been using)
+# Dialogue detection
 # =====================================================================
 
 func _planet_has_dialogue(planet: Node) -> bool:
