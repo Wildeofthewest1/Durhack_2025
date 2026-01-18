@@ -4,7 +4,7 @@ class_name SpeechBubble
 @export var speaker_label: RichTextLabel
 @export var dialogue_label: DialogueLabel
 
-@export var npc_speaker_color: String = "#d9d4ff"
+@export var npc_speaker_color: String = "#5CBBFF"
 @export var you_speaker_color: String = "#f3d38b"
 
 @export var you_name: String = "YOU"

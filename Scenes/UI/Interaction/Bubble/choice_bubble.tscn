@@ -1,37 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://kuy7xi1mefgn"]
+[gd_scene load_steps=6 format=3 uid="uid://kuy7xi1mefgn"]
 
 [ext_resource type="Script" uid="uid://c72pis58wt88j" path="res://Scenes/UI/Interaction/Bubble/choices_bubble.gd" id="1_lugr8"]
 [ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="2_8an27"]
 [ext_resource type="FontFile" uid="uid://dd7w7hj78m7te" path="res://Assets/ari-w9500.ttf" id="2_p1ix5"]
+[ext_resource type="FontFile" uid="uid://btrqx1dyumfkn" path="res://Assets/ari-w9500-display.ttf" id="3_07dmq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8an27"]
-bg_color = Color(0.9411765, 0.9411765, 0.9411765, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
+bg_color = Color(0.92, 0.93733335, 1, 0.27450982)
 border_color = Color(0.8, 0.8, 0.8, 0)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
-corner_radius_bottom_right = 50
+corner_radius_bottom_right = 40
 corner_radius_bottom_left = 20
-shadow_color = Color(1, 1, 1, 0.27450982)
-shadow_size = 1
+shadow_color = Color(1, 1, 1, 0.11764706)
+shadow_size = 2
 shadow_offset = Vector2(5, 5)
 
 [node name="SpeechBubble" type="PanelContainer" node_paths=PackedStringArray("choices_label")]
-custom_minimum_size = Vector2(500, 50)
+custom_minimum_size = Vector2(500, 20)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -400.0
-offset_bottom = 100.0
+offset_left = -500.0
+offset_bottom = 45.0
 grow_horizontal = 0
 size_flags_horizontal = 0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8an27")
 script = ExtResource("1_lugr8")
 choices_label = NodePath("MarginContainer/VBoxContainer/RichTextLabel")
+choice_font_size = 22
+continue_font_size = 22
+hover_mute_factor = 0.2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -46,8 +46,9 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_separation = 10
-theme_override_constants/paragraph_separation = 20
+theme_override_constants/paragraph_separation = 5
 theme_override_fonts/normal_font = ExtResource("2_p1ix5")
+theme_override_fonts/bold_font = ExtResource("3_07dmq")
 theme_override_font_sizes/normal_font_size = 22
 theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true

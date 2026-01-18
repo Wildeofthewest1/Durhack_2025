@@ -2,20 +2,26 @@ extends Control
 class_name InteractionUI
 
 # =====================================================================
-# ROOT ORCHESTRATOR (NO COMMS PAGE)
+# ROOT ORCHESTRATOR (COMMS RESTORED)
 # - panel open/close
 # - safe pause
-# - optional fleet/shop pages
+# - comms/fleet/shop pages (optional)
 # - triggers bubble dialogue UI only if planet/interactible has dialogue
 # - keeps old API: toggle_for_planet / open_for_planet
 # =====================================================================
 
 @export var panel: Control
 
+# Portrait panel slide (NEW)
+@export var portrait_panel: Control
+@export var portrait_hide_offset: float = 400.0
+
 # Optional pages (use or leave null)
+@export var comms_page: Control
 @export var fleet_page: Control
 @export var shop_page: Control
 
+@export var comms_tab_button: Button
 @export var fleet_tab_button: Button
 @export var shop_tab_button: Button
 
@@ -25,12 +31,17 @@ class_name InteractionUI
 # Controllers
 @export var portrait_controller: Node
 @export var bubble_dialogue_controller: Node # your BubbleDialogueController
+@export var comms_controller: Node
 @export var fleet_controller: Node
 @export var shop_controller: Node
 
 var _open: bool = false
 var _panel_shown_x: float = 0.0
 var _panel_hidden_x: float = 0.0
+
+# Portrait slide cached positions (NEW)
+var _portrait_shown_x: float = 0.0
+var _portrait_hidden_x: float = 0.0
 
 # close gating
 var _pending_close_anims: int = 0
@@ -39,8 +50,8 @@ var _closing: bool = false
 # data
 var _current_planet: Node = null
 
-# active page (fleet/shop only; bubbles are independent)
-var _active_page: StringName = &"none" # "none" | "fleet" | "shop"
+# active page
+var _active_page: StringName = &"none" # "none" | "comms" | "fleet" | "shop"
 
 
 func _ready() -> void:
@@ -53,16 +64,27 @@ func _ready() -> void:
 	_panel_shown_x = panel.position.x
 	_panel_hidden_x = _panel_shown_x + panel_hide_offset
 
-	# Start panel hidden
+	# Start main panel hidden
 	var ppos: Vector2 = panel.position
 	ppos.x = _panel_hidden_x
 	panel.position = ppos
+
+	# Cache portrait positions + start hidden (NEW)
+	if portrait_panel != null:
+		_portrait_shown_x = portrait_panel.position.x
+		_portrait_hidden_x = _portrait_shown_x + portrait_hide_offset
+
+		var ppos2: Vector2 = portrait_panel.position
+		ppos2.x = _portrait_hidden_x
+		portrait_panel.position = ppos2
 
 	_open = false
 	_set_ui_active(false)
 	_show_page(&"none")
 
 	# Optional tab hookups
+	if comms_tab_button != null and not comms_tab_button.pressed.is_connected(show_comms_page):
+		comms_tab_button.pressed.connect(show_comms_page)
 	if fleet_tab_button != null and not fleet_tab_button.pressed.is_connected(show_fleet_page):
 		fleet_tab_button.pressed.connect(show_fleet_page)
 	if shop_tab_button != null and not shop_tab_button.pressed.is_connected(show_shop_page):
@@ -129,18 +151,15 @@ func open_for_planet(planet: Node) -> void:
 	# Enable UI + input
 	_set_ui_active(true)
 
-	# Default page: none (unless you want fleet/shop open by default)
-	_show_page(&"none")
+	# Default page: comms
+	_show_page(&"comms")
 
-	# Portrait (optional)
+	# Portrait setup (content) stays here
 	if portrait_controller != null and planet != null and is_instance_valid(planet):
 		if _has_method(portrait_controller, &"setup_for_planet"):
 			portrait_controller.call("setup_for_planet", planet)
 		elif _has_method(portrait_controller, &"setup_for_target"):
 			portrait_controller.call("setup_for_target", planet)
-
-		if _has_method(portrait_controller, &"fade_in"):
-			portrait_controller.call("fade_in")
 
 	# Bubble dialogue: ONLY start if this planet has dialogue
 	if bubble_dialogue_controller != null and _planet_has_dialogue(planet):
@@ -150,6 +169,12 @@ func open_for_planet(planet: Node) -> void:
 			bubble_dialogue_controller.call("start_for_target", planet)
 
 	# Optional other controllers
+	if comms_controller != null:
+		if _has_method(comms_controller, &"setup_for_planet"):
+			comms_controller.call("setup_for_planet", planet)
+		elif _has_method(comms_controller, &"setup_for_target"):
+			comms_controller.call("setup_for_target", planet)
+
 	if fleet_controller != null:
 		if _has_method(fleet_controller, &"setup_for_planet"):
 			fleet_controller.call("setup_for_planet", planet)
@@ -177,9 +202,12 @@ func close_ui() -> void:
 	_closing = true
 	_pending_close_anims = 0
 
-	# Stop controllers (cancels dialogue flow cleanly)
+	# Stop controllers (cancels flows cleanly)
 	if bubble_dialogue_controller != null and _has_method(bubble_dialogue_controller, &"stop"):
 		bubble_dialogue_controller.call("stop")
+
+	if comms_controller != null and _has_method(comms_controller, &"stop"):
+		comms_controller.call("stop")
 
 	if fleet_controller != null and _has_method(fleet_controller, &"stop"):
 		fleet_controller.call("stop")
@@ -191,10 +219,6 @@ func close_ui() -> void:
 	_set_game_paused(false)
 
 	_slide_closed_and_count()
-
-	if portrait_controller != null and _has_method(portrait_controller, &"fade_out"):
-		_pending_close_anims += 1
-		portrait_controller.call("fade_out")
 
 	_current_planet = null
 
@@ -225,7 +249,7 @@ func _set_ui_active(active: bool) -> void:
 
 
 # =====================================================================
-# PANEL SLIDE ANIMATION
+# PANEL SLIDE ANIMATION (now includes portrait panel)
 # =====================================================================
 
 func _slide_open() -> void:
@@ -237,7 +261,13 @@ func _slide_open() -> void:
 	var tw: Tween = create_tween()
 	tw.set_ignore_time_scale(true)
 	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	# Main panel
 	tw.tween_property(panel, "position:x", _panel_shown_x, tween_time)
+
+	# Portrait panel (NEW)
+	if portrait_panel != null:
+		tw.parallel().tween_property(portrait_panel, "position:x", _portrait_shown_x, tween_time)
 
 
 func _slide_closed_and_count() -> void:
@@ -250,7 +280,14 @@ func _slide_closed_and_count() -> void:
 	var tw: Tween = create_tween()
 	tw.set_ignore_time_scale(true)
 	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+
+	# Main panel
 	tw.tween_property(panel, "position:x", _panel_hidden_x, tween_time)
+
+	# Portrait panel (NEW)
+	if portrait_panel != null:
+		tw.parallel().tween_property(portrait_panel, "position:x", _portrait_hidden_x, tween_time)
+
 	tw.finished.connect(_on_one_close_anim_done)
 
 
@@ -264,19 +301,28 @@ func _on_one_close_anim_done() -> void:
 
 
 # =====================================================================
-# OPTIONAL PAGES (fleet/shop only)
+# OPTIONAL PAGES (comms/fleet/shop)
 # =====================================================================
 
 func _show_page(page: StringName) -> void:
 	_active_page = page
 
+	var show_comms: bool = page == &"comms"
 	var show_fleet: bool = page == &"fleet"
 	var show_shop: bool = page == &"shop"
 
+	if comms_page != null:
+		comms_page.visible = show_comms
 	if fleet_page != null:
 		fleet_page.visible = show_fleet
 	if shop_page != null:
 		shop_page.visible = show_shop
+
+
+func show_comms_page() -> void:
+	if comms_controller != null and _has_method(comms_controller, &"refresh"):
+		comms_controller.call("refresh")
+	_show_page(&"comms")
 
 
 func show_fleet_page() -> void:
@@ -307,12 +353,10 @@ func _planet_has_dialogue(planet: Node) -> bool:
 	if planet == null or not is_instance_valid(planet):
 		return false
 
-	# direct properties
 	var dr: Variant = _safe_get(planet, &"dialogue_resource")
 	if dr is DialogueResource:
 		return true
 
-	# nested resource approach
 	var data: Variant = _safe_get(planet, &"dialogue_data")
 	if data is Object:
 		var dr2: Variant = _safe_get(data as Object, &"dialogue_resource")
