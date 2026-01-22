@@ -5,9 +5,8 @@ signal health_changed(new_health: int, max_health: int)
 signal shield_changed(new_shield: int, max_shield: int)
 signal died()
 
-@export var max_health: int = 100
-
-@export var max_shield: int = 100
+@onready var max_health: float = PlayerVariables.get_value(&"max_hp")
+@onready var max_shield: float = PlayerVariables.get_value(&"max_shield")
 @export var shield_regen_per_second: float = 30.0
 @export var shield_regen_delay: float = 3.0
 
@@ -21,8 +20,8 @@ signal died()
 @export var hit_effect_sprite: GPUParticles2D
 
 var player: CharacterBody2D = null
-var health: int = 0
-var shield: int = 0
+var health: float = 0
+var shield: float = 0
 
 var _is_hit_stopping: bool = false
 var _invincible_timer: float = 0.0
@@ -36,7 +35,7 @@ func _ready() -> void:
 	if player == null:
 		push_error("PlayerHealth must be a child of a CharacterBody2D.")
 		return
-
+	
 	health = max_health
 	shield = max_shield
 	_shield_regen_accum = 0.0

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://bgh3ex0a3vlve"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_bpx0n"]
+
+[resource]
+script = ExtResource("1_bpx0n")
+id = &"max_hp"
+display_name = "Max Hull Strength"
+default_value = 50.0
+metadata/_custom_type_script = "uid://17pvuq76srq4"

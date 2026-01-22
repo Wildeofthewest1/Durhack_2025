@@ -4,7 +4,7 @@ class_name HealthShieldUI
 # -------------------------
 # HEALTH (square blocks)
 # -------------------------
-@export var max_health: int = 100
+var max_health: float = PlayerVariables.get_value(&"max_hp")
 @export var square_size: int = 25
 @export var spacing: int = 50
 @export var squares_per_row: int = 10
@@ -15,7 +15,7 @@ class_name HealthShieldUI
 # -------------------------
 # SHIELD (Halo-style bar)
 # -------------------------
-@export var max_shield: int = 100
+var max_shield: float = PlayerVariables.get_value(&"max_shield")
 @export var shield_color: Color = Color("84dbf5")
 @export var shield_empty_color: Color = Color("333333")
 

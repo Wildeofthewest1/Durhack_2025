@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatDB" load_steps=5 format=3 uid="uid://b8dfllvp1i5h0"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_b7lov"]
+[ext_resource type="Resource" uid="uid://bgh3ex0a3vlve" path="res://Stats/StatList/max_hp.tres" id="2_4fuy3"]
+[ext_resource type="Script" uid="uid://dkfmxklrhtd4n" path="res://Stats/StatDB.gd" id="2_rib81"]
+[ext_resource type="Resource" uid="uid://oykpu20nci7w" path="res://Stats/StatList/max_shield.tres" id="3_4fuy3"]
+
+[resource]
+script = ExtResource("2_rib81")
+definitions = Array[ExtResource("1_b7lov")]([ExtResource("2_4fuy3"), ExtResource("3_4fuy3")])
+metadata/_custom_type_script = "uid://dkfmxklrhtd4n"

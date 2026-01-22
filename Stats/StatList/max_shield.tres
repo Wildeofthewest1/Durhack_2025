@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://oykpu20nci7w"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_h3d3l"]
+
+[resource]
+script = ExtResource("1_h3d3l")
+id = &"max_shield"
+display_name = "Max Shield"
+default_value = 50.0
+metadata/_custom_type_script = "uid://17pvuq76srq4"

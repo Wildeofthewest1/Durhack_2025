@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=25 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://b2is01dn5d4fu" path="res://Scenes/Camera/background.tscn" id="1_xqoiw"]
@@ -27,6 +27,8 @@ blend_mode = 4
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bo1nx"]
 shader = ExtResource("1_jjgbg")
 shader_parameter/cam_offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nq4jv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sw6w7"]
 shader = ExtResource("11_5fdju")
@@ -98,6 +100,7 @@ size = Vector2i(642, 362)
 render_target_update_mode = 4
 
 [node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_bo1nx")]
+material = SubResource("ShaderMaterial_nq4jv")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true

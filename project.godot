@@ -17,11 +17,11 @@ config/features=PackedStringArray("4.5", "GL Compatibility")
 [autoload]
 
 FleetManager="*res://Scenes/Managers/FleetManager.gd"
-PlayerVariables="*res://Scenes/Player/PlayerVariables.gd"
 Screenshake="*res://Scenes/Camera/Screenshake.gd"
 WaveManager="*res://Scenes/Waves/WaveManager.gd"
 ResourceManager="*res://Data/Game Resources/ResourceManager.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+PlayerVariables="*res://Stats/PlayerVariables.gd"
 PauseManager="*res://Scenes/Game/PauseManager.gd"
 
 [dialogic]
