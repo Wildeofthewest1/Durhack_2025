@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://chtntuksi7u5v"]
+[gd_scene load_steps=7 format=3 uid="uid://chtntuksi7u5v"]
 
 [ext_resource type="Texture2D" uid="uid://bdgd8byi47npg" path="res://Assets/explosion_effect.png" id="1_60hq2"]
 [ext_resource type="Script" uid="uid://cdnh4rvcgobn0" path="res://Scenes/particles/destroy_timer.gd" id="2_m7uvj"]
+[ext_resource type="PackedScene" uid="uid://crnuew8g2u1hs" path="res://Scenes/particles/dust_explosion.tscn" id="3_i18c1"]
+[ext_resource type="Script" uid="uid://cr4eg010om2tg" path="res://Scenes/particles/copy_emit_parrent.gd" id="4_f6yck"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_htcqd"]
 particles_animation = true
@@ -35,3 +37,6 @@ explosiveness = 0.95
 randomness = 0.25
 process_material = SubResource("ParticleProcessMaterial_i18c1")
 script = ExtResource("2_m7uvj")
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("3_i18c1")]
+script = ExtResource("4_f6yck")

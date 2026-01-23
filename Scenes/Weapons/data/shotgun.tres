@@ -17,6 +17,7 @@ flash_scene = ExtResource("2_liptd")
 spread_deg = 10.0
 damage = 30.0
 muzzle_velocity = 600.0
+knockback = 300.0
 max_magazine = 4
 reload_time = 0.5
 mag_regen_time = 5.0

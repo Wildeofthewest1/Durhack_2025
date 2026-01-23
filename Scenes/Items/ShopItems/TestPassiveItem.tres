@@ -8,7 +8,6 @@ script = ExtResource("1_6qqrl")
 passive_id = &"test_passive_item"
 stacks = 99
 id = &"test_passive_item"
-kind = 2
 display_name = "Test Item"
 description = "This is a Test Item, not to be confused with the common insult Testittem, which roughly translates as \"motherfucker\"."
 icon = ExtResource("1_oj8u0")

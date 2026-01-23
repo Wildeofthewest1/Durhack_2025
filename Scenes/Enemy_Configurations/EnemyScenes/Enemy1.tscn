@@ -16,6 +16,8 @@ position = Vector2(-18, 27)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_ow0xe")
+knockback_rate_start = 0.0
+knockback_ramp_time = 0.25
 death_particles_scene = ExtResource("2_iyo2w")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

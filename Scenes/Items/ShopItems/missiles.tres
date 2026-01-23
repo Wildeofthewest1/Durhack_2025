@@ -7,7 +7,6 @@
 script = ExtResource("1_02g4r")
 weapon_id = &"missiles"
 id = &"missiles"
-kind = 1
 display_name = "Micro-Missile Launcher"
 description = "Micro-Missile Launcher. Auto-aims on targets as small fine as small debris particules"
 icon = ExtResource("1_xw08o")

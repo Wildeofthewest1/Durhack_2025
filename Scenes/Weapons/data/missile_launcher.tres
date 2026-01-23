@@ -17,6 +17,7 @@ flash_scene = ExtResource("2_hmygo")
 fire_cooldown = 0.05
 spread_deg = 10.0
 damage = 20.0
+knockback = 300.0
 max_magazine = 10
 reload_time = 0.5
 mag_regen_time = 10.0

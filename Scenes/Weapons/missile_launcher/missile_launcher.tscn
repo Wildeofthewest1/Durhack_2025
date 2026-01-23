@@ -6,6 +6,13 @@
 [node name="missile_launcher" type="Node2D"]
 z_index = 1
 script = ExtResource("1_ry5vl")
+muzzle_l_path = null
+muzzle_r_path = null
+spawn_offset_px = null
+fire_both_at_once = null
+alternate_start_left = null
+reload_complete_volume_db = null
+reload_complete_pitch = null
 metadata/_edit_lock_ = true
 
 [node name="MuzzleL" type="Marker2D" parent="."]

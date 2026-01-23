@@ -26,6 +26,7 @@ enum AmmoModel {
 @export_category("Damage")
 @export var damage: float = 10.0
 @export var muzzle_velocity: float = 800.0
+@export var knockback: float = 100.0
 
 @export_category("Reload")
 @export var max_magazine: int = 12

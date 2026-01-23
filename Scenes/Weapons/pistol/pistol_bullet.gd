@@ -15,6 +15,7 @@ var _velocity_vec: Vector2 = Vector2.ZERO
 var _damage: float = 0.0
 var _life_timer: float = 0.0
 var _aim_dir: Vector2 = Vector2.RIGHT
+var _knockback: float = 100.0
 
 @onready var _trail: Node = $Trail
 @onready var _trail_line: Line2D = $Trail as Line2D
@@ -29,11 +30,12 @@ func _ready() -> void:
 		get_parent().add_child(trailer)
 		trailer.follower = self
 
-func initialize_projectile(dir: Vector2, speed: float, dmg: float, carrier_vel: Vector2) -> void:
+func initialize_projectile(dir: Vector2, speed: float, dmg: float, carrier_vel: Vector2,knockback:float) -> void:
 	_aim_dir = dir.normalized()
 	_velocity_vec = _aim_dir * speed + carrier_vel
 	_damage = dmg
 	_life_timer = life_time
+	_knockback = knockback
 
 	# Seed the trail immediately at the bullet's CURRENT position (prevents (0,0) spike)
 	# Requires your Trail script to have reset_to_world_pos(p)
@@ -63,10 +65,10 @@ func _physics_process(delta: float) -> void:
 		if target != null:
 			if target.is_in_group("Enemy"):
 				if target.has_method("take_damage"):
-					target.take_damage(_damage,global_position)
+					target.take_damage(_damage,Vector2.RIGHT.rotated(global_rotation),_knockback)
 			elif "team" in target:
 				if String(target.team) == "Enemy" and target.has_method("take_damage"):
-					target.take_damage(_damage,global_position)
+					target.take_damage(_damage,Vector2.RIGHT.rotated(global_rotation),_knockback)
 		_spawn_explosion()
 		queue_free()
 		return
@@ -87,6 +89,7 @@ func _spawn_explosion() -> void:
 	if parent_node != null:
 		parent_node.add_child(explo)
 		explo.global_position = global_position
+		explo.global_rotation = global_rotation
 		explo.emitting = true
 
 func _die() -> void:

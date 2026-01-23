@@ -90,7 +90,7 @@ func _spawn_from_muzzle(muzzle: Node2D, _base_dir: Vector2) -> void:
 	missile.global_position = spawn_pos
 
 	# Let the missile script set its own rotation/velocity
-	missile.initialize(fire_dir)
+	missile.initialize(fire_dir,data.damage,data.knockback)
 
 	# Muzzle flash stays the same
 	if data.flash_scene != null:

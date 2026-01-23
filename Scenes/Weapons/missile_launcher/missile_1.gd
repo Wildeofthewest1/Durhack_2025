@@ -4,6 +4,7 @@ class_name MissileProjectile
 # --- GENERAL SETTINGS ---
 @export var life_time: float = 5.0
 @export var damage: float = 20.0
+var knockback: float = 100.0
 
 # --- STARTUP PHASE ---
 @export var startup_time: float = 0.4
@@ -56,7 +57,7 @@ func _ready() -> void:
 	_cached_cone_cos = cos(deg_to_rad(cone_angle_deg))
 	# wait for initialize() to set direction/velocity
 
-func initialize(initial_direction: Vector2) -> void:
+func initialize(initial_direction: Vector2,missile_damage:float, missile_knockback:float) -> void:
 	var dir: Vector2 = initial_direction
 	if dir.length() == 0.0:
 		dir = Vector2.RIGHT
@@ -64,6 +65,8 @@ func initialize(initial_direction: Vector2) -> void:
 	_forward = dir.normalized()
 	velocity = _forward * startup_speed
 	rotation = _forward.angle()
+	damage = missile_damage
+	knockback = missile_knockback
 
 func _physics_process(delta: float) -> void:
 	# Lifetime
@@ -388,12 +391,11 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	if target != null:
 		if target.is_in_group(enemy_group):
 			if target.has_method("take_damage"):
-				target.call("take_damage", damage,global_position)
+				target.call("take_damage", damage,Vector2.RIGHT.rotated(global_rotation),knockback)
 		elif "team" in target:
 			var team_string: String = String(target.team)
 			if team_string == String(enemy_group) and target.has_method("take_damage"):
-				target.call("take_damage", damage,global_position)
-
+				target.call("take_damage", damage,Vector2.RIGHT.rotated(global_rotation),knockback)
 	_spawn_explosion()
 	_die()
 

@@ -191,7 +191,7 @@ func _apply_hit_damage(collider: Object) -> void:
 	var damage: float = data.damage
 
 	if collider.has_method("take_damage"):
-		collider.call("take_damage", damage,global_position)
+		collider.call("take_damage", damage,global_position,data.knockback)
 	elif collider.has_method("apply_damage"):
 		collider.call("apply_damage", damage)
 	elif collider.has_method("damage"):

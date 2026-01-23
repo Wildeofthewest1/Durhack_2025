@@ -15,4 +15,12 @@ func _ready() -> void:
 	Particle_2.emitting = true
 	Particle_3.emitting = true
 	Particle_4.emitting = true
-	
+	var timer := Timer.new()
+	add_child(timer)
+	timer.wait_time = 5.0
+	timer.one_shot = true
+	timer.start()
+	timer.connect("timeout", _on_timer_timeout)
+
+func _on_timer_timeout() -> void:
+	queue_free()

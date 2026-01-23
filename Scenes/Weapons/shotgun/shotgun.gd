@@ -83,4 +83,4 @@ func _spawn_pellet(base_dir: Vector2, base_half_spread: float, pellet_half_sprea
 	proj.rotation = fire_dir.angle()
 
 	if proj.has_method("initialize_projectile"):
-		proj.call("initialize_projectile", fire_dir, data.muzzle_velocity*randf_range(0.95,1.05), data.damage,get_parent().get_parent().get_parent().velocity)
+		proj.call("initialize_projectile", fire_dir, data.muzzle_velocity*randf_range(0.95,1.05), data.damage,get_parent().get_parent().get_parent().velocity,data.knockback)
