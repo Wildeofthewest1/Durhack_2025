@@ -1,0 +1,28 @@
+~ start
+Commander: [[I see, divert the 153rd to the col- oh, captain.|Captain...|Captain.]]
+Commander: Why are you here? I thought me and my fleet were to be left alone in the matters of inner system defense.
+Commander: There is nothing for you to see here.
+Commander: Shoo, go back to your solar orbit, you are not needed.
+Commander: [speed=0.2]... [speed=1] Fine. I will sell you surplus weaponry.
+Commander: Happy? [wait=1] Of course you are. You always are. You and your smug face. Fine. Plunder our supplies and see what happens when the invasion comes and I am forced to defend our precious sun with nothing but muskets and mosquitoes.
+~ choices
+- I'm sure you'll do fine.
+	Commander: -_-
+	Commander: >_>
+	Commander: UwU
+	Commander: X_n_X
+	Commander: Are you cringing in disgust?
+	Commander: Are you sad? Mad? 
+	Commander: Good. => choices
+- I just wanted to say hi.
+	Commander: Hi. [wait=0.5] Bye. => choices
+- You're right. I would like to buy some weapons.
+	Commander: You don't need to tell me that. You don't even need to talk to me. There's a BIG BUTTON THAT SAYS SHOP. GO CLICK ON THAT.
+	Commander: [Commander turns sideways, doing her best to throw a scrutinizing side eye. It's ridiculous]
+	Commander: No it's not! It's a very effective strategy against pests and mutts.
+- [Start again]
+	Commander: Nope. I'm not repeating all that. => choices
+- Bye
+	Commander: For the future of our system. [Commander straightens up, and does a formal salute, a sign of deep respect, or not. It's something she does to every half-descent officer. Now what does that say about you?]
+	You: Note to self, remove VoiceOver text admin access from the interacting party.
+	Commander: [Captain walks away in defeat]

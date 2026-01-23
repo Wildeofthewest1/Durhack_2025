@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://c2e7y4bongp4e"
+path="res://.godot/imported/FleetCommander.dialogue-52e19734ecb3dd36cd8111d437b0a879.tres"
+
+[deps]
+
+source_file="res://Scenes/NPCs/Fleet Commander/FleetCommander.dialogue"
+dest_files=["res://.godot/imported/FleetCommander.dialogue-52e19734ecb3dd36cd8111d437b0a879.tres"]
+
+[params]
+
+defaults=true
