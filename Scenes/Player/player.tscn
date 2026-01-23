@@ -133,7 +133,8 @@ color = Color(1, 1, 1, 1)
 
 [node name="WeaponManager" type="Node2D" parent="." groups=["weapon_manager"]]
 script = ExtResource("5_fkybt")
-starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd"), ExtResource("16_hnuln"), ExtResource("17_aqm4k")])
+weapon_library = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd"), ExtResource("16_hnuln"), ExtResource("17_aqm4k")])
+starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("16_hnuln")])
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
 

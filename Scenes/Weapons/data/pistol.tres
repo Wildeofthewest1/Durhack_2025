@@ -8,6 +8,7 @@
 
 [resource]
 script = ExtResource("1_yvqru")
+id = &"pistol"
 icon = ExtResource("3_nprgb")
 weapon_scene = ExtResource("3_m54r8")
 bullet_scene = ExtResource("1_3isoy")

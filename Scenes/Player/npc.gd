@@ -2,7 +2,7 @@ extends Node2D
 class_name PlanetNPC
 
 @export var dialogue_data: DialogueData
-@export var shop_data: ShopData
+@export var shop_data: DialogueData
 
 # This just makes it easy to show the planet name without digging.
 func get_planet_name() -> String:
@@ -22,12 +22,11 @@ func get_dialogue_replies() -> Array[String]:
 	var arr: Array[String] = []
 	return arr
 
-func get_shop_items() -> Array[String]:
-	if shop_data != null:
-		return shop_data.items
-	var arr: Array[String] = []
-	return arr
-
+func get_shop_offers() -> Array[ShopOffer]:
+	if dialogue_data == null:
+		return []
+	return dialogue_data.shop_offers
+	
 func get_shop_prices() -> Array[int]:
 	if shop_data != null:
 		return shop_data.prices

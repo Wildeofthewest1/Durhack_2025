@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponShopItemData" load_steps=3 format=3 uid="uid://k27ps48itb0u"]
+
+[ext_resource type="Script" uid="uid://br2ctu33guvps" path="res://Scenes/Items/WeaponShopItemData.gd" id="1_02g4r"]
+[ext_resource type="Texture2D" uid="uid://d15mtu7xdudpy" path="res://Assets/background/missile_logo.png" id="1_xw08o"]
+
+[resource]
+script = ExtResource("1_02g4r")
+weapon_id = &"missiles"
+id = &"missiles"
+kind = 1
+display_name = "Micro-Missile Launcher"
+description = "Micro-Missile Launcher. Auto-aims on targets as small fine as small debris particules"
+icon = ExtResource("1_xw08o")
+metadata/_custom_type_script = "uid://br2ctu33guvps"

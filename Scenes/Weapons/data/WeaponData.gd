@@ -6,6 +6,7 @@ enum AmmoModel {
 	STANDARD = 0,             # banks mags in background
 	INFINITE_WITH_RELOAD = 1  # pistol option B
 }
+@export var id: StringName = &""
 
 @export_category("UI")
 @export var display_name: String = "Pistol"

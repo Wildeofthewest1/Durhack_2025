@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="DialogueData" load_steps=6 format=3 uid="uid://cnrc64sortms1"]
+
+[ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_af5gb"]
+[ext_resource type="Texture2D" uid="uid://dmcq0wlbhra5q" path="res://Assets/commander.png" id="1_u78u1"]
+[ext_resource type="Script" uid="uid://y1erbaey8il8" path="res://Scenes/Items/ShopOffer.gd" id="3_gx0yx"]
+[ext_resource type="Resource" uid="uid://k27ps48itb0u" path="res://Scenes/Items/ShopItems/missiles.tres" id="4_kib0y"]
+
+[sub_resource type="Resource" id="Resource_rj1aq"]
+script = ExtResource("3_gx0yx")
+item = ExtResource("4_kib0y")
+price = 5
+stock = 1
+metadata/_custom_type_script = "uid://y1erbaey8il8"
+
+[resource]
+script = ExtResource("1_af5gb")
+portrait_texture = ExtResource("1_u78u1")
+shop_offers = Array[ExtResource("3_gx0yx")]([SubResource("Resource_rj1aq")])
+metadata/_custom_type_script = "uid://droqswt3u80yn"

@@ -19,6 +19,10 @@ signal weapon_ammo_changed(
 	regen_progress: float
 )
 
+# NEW: so the shop can unlock by id.
+# Populate with all weapons in your game.
+@export var weapon_library: Array[WeaponData] = []
+
 @export var socket_path: NodePath = NodePath("WeaponSocket")
 @export var starting_loadout: Array[WeaponData] = []
 
@@ -51,6 +55,9 @@ func _ready() -> void:
 			_equip_slot(i)
 			break
 		i += 1
+	for w: WeaponData in weapon_library:
+		if w != null and w.id == &"":
+			push_error("WeaponData missing id: " + w.display_name)
 
 func _physics_process(delta: float) -> void:
 	if _equipped_instance != null:
@@ -82,6 +89,57 @@ func get_slots() -> Array[WeaponData]:
 func get_active_slot() -> int:
 	return _equipped_index
 
+# ============================================================
+# NEW PUBLIC API (Shop uses this)
+# ============================================================
+
+func unlock_weapon(weapon_id: StringName, auto_equip: bool = false) -> bool:
+	var data: WeaponData = _find_weapon_in_library(weapon_id)
+	if data == null:
+		print("Data Null")
+		push_warning("WeaponManager.unlock_weapon: unknown weapon_id: " + String(weapon_id))
+		return false
+	print("[WeaponManager] unlock_weapon called: ", weapon_id)
+	return add_weapon_data(data, auto_equip)
+
+func add_weapon_data(data: WeaponData, auto_equip: bool = false) -> bool:
+	if data == null:
+		return false
+
+	# Already owned?
+	var existing: int = _find_weapon_slot_by_data(data)
+	if existing >= 0:
+		if auto_equip:
+			_equip_slot(existing)
+		return false
+
+	# Find first empty slot, else append a new slot.
+	var slot_index: int = _find_first_empty_slot()
+	if slot_index < 0:
+		slot_index = _slots.size()
+		_slots.append(null)
+		_instances.append(null)
+
+	_slots[slot_index] = data
+	_spawn_weapon_for_slot(slot_index)
+
+	emit_signal("loadout_changed", _slots)
+
+	if auto_equip:
+		_equip_slot(slot_index)
+
+	return true
+
+func has_weapon(weapon_id: StringName) -> bool:
+	var data: WeaponData = _find_weapon_in_library(weapon_id)
+	if data == null:
+		return false
+	return _find_weapon_slot_by_data(data) >= 0
+
+# ============================================================
+# Existing internals
+# ============================================================
+
 func _spawn_all() -> void:
 	_instances.clear()
 
@@ -93,31 +151,46 @@ func _spawn_all() -> void:
 			i += 1
 			continue
 
-		if data.weapon_scene == null:
-			push_error("WeaponManager: weapon_scene not set for " + data.display_name)
-			_instances.append(null)
-			i += 1
-			continue
-
-		var instance: WeaponBase = data.weapon_scene.instantiate() as WeaponBase
-		instance.data = data
-		_socket.add_child(instance)
-
-		instance.visible = false
-		instance.set_equipped(false)
-
-		_instances.append(instance)
-
-		_cached_ammo_model[i] = int(data.ammo_model)
-		_cached_current_mag[i] = data.max_magazine
-		_cached_stored_mags[i] = 0
-		_cached_is_reloading[i] = false
-		_cached_is_regenerating[i] = false
-
-		# now includes reload_progress + regen_progress
-		instance.ammo_state_changed.connect(_on_weapon_ammo_state_changed.bind(i))
-
+		_spawn_weapon_for_slot(i)
 		i += 1
+
+func _spawn_weapon_for_slot(slot_index: int) -> void:
+	# Ensure arrays are big enough
+	while _instances.size() <= slot_index:
+		_instances.append(null)
+
+	var data: WeaponData = _slots[slot_index]
+	if data == null:
+		_instances[slot_index] = null
+		return
+
+	if data.weapon_scene == null:
+		push_error("WeaponManager: weapon_scene not set for " + data.display_name)
+		_instances[slot_index] = null
+		return
+
+	var instance: WeaponBase = data.weapon_scene.instantiate() as WeaponBase
+	if instance == null:
+		push_error("WeaponManager: weapon_scene root must extend WeaponBase for " + data.display_name)
+		_instances[slot_index] = null
+		return
+
+	instance.data = data
+	_socket.add_child(instance)
+
+	instance.visible = false
+	instance.set_equipped(false)
+
+	_instances[slot_index] = instance
+
+	_cached_ammo_model[slot_index] = int(data.ammo_model)
+	_cached_current_mag[slot_index] = data.max_magazine
+	_cached_stored_mags[slot_index] = 0
+	_cached_is_reloading[slot_index] = false
+	_cached_is_regenerating[slot_index] = false
+
+	# includes reload_progress + regen_progress
+	instance.ammo_state_changed.connect(_on_weapon_ammo_state_changed.bind(slot_index))
 
 func _equip_slot(index: int) -> void:
 	if index < 0:
@@ -235,3 +308,32 @@ func _on_weapon_ammo_state_changed(
 		reload_progress,
 		regen_progress
 	)
+
+# ============================================================
+# NEW helpers
+# ============================================================
+
+func _find_weapon_in_library(weapon_id: StringName) -> WeaponData:
+	var i: int = 0
+	while i < weapon_library.size():
+		var w: WeaponData = weapon_library[i]
+		if w != null and w.id == weapon_id:
+			return w
+		i += 1
+	return null
+
+func _find_weapon_slot_by_data(data: WeaponData) -> int:
+	var i: int = 0
+	while i < _slots.size():
+		if _slots[i] == data:
+			return i
+		i += 1
+	return -1
+
+func _find_first_empty_slot() -> int:
+	var i: int = 0
+	while i < _slots.size():
+		if _slots[i] == null:
+			return i
+		i += 1
+	return -1

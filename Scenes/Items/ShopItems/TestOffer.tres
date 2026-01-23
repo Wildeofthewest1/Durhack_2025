@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ShopOffer" load_steps=3 format=3 uid="uid://ct232k83qkx3s"]
+
+[ext_resource type="Resource" uid="uid://dwlbxvqfqfiox" path="res://Scenes/Items/ShopItems/TestPassiveItem.tres" id="1_laeq3"]
+[ext_resource type="Script" uid="uid://y1erbaey8il8" path="res://Scenes/Items/ShopOffer.gd" id="1_wtvt0"]
+
+[resource]
+script = ExtResource("1_wtvt0")
+item = ExtResource("1_laeq3")
+price = 10
+stock = 999
+metadata/_custom_type_script = "uid://y1erbaey8il8"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://rp1733dafbo0"]
+[gd_scene load_steps=28 format=3 uid="uid://rp1733dafbo0"]
 
 [ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="1_6rneb"]
 [ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="1_hl17m"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cw3exvx2l7hjt" path="res://Assets/ui_panel_outline.png" id="7_dqfo7"]
 [ext_resource type="PackedScene" uid="uid://kuy7xi1mefgn" path="res://Scenes/UI/Interaction/Bubble/choice_bubble.tscn" id="7_te2gg"]
 [ext_resource type="FontFile" uid="uid://btrqx1dyumfkn" path="res://Assets/ari-w9500-display.ttf" id="7_xho7b"]
+[ext_resource type="PackedScene" uid="uid://qfrggsnqd5dy" path="res://Scenes/UI/Shop/shop_item_row.tscn" id="18_qwc5j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl17m"]
 content_margin_left = 4.0
@@ -222,14 +223,13 @@ theme_override_constants/margin_bottom = 12
 [node name="TopBar" type="HBoxContainer" parent="HBoxContainer/Panel/MainVBox/MarginContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 3
 theme = SubResource("Theme_epk0l")
 theme_override_constants/separation = 30
 
 [node name="CommsTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("6_epk0l")
 theme_override_fonts/font = ExtResource("7_xho7b")
 theme_override_font_sizes/font_size = 33
@@ -238,7 +238,6 @@ text = "Comms"
 [node name="FleetTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("6_epk0l")
 theme_override_fonts/font = ExtResource("7_xho7b")
 theme_override_font_sizes/font_size = 33
@@ -247,7 +246,6 @@ text = "Fleet"
 [node name="ShopTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("6_epk0l")
 theme_override_fonts/font = ExtResource("7_xho7b")
 theme_override_font_sizes/font_size = 33
@@ -256,11 +254,11 @@ text = "Shop"
 [node name="CloseButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 10
 theme = ExtResource("6_epk0l")
 theme_override_fonts/font = ExtResource("7_xho7b")
 theme_override_font_sizes/font_size = 33
-text = "X"
+text = "  X  "
 
 [node name="ContentMarginContainer" type="MarginContainer" parent="HBoxContainer/Panel/MainVBox"]
 custom_minimum_size = Vector2(500, 0)
@@ -436,7 +434,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Switch Drone"
 
-[node name="ShopPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("shop_list", "buy_button")]
+[node name="ShopPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("shop_rows_parent", "buy_button")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -444,8 +442,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_1nyff")
-shop_list = NodePath("ShopVBox/ShopList")
+shop_rows_parent = NodePath("ShopVBox/ShopList")
 buy_button = NodePath("ShopVBox/BuyButton")
+row_scene = ExtResource("18_qwc5j")
 
 [node name="ShopVBox" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
 custom_minimum_size = Vector2(400, 0)
@@ -457,10 +456,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="ShopList" type="ItemList" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+[node name="ShopList" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 16
 
 [node name="BuyButton" type="Button" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
 custom_minimum_size = Vector2(0, 50)

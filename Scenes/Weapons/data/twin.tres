@@ -8,6 +8,7 @@
 
 [resource]
 script = ExtResource("3_emqd1")
+id = &"twin"
 display_name = "Twin"
 icon = ExtResource("3_m663s")
 weapon_scene = ExtResource("4_u225o")
