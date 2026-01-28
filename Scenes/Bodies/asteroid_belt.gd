@@ -1,41 +1,26 @@
-extends Area2D
-
+extends Node2D
 class_name AsteroidBelt
 
-# Belt parameters
-@export var inner_radius: float = 100.0
-@export var outer_radius: float = 200.0
 @export var damage_per_second: float = 10.0
 
-# Visual parameters (for later drawing / shader)
-@export var asteroid_count: int = 80
-@export var asteroid_color_1: Color = Color(0.6, 0.5, 0.4, 1.0)
-@export var asteroid_color_2: Color = Color(0.5, 0.4, 0.3, 1.0)
-@export var asteroid_color_3: Color = Color(0.7, 0.6, 0.5, 1.0)
-@export var base_transparency: float = 0.3
+# Must match the player's collision layer(s): 1, 2, 4, 8, ... or OR'ed.
+@export var query_collision_mask: int = 1
 
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+# If true, only nodes in group "player" (or their parents) can be damaged.
+# If false, we damage any collider we detect that has take_damage/damage on it or its parents.
+@export var require_player_group: bool = true
 
-# NEW: reference to the screen effect controller
+@export var debug_print: bool = false
+
+@onready var outer_shape_node: CollisionShape2D = $OuterArea/OuterCollision
+@onready var inner_shape_node: CollisionShape2D = $InnerArea/InnerCollision
+
 var _belt_fx: AsteroidBeltScreenFX = null
-
-var _bodies_in_belt: Array[Node2D] = []
-var _asteroids: Array[Dictionary] = []
-var _damage_timers: Dictionary = {}
+var _damage_accum: Dictionary = {} # Node2D -> float
+var damaged_this_frame: Dictionary = {}
 
 
 func _ready() -> void:
-	# Configure the outer collision circle
-	var circle_shape: CircleShape2D = collision_shape.shape as CircleShape2D
-	if circle_shape != null:
-		circle_shape.radius = outer_radius
-
-	area_entered.connect(_on_area_entered)
-	area_exited.connect(_on_area_exited)
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
-
-	# NEW: find the screen FX node (CanvasLayer with AsteroidBeltScreenFX)
 	_belt_fx = get_tree().get_first_node_in_group("asteroid_belt_fx") as AsteroidBeltScreenFX
 
 
@@ -43,74 +28,145 @@ func _physics_process(delta: float) -> void:
 	_apply_damage_and_fx(delta)
 
 
-# --- Enter / exit tracking ---
-
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		if _bodies_in_belt.has(body) == false:
-			_bodies_in_belt.append(body)
-			_damage_timers[body] = 0.0
-
-func _on_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		_bodies_in_belt.erase(body)
-		_damage_timers.erase(body)
-
-func _on_area_entered(area: Area2D) -> void:
-	if area.is_in_group("player"):
-		if _bodies_in_belt.has(area) == false:
-			_bodies_in_belt.append(area)
-			_damage_timers[area] = 0.0
-
-func _on_area_exited(area: Area2D) -> void:
-	if area.is_in_group("player"):
-		_bodies_in_belt.erase(area)
-		_damage_timers.erase(area)
-
-
-# --- Damage + FX System ---
-
 func _apply_damage_and_fx(delta: float) -> void:
-	var bodies_to_remove: Array[Node2D] = []
+	var outer_hits: Dictionary = _query_circle_hits(outer_shape_node)
+	var inner_hits: Dictionary = _query_circle_hits(inner_shape_node)
+
 	var any_in_ring: bool = false
 
-	for body: Node2D in _bodies_in_belt:
-		if is_instance_valid(body) == false:
-			bodies_to_remove.append(body)
+	for key in outer_hits.keys():
+		var collider_node: Node2D = key as Node2D
+		if collider_node == null or is_instance_valid(collider_node) == false:
 			continue
 
-		# ---- RING CHECK HERE ----
-		var offset: Vector2 = body.global_position - global_position
-		var distance: float = offset.length()
+		# Is collider also inside inner? (safe hole)
+		if inner_hits.has(collider_node):
+			continue
 
-		var inside_outer: bool = distance <= outer_radius
-		var outside_inner: bool = distance >= inner_radius
-		var in_ring: bool = inside_outer and outside_inner
+		# Find who should receive damage
+		var target: Node2D = _resolve_damage_target(collider_node)
+		if target == null:
+			if debug_print:
+				print("No damage target resolved for collider: ", collider_node.name)
+			continue
 
-		if in_ring:
-			any_in_ring = true
+		# Now check if THAT target is in inner (in case collider != target)
+		if inner_hits.has(target):
+			continue
+		if damaged_this_frame.has(target):
+			continue
+		damaged_this_frame[target] = true
 
-			_damage_timers[body] = _damage_timers.get(body, 0.0) + delta
+		any_in_ring = true
+		_apply_damage_accumulated(target, delta)
 
-			# Apply damage every 1 second (or change to continuous if you want)
-			if _damage_timers[body] >= 1.0:
-				_damage_timers[body] = 0.0
-				_damage_body(body)
-		else:
-			# Optional: reset timer if outside ring
-			_damage_timers[body] = 0.0
+		# Cleanup accum entries for targets that weren't seen in-ring this frame
+		# (or you can use 'in_outer_targets' if you want to keep it while in outer)
+		var to_erase: Array[Node2D] = []
+		for k in _damage_accum.keys():
+			var t: Node2D = k as Node2D
+			if t == null or is_instance_valid(t) == false:
+				to_erase.append(t)
+				continue
+			if damaged_this_frame.has(t) == false:
+				# Not processed this frame -> reset/erase so it doesn't "carry" forever
+				# Choose ONE behavior:
+				# A) erase (recommended)
+				to_erase.append(t)
+				# B) or keep but don't erase:
+				# _damage_accum[t] = 0.0
 
-	for body: Node2D in bodies_to_remove:
-		_bodies_in_belt.erase(body)
-		_damage_timers.erase(body)
-
-	# ---- SCREEN FX TOGGLE ----
-	if _belt_fx != null:
-		_belt_fx.set_inside_belt(any_in_ring)
+		for t2: Node2D in to_erase:
+			_damage_accum.erase(t2)
 
 
-func _damage_body(body: Node2D) -> void:
-	if body.has_method("take_damage"):
-		body.take_damage(damage_per_second)
-	elif body.has_method("damage"):
-		body.damage(damage_per_second)
+func _query_circle_hits(shape_node: CollisionShape2D) -> Dictionary:
+	var out: Dictionary = {}
+	if shape_node == null:
+		return out
+
+	var circle: CircleShape2D = shape_node.shape as CircleShape2D
+	if circle == null:
+		return out
+
+	var space_state: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
+
+	var params: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
+	params.shape = circle
+	params.transform = shape_node.global_transform
+	params.collision_mask = query_collision_mask
+	params.collide_with_bodies = true
+	params.collide_with_areas = true
+
+	var results: Array[Dictionary] = space_state.intersect_shape(params, 64)
+	for hit in results:
+		var collider: Object = hit.get("collider")
+		if collider is Node2D:
+			out[collider] = true
+
+	return out
+
+
+# ---------------------------------------------------------------------
+# DAMAGE TARGET RESOLUTION
+# ---------------------------------------------------------------------
+
+func _resolve_damage_target(from_collider: Node2D) -> Node2D:
+	# 1) If we require player group, first find a parent in group "player"
+	if require_player_group:
+		var player_root: Node2D = _find_parent_in_group(from_collider, "player")
+		if player_root == null:
+			return null
+
+		# If player root has damage method, use it, otherwise keep searching upwards
+		var dmg_node: Node2D = _find_parent_with_damage_method(player_root)
+		return dmg_node
+
+	# 2) Otherwise, just find the nearest parent (including self) with damage method
+	return _find_parent_with_damage_method(from_collider)
+
+
+func _find_parent_in_group(node: Node, group_name: String) -> Node2D:
+	var cur: Node = node
+	while cur != null:
+		if cur is Node2D and cur.is_in_group(group_name):
+			return cur as Node2D
+		cur = cur.get_parent()
+	return null
+
+
+func _find_parent_with_damage_method(node: Node) -> Node2D:
+	var cur: Node = node
+	while cur != null:
+		if cur is Node2D:
+			var n2: Node2D = cur as Node2D
+			if n2.has_method("take_damage") or n2.has_method("damage"):
+				return n2
+		cur = cur.get_parent()
+	return null
+
+
+# ---------------------------------------------------------------------
+# DAMAGE APPLICATION
+# ---------------------------------------------------------------------
+
+func _apply_damage_accumulated(target: Node2D, delta: float) -> void:
+	var accum: float = float(_damage_accum.get(target, 0.0))
+	accum += damage_per_second * delta
+
+	# Apply in configurable integer ticks
+	var tick_f: float = float(max(1, damage_tick))
+	while accum >= tick_f:
+		accum -= tick_f
+		_damage_body_int(target, int(tick_f))
+
+	_damage_accum[target] = accum
+
+func _damage_body_float(target: Node2D, amount: float) -> void:
+	if amount <= 0.0:
+		return
+
+	if target.has_method("take_damage"):
+		target.take_damage(amount)
+	elif target.has_method("damage"):
+		target.damage(amount)

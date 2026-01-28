@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 	if velocity.length() > 0.01:
 		rotation = velocity.angle() + deg_to_rad(-90.0)
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, hit_from_world: Variant = null, knockback_strength: Variant = null) -> void:
 	health -= float(amount)
 	if health <= 0.0:
 		_die()

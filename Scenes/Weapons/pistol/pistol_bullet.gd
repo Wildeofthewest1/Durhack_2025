@@ -93,5 +93,4 @@ func _spawn_explosion() -> void:
 		explo.emitting = true
 
 func _die() -> void:
-	_spawn_explosion()
 	queue_free()

@@ -12,6 +12,7 @@ func _ready() -> void:
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	up_direction = Vector2.RIGHT
 
+
 func take_damage(amount: int) -> void:
 	if health_component != null:
 		health_component.take_damage(amount)

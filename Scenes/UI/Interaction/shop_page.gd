@@ -262,12 +262,25 @@ func _on_buy_pressed() -> void:
 		print("[SHOP] Not enough ", currency_id, " (need ", offer.price, ", have ", _get_currency_amount(), ")")
 		_update_buy_button_state()
 		return
-
+	print("[SHOP] item class=", offer.item.get_class())
+	print("[SHOP] resource_path=", offer.item.resource_path)
+	
 	# NEW: polymorphic purchase behavior (ShopItemData decides what happens)
 	var applied: bool = false
 	if offer.item is ShopItemData:
 		var item: ShopItemData = offer.item as ShopItemData
 		applied = item.apply_purchase(1, _planet)
+		var scr: Script = null
+		if item != null:
+			scr = item.get_script()
+
+		print("[SHOP DBG] item=", item)
+		print("[SHOP DBG] item path=", (item.resource_path if item != null else "null"))
+		print("[SHOP DBG] is ShopItemData=", (item is ShopItemData))
+		print("[SHOP DBG] is PassiveShopItemData=", (item is PassiveShopItemData))
+		print("[SHOP DBG] script=", scr)
+		print("[SHOP DBG] script path=", (scr.resource_path if scr != null else "null"))
+		print("[SHOP DBG] has apply_purchase=", (item != null and item.has_method("apply_purchase")))
 
 	# Legacy fallback (old behavior)
 	if applied == false:

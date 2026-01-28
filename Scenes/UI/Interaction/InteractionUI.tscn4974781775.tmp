@@ -1,0 +1,474 @@
+[gd_scene load_steps=28 format=3 uid="uid://rp1733dafbo0"]
+
+[ext_resource type="FontFile" uid="uid://dljpkatcr7l7m" path="res://Assets/TTF/dogicapixelbold.ttf" id="1_6rneb"]
+[ext_resource type="FontFile" uid="uid://cpskyfe5d7dms" path="res://Assets/TTF/dogicapixel.ttf" id="1_hl17m"]
+[ext_resource type="Script" uid="uid://c4n1u74742fxv" path="res://Scenes/UI/Interaction/Bubble/InteractionUI_bubblevariant.gd" id="3_hu01b"]
+[ext_resource type="Script" uid="uid://coainnxauvvmc" path="res://Scenes/UI/Interaction/portrait_panel.gd" id="4_bffip"]
+[ext_resource type="Script" uid="uid://cb15f7wpp6eh3" path="res://Scenes/UI/Interaction/fleet_page.gd" id="4_l3h20"]
+[ext_resource type="Script" uid="uid://ddoikfhq5mc46" path="res://Scenes/UI/Interaction/shop_page.gd" id="5_1nyff"]
+[ext_resource type="Script" uid="uid://dgul76im4orwd" path="res://Scenes/UI/Interaction/comms_page.gd" id="5_d4h0c"]
+[ext_resource type="Texture2D" uid="uid://dlk6od8rwp5ey" path="res://Assets/npc_bg.png" id="5_te2gg"]
+[ext_resource type="Script" uid="uid://52hpst2tcxdx" path="res://Scenes/UI/Interaction/Bubble/speech_bubble_controller.gd" id="5_vxtjt"]
+[ext_resource type="Texture2D" uid="uid://kl5d8ibynkqw" path="res://Assets/ui_outline.png" id="5_w8lsq"]
+[ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="6_epk0l"]
+[ext_resource type="PackedScene" uid="uid://dxf6ileuq40rj" path="res://Scenes/UI/Interaction/Bubble/speech_bubble.tscn" id="6_hu01b"]
+[ext_resource type="AudioStream" uid="uid://dg3wber8vp1p8" path="res://Scenes/UI/Interaction/DialogueClick.mp3" id="6_hvqw7"]
+[ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="6_vmdcp"]
+[ext_resource type="Texture2D" uid="uid://cw3exvx2l7hjt" path="res://Assets/ui_panel_outline.png" id="7_dqfo7"]
+[ext_resource type="PackedScene" uid="uid://kuy7xi1mefgn" path="res://Scenes/UI/Interaction/Bubble/choice_bubble.tscn" id="7_te2gg"]
+[ext_resource type="FontFile" uid="uid://btrqx1dyumfkn" path="res://Assets/ari-w9500-display.ttf" id="7_xho7b"]
+[ext_resource type="PackedScene" uid="uid://qfrggsnqd5dy" path="res://Scenes/UI/Shop/shop_item_row.tscn" id="18_qwc5j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl17m"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rneb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4h0c"]
+
+[sub_resource type="Theme" id="Theme_6rneb"]
+default_font = ExtResource("1_hl17m")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 30
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 16
+Label/styles/focus = SubResource("StyleBoxFlat_hl17m")
+Label/styles/normal = SubResource("StyleBoxEmpty_6rneb")
+Panel/styles/panel = SubResource("StyleBoxFlat_d4h0c")
+RichTextLabel/constants/line_separation = 5
+RichTextLabel/fonts/bold_font = ExtResource("1_6rneb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hvqw7"]
+bg_color = Color(0.13, 0.13, 0.13, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmdcp"]
+bg_color = Color(0.18431373, 0.2, 0.2, 1)
+border_width_left = 10
+border_color = Color(0.184, 0.2, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqfo7"]
+bg_color = Color(0.18431373, 0.2, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_te2gg"]
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="Theme_epk0l"]
+Button/styles/disabled = SubResource("StyleBoxFlat_te2gg")
+
+[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "portrait_panel", "comms_page", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "portrait_controller", "bubble_dialogue_controller", "fleet_controller", "shop_controller", "drag_handle_main", "drag_handle_portrait") groups=["InteractUI"]]
+texture_filter = 1
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme = SubResource("Theme_6rneb")
+script = ExtResource("3_hu01b")
+panel = NodePath("HBoxContainer")
+portrait_panel = NodePath("PortraitPanel")
+portrait_hide_offset = 1000.0
+comms_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage")
+fleet_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
+shop_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+comms_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
+fleet_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
+shop_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
+panel_hide_offset = 1500.0
+tween_time = 0.4
+portrait_controller = NodePath("PortraitPanel")
+bubble_dialogue_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage/SpeechBubble")
+fleet_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
+shop_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
+drag_handle_main = NodePath("HBoxContainer/Panel/Control/TextureRect")
+drag_handle_portrait = NodePath("PortraitPanel/PortraitFrame")
+drag_range_px_main = 150.0
+drag_range_px_portrait = 300.0
+
+[node name="PortraitPanel" type="Control" parent="." node_paths=PackedStringArray("portrait_panel", "portrait_texture_rect")]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_bffip")
+portrait_panel = NodePath(".")
+portrait_texture_rect = NodePath("PortraitFrame/PortraitTexture")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="PortraitPanel"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1920.0
+offset_right = -1920.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(1920, 0)
+texture = ExtResource("5_w8lsq")
+
+[node name="TextureRect" type="TextureRect" parent="PortraitPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 556.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_te2gg")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="PortraitFrame" type="Panel" parent="PortraitPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hvqw7")
+
+[node name="PortraitTexture" type="TextureRect" parent="PortraitPanel/PortraitFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.521
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vmdcp")
+
+[node name="Control" type="Control" parent="HBoxContainer/Panel"]
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="HBoxContainer/Panel/Control"]
+layout_mode = 0
+offset_right = 1396.6799
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dqfo7")
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Panel/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -202.32007
+offset_top = -540.0
+offset_right = 706.67993
+offset_bottom = 540.0
+grow_vertical = 2
+texture = ExtResource("7_dqfo7")
+stretch_mode = 4
+
+[node name="MainVBox" type="VBoxContainer" parent="HBoxContainer/Panel"]
+custom_minimum_size = Vector2(300, 500)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panel/MainVBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="HBoxContainer" parent="HBoxContainer/Panel/MainVBox/MarginContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = SubResource("Theme_epk0l")
+theme_override_constants/separation = 30
+
+[node name="CommsTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("6_epk0l")
+theme_override_fonts/font = ExtResource("7_xho7b")
+theme_override_font_sizes/font_size = 33
+text = "Comms"
+
+[node name="FleetTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("6_epk0l")
+theme_override_fonts/font = ExtResource("7_xho7b")
+theme_override_font_sizes/font_size = 33
+text = "Fleet"
+
+[node name="ShopTabButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("6_epk0l")
+theme_override_fonts/font = ExtResource("7_xho7b")
+theme_override_font_sizes/font_size = 33
+text = "Shop"
+
+[node name="CloseButton" type="Button" parent="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme = ExtResource("6_epk0l")
+theme_override_fonts/font = ExtResource("7_xho7b")
+theme_override_font_sizes/font_size = 33
+text = "  X  "
+
+[node name="ContentMarginContainer" type="MarginContainer" parent="HBoxContainer/Panel/MainVBox"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="TabContainer" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CommsPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_d4h0c")
+
+[node name="CommsVBox" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="PlanetNameLabel" type="Label" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Planet Name"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="History" type="RichTextLabel" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/line_separation = 7
+theme_override_constants/paragraph_separation = 20
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Dialogue will appear here..."
+fit_content = true
+scroll_following = true
+vertical_alignment = 2
+
+[node name="HFlowContainer" type="HBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/HFlowContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="DialogueText" type="RichTextLabel" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Dialogue will appear here..."
+fit_content = true
+script = ExtResource("6_vmdcp")
+skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
+metadata/_custom_type_script = "uid://g32um0mltv5d"
+
+[node name="Replies" type="RichTextLabel" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/line_separation = 20
+theme_override_constants/paragraph_separation = 20
+theme_override_font_sizes/normal_font_size = 24
+
+[node name="ReplyButtonsHolder" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage/CommsVBox"]
+visible = false
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 6
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage"]
+stream = ExtResource("6_hvqw7")
+
+[node name="SpeechPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpeechBubble" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage" node_paths=PackedStringArray("planet_name_label", "bubble_scroll", "bubble_list", "click_sfx")]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_vxtjt")
+planet_name_label = NodePath("../../CommsPage/CommsVBox/PlanetNameLabel")
+bubble_scroll = NodePath("ScrollContainer")
+bubble_list = NodePath("ScrollContainer/VBoxContainer")
+speech_bubble_scene = ExtResource("6_hu01b")
+choices_bubble_scene = ExtResource("7_te2gg")
+npc_speaker_color = "5cbbff"
+you_speaker_color = "#e1b12c"
+choice_color = "5cbbff"
+continue_color = "5cbbff"
+continue_text = "[b]→ Continue [/b]"
+click_sfx = NodePath("../../CommsPage/ClickSound")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage/SpeechBubble"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage/SpeechBubble/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="FleetPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("fleet_list", "assign_button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_l3h20")
+fleet_list = NodePath("FleetVBox/FleetList")
+assign_button = NodePath("FleetVBox/AssignSelectedButton")
+
+[node name="FleetVBox" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="FleetList" type="ItemList" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AssignSelectedButton" type="Button" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage/FleetVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Switch Drone"
+
+[node name="ShopPage" type="Control" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer" node_paths=PackedStringArray("shop_rows_parent", "buy_button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_1nyff")
+shop_rows_parent = NodePath("ShopVBox/ShopList")
+buy_button = NodePath("ShopVBox/BuyButton")
+row_scene = ExtResource("18_qwc5j")
+
+[node name="ShopVBox" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="ShopList" type="VBoxContainer" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="BuyButton" type="Button" parent="HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage/ShopVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Buy Item"
+
+[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CommsTabButton" to="." method="show_comms_tab"]
+[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/FleetTabButton" to="." method="show_fleet_tab"]
+[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/ShopTabButton" to="." method="show_shop_tab"]
+[connection signal="pressed" from="HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CloseButton" to="." method="close_button_pressed"]

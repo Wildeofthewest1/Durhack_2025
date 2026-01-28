@@ -6,9 +6,12 @@ class_name WeaponShopItemData
 @export var auto_equip: bool = true
 
 func apply_purchase(qty: int, context: Object) -> bool:
+	print("[Weapon] ENTER apply_purchase qty=", qty, " name=", display_name)
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
 	if tree == null:
+		print("[Weapon] FAIL: tree is null")
 		return false
+
 
 	var inv: ShopInventory = tree.root.get_node_or_null("ShopInventory") as ShopInventory
 	if inv == null:

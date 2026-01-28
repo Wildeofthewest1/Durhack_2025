@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=7 format=3 uid="uid://cnrc64sortms1"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=8 format=3 uid="uid://cnrc64sortms1"]
 
 [ext_resource type="Resource" uid="uid://c2e7y4bongp4e" path="res://Scenes/NPCs/Fleet Commander/FleetCommander.dialogue" id="1_65v8w"]
 [ext_resource type="Texture2D" uid="uid://dmcq0wlbhra5q" path="res://Assets/commander.png" id="2_urh3w"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="3_creyf"]
 [ext_resource type="Script" uid="uid://y1erbaey8il8" path="res://Scenes/Items/ShopOffer.gd" id="4_kbv7h"]
 [ext_resource type="Resource" uid="uid://k27ps48itb0u" path="res://Scenes/Items/ShopItems/missiles.tres" id="5_xrc6h"]
+[ext_resource type="Resource" uid="uid://ct232k83qkx3s" path="res://Scenes/Items/ShopItems/TestOffer.tres" id="6_urh3w"]
 
 [sub_resource type="Resource" id="Resource_rj1aq"]
 script = ExtResource("4_kbv7h")
@@ -17,5 +18,5 @@ metadata/_custom_type_script = "uid://y1erbaey8il8"
 script = ExtResource("3_creyf")
 portrait_texture = ExtResource("2_urh3w")
 dialogue_resource = ExtResource("1_65v8w")
-shop_offers = Array[ExtResource("4_kbv7h")]([SubResource("Resource_rj1aq")])
+shop_offers = Array[ExtResource("4_kbv7h")]([SubResource("Resource_rj1aq"), ExtResource("6_urh3w")])
 metadata/_custom_type_script = "uid://droqswt3u80yn"

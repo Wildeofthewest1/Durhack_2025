@@ -8,9 +8,12 @@ class_name ShopItemData
 @export var unique: bool = false
 
 func apply_purchase(qty: int, context: Object) -> bool:
+	print("[Item] ENTER apply_purchase qty=", qty, " name=", display_name)
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
 	if tree == null:
+		print("[Item] FAIL: tree is null")
 		return false
+
 
 	var inv: ShopInventory = tree.root.get_node_or_null("ShopInventory") as ShopInventory
 	if inv == null:

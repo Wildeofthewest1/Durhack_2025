@@ -18,5 +18,5 @@ scale = Vector2(0.5, 0.1)
 [node name="Muzzle" type="Marker2D" parent="."]
 position = Vector2(10, 0)
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_buxis")

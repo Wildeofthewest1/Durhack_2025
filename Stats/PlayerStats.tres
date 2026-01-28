@@ -1,11 +1,18 @@
-[gd_resource type="Resource" script_class="StatDB" load_steps=5 format=3 uid="uid://b8dfllvp1i5h0"]
+[gd_resource type="Resource" script_class="StatDB" load_steps=12 format=3 uid="uid://b8dfllvp1i5h0"]
 
 [ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_b7lov"]
 [ext_resource type="Resource" uid="uid://bgh3ex0a3vlve" path="res://Stats/StatList/max_hp.tres" id="2_4fuy3"]
 [ext_resource type="Script" uid="uid://dkfmxklrhtd4n" path="res://Stats/StatDB.gd" id="2_rib81"]
 [ext_resource type="Resource" uid="uid://oykpu20nci7w" path="res://Stats/StatList/max_shield.tres" id="3_4fuy3"]
+[ext_resource type="Resource" uid="uid://cbqge3v1cmlwj" path="res://Stats/StatList/damage.tres" id="4_olhot"]
+[ext_resource type="Resource" uid="uid://x4klfltkxgtm" path="res://Stats/StatList/accuracy.tres" id="5_dbadf"]
+[ext_resource type="Resource" uid="uid://pji6lo0dy6kv" path="res://Stats/StatList/fire_rate.tres" id="6_wov10"]
+[ext_resource type="Resource" uid="uid://bs65jlglkpebs" path="res://Stats/StatList/knockback.tres" id="7_6mn41"]
+[ext_resource type="Resource" uid="uid://uu40nhojsnqo" path="res://Stats/StatList/mag_regen.tres" id="8_qar27"]
+[ext_resource type="Resource" uid="uid://b44tc1b1j35wu" path="res://Stats/StatList/pistol_mag_size.tres" id="9_b6lil"]
+[ext_resource type="Resource" uid="uid://t1rjl2h6exno" path="res://Stats/StatList/pistol_mag_count.tres" id="10_gmkx5"]
 
 [resource]
 script = ExtResource("2_rib81")
-definitions = Array[ExtResource("1_b7lov")]([ExtResource("2_4fuy3"), ExtResource("3_4fuy3")])
+definitions = Array[ExtResource("1_b7lov")]([ExtResource("2_4fuy3"), ExtResource("3_4fuy3"), ExtResource("4_olhot"), ExtResource("5_dbadf"), ExtResource("6_wov10"), ExtResource("7_6mn41"), ExtResource("8_qar27"), ExtResource("9_b6lil"), ExtResource("10_gmkx5")])
 metadata/_custom_type_script = "uid://dkfmxklrhtd4n"

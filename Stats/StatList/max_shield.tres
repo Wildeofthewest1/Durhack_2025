@@ -6,5 +6,5 @@
 script = ExtResource("1_h3d3l")
 id = &"max_shield"
 display_name = "Max Shield"
-default_value = 50.0
+default_value = 150.0
 metadata/_custom_type_script = "uid://17pvuq76srq4"

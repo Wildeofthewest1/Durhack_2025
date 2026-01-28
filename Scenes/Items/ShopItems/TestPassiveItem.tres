@@ -1,14 +1,20 @@
-[gd_resource type="Resource" script_class="PassiveShopItemData" load_steps=3 format=3 uid="uid://dwlbxvqfqfiox"]
+[gd_resource type="Resource" script_class="PassiveShopItemData" load_steps=5 format=3 uid="uid://dwlbxvqfqfiox"]
 
 [ext_resource type="Script" uid="uid://kxmsd5t3ktyw" path="res://Scenes/Items/PassiveShopItemData.gd" id="1_6qqrl"]
 [ext_resource type="Texture2D" uid="uid://b3dpvxetdageb" path="res://Assets/background/pistol_icon.png" id="1_oj8u0"]
+[ext_resource type="Script" uid="uid://xt3ie0p0lkwm" path="res://Stats/StatModifier.gd" id="2_4oaul"]
+
+[sub_resource type="Resource" id="Resource_4oaul"]
+script = ExtResource("2_4oaul")
+stat_id = &"max_hp"
+value = 10.0
+metadata/_custom_type_script = "uid://xt3ie0p0lkwm"
 
 [resource]
 script = ExtResource("1_6qqrl")
-passive_id = &"test_passive_item"
-stacks = 99
+modifier = SubResource("Resource_4oaul")
 id = &"test_passive_item"
 display_name = "Test Item"
-description = "This is a Test Item, not to be confused with the common insult Testittem, which roughly translates as \"motherfucker\"."
+description = "Gives 10HP. This is a Test Item, not to be confused with the common insult Testittem, which roughly translates as \"motherfucker\"."
 icon = ExtResource("1_oj8u0")
 metadata/_custom_type_script = "uid://kxmsd5t3ktyw"

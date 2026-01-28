@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://x4klfltkxgtm"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_47yyl"]
+
+[resource]
+script = ExtResource("1_47yyl")
+id = &"accuracy"
+display_name = "Weapon Accuracy"
+default_value = 1.0
+min_value = 1.0
+metadata/_custom_type_script = "uid://17pvuq76srq4"

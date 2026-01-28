@@ -6,6 +6,7 @@ enum AmmoModel {
 	STANDARD = 0,             # banks mags in background
 	INFINITE_WITH_RELOAD = 1  # pistol option B
 }
+
 @export var id: StringName = &""
 
 @export_category("UI")
@@ -21,7 +22,12 @@ enum AmmoModel {
 @export var fire_cooldown: float = 0.25
 @export var automatic: bool = true
 @export var bullets_per_shot: int = 1
+
+# NOTE:
+# WeaponBase now treats accuracy as spread control.
+# It uses spread_rad internally; keep spread_deg for editor convenience.
 @export var spread_deg: float = 4.0
+@export var spread_rad: float = deg_to_rad(4.0) # base half-angle spread in radians
 
 @export_category("Damage")
 @export var damage: float = 10.0
@@ -41,3 +47,11 @@ enum AmmoModel {
 @export var slot_hint: int = 0
 @export var weapon_type: String = "ballistic"
 @export var ammo_model: AmmoModel = AmmoModel.STANDARD
+
+func _validate_property(property: Dictionary) -> void:
+	# Keep spread_deg and spread_rad in sync when editing in inspector.
+	# Godot will call this in the editor; runtime is fine too.
+	if property.has("name") and String(property["name"]) == "spread_deg":
+		spread_rad = deg_to_rad(spread_deg)
+	elif property.has("name") and String(property["name"]) == "spread_rad":
+		spread_deg = rad_to_deg(spread_rad)

@@ -15,7 +15,8 @@ func _ready() -> void:
 	print("Game script ready")
 	var spawner = $PlanetSpawner
 	var spawner2 = $EnemySpawner
-
+	ResourceManager.add("scrap",100)
+	
 	# --- Planets setup ---
 	var planets = {
 		"Star": {

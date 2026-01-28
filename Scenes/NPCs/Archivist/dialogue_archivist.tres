@@ -1,15 +1,22 @@
-[gd_resource type="Resource" script_class="DialogueData" load_steps=6 format=3 uid="uid://brtujxc7eu2e5"]
+[gd_resource type="Resource" script_class="DialogueData" load_steps=7 format=3 uid="uid://brtujxc7eu2e5"]
 
 [ext_resource type="Resource" uid="uid://bbah8n58j60jf" path="res://Scenes/NPCs/Archivist/archivist_1.dialogue" id="1_ou6y7"]
 [ext_resource type="Texture2D" uid="uid://bnf7n8mt8pfi6" path="res://Assets/cyber_thing.png" id="2_ou6y7"]
 [ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="3_om56f"]
 [ext_resource type="Script" uid="uid://y1erbaey8il8" path="res://Scenes/Items/ShopOffer.gd" id="4_vr0pb"]
-[ext_resource type="Resource" uid="uid://ct232k83qkx3s" path="res://Scenes/Items/ShopItems/TestOffer.tres" id="5_om56f"]
+[ext_resource type="Resource" uid="uid://dwlbxvqfqfiox" path="res://Scenes/Items/ShopItems/TestPassiveItem.tres" id="5_om56f"]
+
+[sub_resource type="Resource" id="Resource_txwnt"]
+script = ExtResource("4_vr0pb")
+item = ExtResource("5_om56f")
+price = 10
+stock = 99
+metadata/_custom_type_script = "uid://y1erbaey8il8"
 
 [resource]
 script = ExtResource("3_om56f")
 display_name = "Archivist"
 portrait_texture = ExtResource("2_ou6y7")
 dialogue_resource = ExtResource("1_ou6y7")
-shop_offers = Array[ExtResource("4_vr0pb")]([ExtResource("5_om56f"), ExtResource("5_om56f"), ExtResource("5_om56f")])
+shop_offers = Array[ExtResource("4_vr0pb")]([SubResource("Resource_txwnt")])
 metadata/_custom_type_script = "uid://droqswt3u80yn"

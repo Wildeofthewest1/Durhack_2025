@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://pji6lo0dy6kv"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_3j35w"]
+
+[resource]
+script = ExtResource("1_3j35w")
+id = &"fire_rate"
+display_name = "Fire Rate"
+default_value = 50.0
+metadata/_custom_type_script = "uid://17pvuq76srq4"

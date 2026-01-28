@@ -20,7 +20,7 @@ shader_parameter/spread = 1.0
 shader_parameter/pulse_speed = 5.0000002375
 
 [node name="Bullet" type="CharacterBody2D" groups=["Bullet"]]
-collision_layer = 16
+collision_layer = 32
 collision_mask = 0
 script = ExtResource("1_rpwrj")
 lifetime = 5.0

@@ -32,7 +32,7 @@ func _ready() -> void:
 	await get_tree().create_timer(lifetime).timeout
 	queue_free()
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, hit_from_world: Variant = null, knockback_strength: Variant = null) -> void:
 	health -= amount
 	#print("%s took %d damage, remaining health: %d" % [name, amount, health])
 	if health <= 0:

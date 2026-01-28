@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://b44tc1b1j35wu"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_meu2t"]
+
+[resource]
+script = ExtResource("1_meu2t")
+id = &"pistol_mag_size"
+display_name = "Pistol Mag Size"
+metadata/_custom_type_script = "uid://17pvuq76srq4"

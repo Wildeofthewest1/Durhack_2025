@@ -45,6 +45,7 @@ func _process(delta: float) -> void:
 
 	if changed.size() > 0:
 		stats_changed.emit(changed)
+		
 
 # -------------------------
 # Initialization
@@ -110,6 +111,7 @@ func get_value(stat_id: StringName) -> float:
 		var computed: float = _compute_final(stat_id)
 		_final_cache[stat_id] = computed
 		_dirty[stat_id] = false
+	print(stat_id + " Stat asked")
 	return float(_final_cache[stat_id])
 
 # -------------------------
@@ -118,13 +120,18 @@ func get_value(stat_id: StringName) -> float:
 
 func add_modifier(mod: StatModifier) -> void:
 	if mod == null:
+		push_warning("[PV] add_modifier: mod is null")
 		return
 	if mod.stat_id == &"":
+		push_warning("[PV] add_modifier: EMPTY stat_id (source=" + String(mod.source) + ")")
 		return
+
+	print("[PV] applying mod: ", mod.stat_id, " op=", int(mod.op), " value=", mod.value, " source=", mod.source, " dur=", mod.duration_seconds)
 
 	_mods.append(mod)
 	_mark_dirty(mod.stat_id)
-	stats_changed.emit([mod.stat_id])
+	stats_changed.emit([StringName(mod.stat_id)])
+	print("stat changed:" + mod.stat_id + " to " + str(int(get_value(StringName(mod.stat_id)))))
 
 func remove_modifiers_by_source(source: StringName) -> void:
 	if source == &"":

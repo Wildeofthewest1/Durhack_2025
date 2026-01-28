@@ -20,7 +20,7 @@ shader_parameter/spread = 1.0
 shader_parameter/pulse_speed = 5.0000002375
 
 [node name="DumbBullet" type="CharacterBody2D" groups=["Bullet"]]
-collision_layer = 16
+collision_layer = 48
 collision_mask = 0
 script = ExtResource("1_2mgfb")
 
