@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dntvr2mdkbh3x"]
+
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_2eody"]
+
+[node name="MinimapTracker" type="Node2D" node_paths=PackedStringArray("target_node")]
+script = ExtResource("1_2eody")
+target_node = NodePath("")

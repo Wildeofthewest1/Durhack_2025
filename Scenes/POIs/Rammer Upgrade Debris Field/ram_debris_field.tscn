@@ -1,0 +1,1218 @@
+[gd_scene load_steps=29 format=3 uid="uid://crh2vb5fssedx"]
+
+[ext_resource type="Material" uid="uid://bidau7y5mq2kr" path="res://Shaders/debris_1.tres" id="1_hdco5"]
+[ext_resource type="Script" uid="uid://c8ik22ncav6ck" path="res://Scenes/POIs/Rammer Upgrade Debris Field/ContactDamage.gd" id="1_mci1a"]
+[ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="1_w1m6b"]
+[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/NPCs/Satellite/satellite2_rotate.gd" id="2_7rxif"]
+[ext_resource type="Texture2D" uid="uid://clkhcvgqdw4ln" path="res://Assets/square.png" id="2_mci1a"]
+[ext_resource type="Script" uid="uid://8wvlsmq5i2c0" path="res://Scenes/POIs/Rammer Upgrade Debris Field/crack_scaler.gd" id="3_yud56"]
+[ext_resource type="PackedScene" uid="uid://dntvr2mdkbh3x" path="res://Scenes/UI/Minimap/minimap_tracker.tscn" id="5_25d5k"]
+[ext_resource type="Shader" uid="uid://cq4gy171kom57" path="res://Shaders/ring.gdshader" id="6_ks3qp"]
+[ext_resource type="Texture2D" uid="uid://dam2qircs8hgv" path="res://Assets/rectangles/rectangle_16_512.png" id="7_d4hio"]
+[ext_resource type="Texture2D" uid="uid://bgrqpc61whxc3" path="res://Assets/rectangles/rectangle_8_512.png" id="7_xmfx2"]
+[ext_resource type="Script" uid="uid://4ifepc82iiwm" path="res://Scenes/POIs/Rammer Upgrade Debris Field/spawn_debris.gd" id="11_efw5b"]
+[ext_resource type="PackedScene" uid="uid://t07f6hx8l7er" path="res://Scenes/POIs/Rammer Upgrade Debris Field/random_debris.tscn" id="12_w5y44"]
+[ext_resource type="Texture2D" uid="uid://bda1dqa487wft" path="res://Assets/dust_particles.png" id="13_q1okw"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gncnl"]
+radius = 3.0
+height = 497.70618
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25d5k"]
+size = Vector2(30, 30)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q1okw"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 35.0000016625
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efw5b"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 0.11764706)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 360.0
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ks3qp"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 20.00000095
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yud56"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 60.00000285
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xmfx2"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 15.0000007125
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d4hio"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 5.0000002375
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hdco5"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 30.0350014266625
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jcnsk"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 30.0350014266625
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r7w5g"]
+shader = ExtResource("6_ks3qp")
+shader_parameter/ring_color = Color(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.990000047025
+shader_parameter/outer_radius = 1.0
+shader_parameter/smoothness = 0.0
+shader_parameter/arc_angle = 20.00000095
+shader_parameter/arc_offset = 0.0
+shader_parameter/arc_smoothness = 0.0
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jcnsk"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_r7w5g"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.50646555, 0.46945584), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6i6yh"]
+curve = SubResource("Curve_r7w5g")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3uepw"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 2000.0
+spread = 180.0
+initial_velocity_min = -20.0
+initial_velocity_max = 20.0
+angular_velocity_min = -31.580015
+angular_velocity_max = 69.469986
+orbit_velocity_min = -0.049999908
+orbit_velocity_max = 0.050000098
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_6i6yh")
+anim_offset_max = 1.0
+
+[node name="RamDebrisField" type="Node2D"]
+texture_filter = 1
+material = ExtResource("1_hdco5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("1_hdco5")
+rotation = -0.0048634713
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_w1m6b")
+script = ExtResource("3_yud56")
+
+[node name="Arm" type="Node2D" parent="."]
+rotation = -1.363317
+script = ExtResource("2_7rxif")
+rot = 0.3
+
+[node name="Arm" type="Area2D" parent="Arm"]
+position = Vector2(0.312109, -182.9888)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arm/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arm/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Disk1" type="Node2D" parent="."]
+rotation = -1.363317
+script = ExtResource("2_7rxif")
+rot = 0.3
+
+[node name="Arm" type="Area2D" parent="Disk1"]
+position = Vector2(0.312109, -182.9888)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Disk1/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Disk1/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm2" type="Node2D" parent="."]
+rotation = 0.8157046
+script = ExtResource("2_7rxif")
+rot = 0.29
+
+[node name="Arm" type="Area2D" parent="Arm2"]
+position = Vector2(-2.4869595, -198.7129)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arm2/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arm2/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm3" type="Node2D" parent="."]
+rotation = 2.914301
+script = ExtResource("2_7rxif")
+rot = 0.31
+
+[node name="Arm" type="Area2D" parent="Arm3"]
+position = Vector2(0.3042555, -161.07423)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arm3/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arm3/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm4" type="Node2D" parent="."]
+rotation = 2.914301
+script = ExtResource("2_7rxif")
+rot = 0.31
+
+[node name="Arm" type="Area2D" parent="Arm4"]
+position = Vector2(-614.5813, -830.8591)
+rotation = 0.36016402
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arm4/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_d4hio")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arm4/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm5" type="Node2D" parent="."]
+rotation = 2.914301
+script = ExtResource("2_7rxif")
+rot = 0.31
+
+[node name="Arm" type="Area2D" parent="Arm5"]
+position = Vector2(1088.5814, -73.59204)
+rotation = 2.0579584
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arm5/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_d4hio")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arm5/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm6" type="Node2D" parent="."]
+rotation = 2.914301
+script = ExtResource("2_7rxif")
+rot = 0.31
+
+[node name="Arm" type="Area2D" parent="Arm6"]
+position = Vector2(-249.74283, 1062.0386)
+rotation = 1.9923061
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arm6/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_d4hio")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arm6/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="MinimapTracker" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("5_25d5k")]
+position = Vector2(329.8335, 293.348)
+target_node = NodePath("..")
+dot_shape = 3
+dot_size = 5.0
+dot_color = Color(1, 0.97300005, 0.19, 1)
+blink_enabled = true
+blink_speed = 0.75
+
+[node name="square_debris" type="Node2D" parent="."]
+script = ExtResource("2_7rxif")
+rot = 0.1
+
+[node name="SquareDebris" type="Area2D" parent="square_debris"]
+position = Vector2(-128.99998, 70.00001)
+rotation = -0.65801346
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris2" type="Area2D" parent="square_debris"]
+position = Vector2(83, 158.99995)
+rotation = -1.649668
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris2"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris2"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris3" type="Area2D" parent="square_debris"]
+position = Vector2(232, -23.000008)
+rotation = 0.22725022
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris3"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris3"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris4" type="Area2D" parent="square_debris"]
+position = Vector2(78, -142)
+rotation = -0.6782769
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris4"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris4"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris5" type="Area2D" parent="square_debris"]
+position = Vector2(-182, -157)
+rotation = -1.8497531
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris5"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris5"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris6" type="Area2D" parent="square_debris"]
+position = Vector2(177.99998, -199)
+rotation = -2.5773273
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris6"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris6"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris7" type="Area2D" parent="square_debris"]
+position = Vector2(-63.000008, -129.99998)
+rotation = -4.715288
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris/SquareDebris7"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris/SquareDebris7"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="square_debris2" type="Node2D" parent="."]
+script = ExtResource("2_7rxif")
+rot = -0.2
+
+[node name="SquareDebris" type="Area2D" parent="square_debris2"]
+position = Vector2(93.00003, -321.00006)
+rotation = -0.65801346
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris2" type="Area2D" parent="square_debris2"]
+position = Vector2(23.00002, -172.99995)
+rotation = -1.649668
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris2"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris2"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris3" type="Area2D" parent="square_debris2"]
+position = Vector2(94.000015, 43)
+rotation = 0.22725022
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris3"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris3"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris4" type="Area2D" parent="square_debris2"]
+position = Vector2(-104.000015, -256)
+rotation = -0.6782769
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris4"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris4"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris5" type="Area2D" parent="square_debris2"]
+position = Vector2(-50, 210)
+rotation = -1.8497531
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris5"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris5"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris6" type="Area2D" parent="square_debris2"]
+position = Vector2(325, 132)
+rotation = -2.5773273
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris6"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris6"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris7" type="Area2D" parent="square_debris2"]
+position = Vector2(-262, -55.000023)
+rotation = -4.715288
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris2/SquareDebris7"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris2/SquareDebris7"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="square_debris3" type="Node2D" parent="."]
+script = ExtResource("2_7rxif")
+rot = -0.3
+
+[node name="SquareDebris" type="Area2D" parent="square_debris3"]
+position = Vector2(-101.00003, -499)
+rotation = -0.65801346
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris2" type="Area2D" parent="square_debris3"]
+position = Vector2(271, -409)
+rotation = -1.649668
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris2"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris2"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris3" type="Area2D" parent="square_debris3"]
+position = Vector2(420.99994, -147.99998)
+rotation = 0.22725022
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris3"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris3"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris4" type="Area2D" parent="square_debris3"]
+position = Vector2(-412, -300)
+rotation = -0.6782769
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris4"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris4"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris5" type="Area2D" parent="square_debris3"]
+position = Vector2(-442, 49.99997)
+rotation = -1.8497531
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris5"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris5"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris6" type="Area2D" parent="square_debris3"]
+position = Vector2(-179, 243.99998)
+rotation = -2.5773273
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris6"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris6"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris7" type="Area2D" parent="square_debris3"]
+position = Vector2(502, 53.000015)
+rotation = -4.715288
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris7"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris7"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris8" type="Area2D" parent="square_debris3"]
+position = Vector2(-274.99994, 60.000046)
+rotation = -3.8283668
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris8"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris8"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris9" type="Area2D" parent="square_debris3"]
+position = Vector2(-302.00003, -187.99998)
+rotation = -5.508284
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris9"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris9"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris10" type="Area2D" parent="square_debris3"]
+position = Vector2(328.9999, -99.00001)
+rotation = -6.049259
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="square_debris3/SquareDebris10"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_debris3/SquareDebris10"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="Ring" type="Node2D" parent="."]
+script = ExtResource("2_7rxif")
+
+[node name="Square" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_q1okw")
+rotation = 0.110366836
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="background" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_efw5b")
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square2" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ks3qp")
+rotation = 0.76391
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square14" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ks3qp")
+rotation = -1.9629381
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square15" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ks3qp")
+rotation = -2.6404786
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square3" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_yud56")
+rotation = 1.7665085
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square4" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xmfx2")
+rotation = 2.583426
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square5" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xmfx2")
+rotation = 3.121759
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square6" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = 2.8159618
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square7" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = 1.031196
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square8" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -0.55964756
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square9" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -0.79370236
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square10" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.1541542
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square11" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.1996129
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square12" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.4245857
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square13" type="Sprite2D" parent="Ring"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.4245857
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Ring2" type="Node2D" parent="."]
+rotation = -2.8973143
+scale = Vector2(0.51, 0.51)
+script = ExtResource("2_7rxif")
+
+[node name="Square" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_hdco5")
+rotation = 0.110366836
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="background" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_efw5b")
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square2" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ks3qp")
+rotation = 0.76391
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square14" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ks3qp")
+rotation = -1.9629381
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square15" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ks3qp")
+rotation = -2.6404786
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square3" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_yud56")
+rotation = 1.7665085
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square4" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xmfx2")
+rotation = 2.583426
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square5" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xmfx2")
+rotation = 3.121759
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square6" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = 2.8159618
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square7" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = 1.031196
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square8" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -0.55964756
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square9" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -0.79370236
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square10" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.1541542
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square11" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.1996129
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square12" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.4245857
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Square13" type="Sprite2D" parent="Ring2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d4hio")
+rotation = -1.4245857
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Arm7" type="Node2D" parent="Ring2"]
+rotation = -2.5701663
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm7"]
+position = Vector2(-2.9214077, -679.7532)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm7/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm7/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm8" type="Node2D" parent="Ring2"]
+rotation = -1.049512
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm8"]
+position = Vector2(-3.298685, -724.99243)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm8/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm8/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm9" type="Node2D" parent="Ring2"]
+rotation = 1.9642102
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm9"]
+position = Vector2(-3.7457914, -801.2353)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm9/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm9/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm10" type="Node2D" parent="Ring2"]
+rotation = 1.0260056
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm10"]
+position = Vector2(-3.8219547, -730.8861)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm10/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm10/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm11" type="Node2D" parent="Ring2"]
+rotation = -1.5722708
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm11"]
+position = Vector2(-4.1293097, -777.82263)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm11/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm11/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm12" type="Node2D" parent="Ring2"]
+rotation = -3.1201448
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm12"]
+position = Vector2(-3.6229534, -782.5133)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm12/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm12/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm13" type="Node2D" parent="Ring2"]
+rotation = -5.8881087
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm13"]
+position = Vector2(-4.13196, -788.22394)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm13/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm13/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Arm14" type="Node2D" parent="Ring2"]
+position = Vector2(-14.730682, 662.44495)
+rotation = -6.7746234
+scale = Vector2(1.9607844, 1.9607844)
+
+[node name="Arm" type="Area2D" parent="Ring2/Arm14"]
+position = Vector2(-4.13196, -788.22394)
+scale = Vector2(1, -0.29837048)
+script = ExtResource("1_mci1a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ring2/Arm14/Arm"]
+position = Vector2(-4.7683716e-07, 200.00002)
+rotation = -0.0017978285
+texture = ExtResource("7_xmfx2")
+script = ExtResource("3_yud56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/Arm14/Arm"]
+position = Vector2(0, 200)
+shape = SubResource("CapsuleShape2D_gncnl")
+
+[node name="Ring3" type="Node2D" parent="Ring2"]
+rotation = 2.1997337
+scale = Vector2(0.81372553, 0.81372553)
+
+[node name="Square" type="Sprite2D" parent="Ring2/Ring3"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_hdco5")
+rotation = 0.110366836
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Ring4" type="Node2D" parent="Ring2"]
+rotation = -0.607852
+scale = Vector2(0.88, 0.88)
+
+[node name="Square" type="Sprite2D" parent="Ring2/Ring4"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_hdco5")
+rotation = 0.110366836
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Ring5" type="Node2D" parent="Ring2"]
+rotation = -2.6096141
+scale = Vector2(0.88, 0.88)
+
+[node name="Square" type="Sprite2D" parent="Ring2/Ring5"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_jcnsk")
+position = Vector2(29.096329, -425.15024)
+rotation = 0.48249218
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="Ring6" type="Node2D" parent="Ring2"]
+position = Vector2(-110.722916, 561.0835)
+rotation = -2.0226269
+scale = Vector2(0.88, 0.88)
+
+[node name="Square" type="Sprite2D" parent="Ring2/Ring6"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_r7w5g")
+position = Vector2(-11.348679, -216.43094)
+rotation = 0.25663358
+scale = Vector2(100, 100)
+texture = ExtResource("2_mci1a")
+
+[node name="square_debris4" type="Node2D" parent="Ring2"]
+rotation = 2.8973143
+scale = Vector2(1.9607844, 1.9607844)
+script = ExtResource("2_7rxif")
+rot = 0.0
+
+[node name="SquareDebris" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(-89.999954, -722)
+rotation = -0.65801346
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris2" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(690, -113.00003)
+rotation = -1.649668
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris2"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris2"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris3" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(651.99994, 267)
+rotation = 0.22725022
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris3"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris3"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris4" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(-581.99994, 458.00006)
+rotation = -0.6782769
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris4"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris4"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris5" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(-296, 596.99994)
+rotation = -1.8497531
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris5"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris5"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris6" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(-106.00003, 706)
+rotation = -2.5773273
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris6"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris6"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris7" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(161.00003, 672.99994)
+rotation = -4.715288
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris7"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris7"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris8" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(-435.00003, -537)
+rotation = -3.8283668
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris8"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris8"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris9" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(-662, -125.000015)
+rotation = -5.508284
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris9"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris9"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="SquareDebris10" type="Area2D" parent="Ring2/square_debris4"]
+position = Vector2(347.00003, -627.00006)
+rotation = -6.049259
+scale = Vector2(0.7193372, 0.7193372)
+script = ExtResource("1_mci1a")
+
+[node name="Square" type="Sprite2D" parent="Ring2/square_debris4/SquareDebris10"]
+texture = ExtResource("2_mci1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ring2/square_debris4/SquareDebris10"]
+shape = SubResource("RectangleShape2D_25d5k")
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("11_efw5b")
+debris_scene = ExtResource("12_w5y44")
+inner_radius = 520.0
+outer_radius = 1000.0
+rotation_speed = 0.05
+
+[node name="Node2D3" type="Node2D" parent="."]
+script = ExtResource("11_efw5b")
+debris_scene = ExtResource("12_w5y44")
+inner_radius = 520.0
+outer_radius = 1000.0
+rotation_speed = -0.03
+
+[node name="Node2D2" type="Node2D" parent="."]
+script = ExtResource("11_efw5b")
+debris_scene = ExtResource("12_w5y44")
+spawn_count = 50
+inner_radius = 1050.0
+outer_radius = 1500.0
+rotation_speed = 0.05
+
+[node name="Node2D4" type="Node2D" parent="."]
+script = ExtResource("11_efw5b")
+debris_scene = ExtResource("12_w5y44")
+spawn_count = 50
+inner_radius = 1050.0
+outer_radius = 1500.0
+rotation_speed = -0.04
+
+[node name="Node2D5" type="Node2D" parent="."]
+script = ExtResource("11_efw5b")
+debris_scene = ExtResource("12_w5y44")
+spawn_count = 25
+inner_radius = 500.0
+outer_radius = 2000.0
+rotation_speed = 0.5
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_jcnsk")
+amount = 500
+texture = ExtResource("13_q1okw")
+lifetime = 50.0
+visibility_rect = Rect2(-4500, -2000, 9000, 4000)
+process_material = SubResource("ParticleProcessMaterial_3uepw")

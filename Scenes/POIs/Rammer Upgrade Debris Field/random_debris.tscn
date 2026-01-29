@@ -1,0 +1,158 @@
+[gd_scene load_steps=25 format=3 uid="uid://t07f6hx8l7er"]
+
+[ext_resource type="Script" uid="uid://c8ik22ncav6ck" path="res://Scenes/POIs/Rammer Upgrade Debris Field/ContactDamage.gd" id="1_b48t7"]
+[ext_resource type="Texture2D" uid="uid://dsxugx7vrfi4y" path="res://Assets/some_debris.png" id="1_g8dk2"]
+[ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/NPCs/Satellite/satellite2_rotate.gd" id="3_2ev8l"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="4_2ev8l"]
+[ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="5_kr1ag"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g8dk2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pp71e"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b48t7"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ev8l"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kr1ag"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_adq3x"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i21u0"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xtwth"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eqbrm"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8ekc"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kwnc5"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2li0"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvdyd"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(352, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6h3rk"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(384, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8rvr3"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(416, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yo3he"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(448, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_67q8e"]
+atlas = ExtResource("1_g8dk2")
+region = Rect2(480, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ldjcs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pp71e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b48t7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ev8l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kr1ag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_adq3x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i21u0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtwth")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eqbrm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8ekc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kwnc5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2li0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvdyd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6h3rk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8rvr3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yo3he")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_67q8e")
+}],
+"loop": false,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adq3x"]
+shader = ExtResource("5_kr1ag")
+shader_parameter/base_color = Color(1, 1, 1, 0.11764706)
+shader_parameter/intensity = 1.5
+shader_parameter/spread = 1.0
+shader_parameter/pulse_speed = 5.0000002375
+
+[node name="RandomDebris" type="Area2D"]
+texture_filter = 1
+script = ExtResource("1_b48t7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_g8dk2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ldjcs")
+script = ExtResource("3_2ev8l")
+
+[node name="Trail" parent="." instance=ExtResource("4_2ev8l")]
+material = SubResource("ShaderMaterial_adq3x")
+width = 32.0
+default_color = Color(1, 1, 1, 0.11764706)
+joint_mode = 2
+begin_cap_mode = 2
+body_path = NodePath("..")
+max_points = 100
+width = 32.0
+color = Color(1, 1, 1, 0.11764706)
