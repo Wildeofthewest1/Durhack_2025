@@ -60,7 +60,7 @@ func _fire_projectile(dir: Vector2) -> void:
 func _spawn_from_muzzle(muzzle: Node2D, fire_dir: Vector2) -> void:
 	if muzzle == null:
 		return
-
+	fire_dir = Vector2.RIGHT.rotated(muzzle.global_rotation)
 	var world_root: Node = get_parent().get_parent().get_parent().get_parent()
 
 	var missile: MissileProjectile = data.bullet_scene.instantiate() as MissileProjectile

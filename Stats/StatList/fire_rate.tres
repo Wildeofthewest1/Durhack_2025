@@ -6,5 +6,5 @@
 script = ExtResource("1_3j35w")
 id = &"fire_rate"
 display_name = "Fire Rate"
-default_value = 50.0
+default_value = 1.0
 metadata/_custom_type_script = "uid://17pvuq76srq4"

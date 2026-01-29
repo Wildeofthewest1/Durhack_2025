@@ -30,10 +30,8 @@ radius = 8000.0
 modulate = Color(1, 1, 1, 0.5019608)
 texture_filter = 1
 script = ExtResource("1_eimpt")
-damage_per_second = 50.0
-query_collision_mask = null
-require_player_group = null
-debug_print = null
+damage_per_second = 100.0
+damage_tick = 49
 
 [node name="OuterArea" type="Area2D" parent="."]
 

@@ -19,7 +19,7 @@ enum AmmoModel {
 @export var flash_scene: PackedScene
 
 @export_category("Firing")
-@export var fire_cooldown: float = 0.25
+@export var fire_rate: float = 4.0 # shots per second
 @export var automatic: bool = true
 @export var bullets_per_shot: int = 1
 

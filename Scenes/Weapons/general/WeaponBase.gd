@@ -22,6 +22,7 @@ var _reload_audio: AudioStreamPlayer = null
 
 @export var data: WeaponData
 
+# Timers are kept in SECONDS
 var _cooldown: float = 0.0
 var _current_mag: int = 0
 
@@ -41,7 +42,7 @@ var _aim_dir: Vector2 = Vector2.RIGHT
 # EFFECTIVE STATS (WeaponData + PlayerVariables)
 # ------------------------------------------------------------
 
-# Multipliers
+# Multipliers (dimensionless)
 var _mult_damage: float = 1.0
 var _mult_fire_rate: float = 1.0
 var _mult_accuracy: float = 1.0
@@ -52,19 +53,22 @@ var _mult_mag_regen: float = 1.0
 var _addon_mag_count: int = 0
 var _addon_mag_size: int = 0
 
-# Effective results
+# Effective results (SECONDS where appropriate)
 var _eff_damage: float = 0.0
-var _eff_fire_cooldown: float = 0.0
+var _eff_fire_cooldown: float = 0.0          # seconds/shot
 var _eff_knockback: float = 0.0
-var _eff_mag_regen_time: float = 0.0
-var _eff_reload_time: float = 0.0
+var _eff_mag_regen_time: float = 0.0         # seconds per stored-mag regen tick
+var _eff_reload_time: float = 0.0            # seconds per reload
+
+# Effective rates (1/SECOND) for UI / design readability
+var _eff_fire_rate: float = 0.0              # shots/second
+var _eff_mag_regen_rate: float = 0.0         # mags/second
+var _eff_reload_rate: float = 0.0            # reloads/second (mostly for display)
 
 var _eff_max_magazine: int = 0
 var _eff_max_stored_mags: int = 0
 
 # Accuracy-as-spread
-# - data.spread_rad is the base half-angle spread in radians
-# - effective_spread_rad = base_spread_rad / accuracy_multiplier
 var _base_spread_rad: float = 0.0
 var _eff_spread_rad: float = 0.0
 
@@ -124,7 +128,6 @@ func _physics_process(delta: float) -> void:
 # ------------------------------------------------------------
 
 func _on_stats_changed(_stat_ids: Array) -> void:
-	# Recompute always (cheap + avoids id mismatch bugs)
 	_recompute_effective_stats(false)
 
 
@@ -135,24 +138,20 @@ func _recompute_effective_stats(is_initial: bool) -> void:
 	var old_max_mag: int = _eff_max_magazine
 	var old_max_stored: int = _eff_max_stored_mags
 
-	# Multipliers (treat 1.0 as "no change")
 	_mult_damage = _safe_stat_mult(&"damage")
 	_mult_fire_rate = _safe_stat_mult(&"fire_rate")
 	_mult_accuracy = _safe_stat_mult(&"accuracy")
 	_mult_knockback = _safe_stat_mult(&"knockback")
 	_mult_mag_regen = _safe_stat_mult(&"mag_regen")
 
-	# Addons (weapon-specific)
 	_addon_mag_count = 0
 	_addon_mag_size = 0
 	if _weapon_is_pistol():
 		_addon_mag_count = _safe_stat_add_int(&"pistol_mag_count")
 		_addon_mag_size = _safe_stat_add_int(&"pistol_mag_size")
 
-	# Base spread from WeaponData (optional field)
 	_base_spread_rad = _safe_get_data_float(&"spread_rad", 0.0)
 
-	# Effective spread: higher accuracy => less spread
 	if _mult_accuracy <= 0.01:
 		_eff_spread_rad = _base_spread_rad
 	else:
@@ -160,20 +159,20 @@ func _recompute_effective_stats(is_initial: bool) -> void:
 	if _eff_spread_rad < 0.0:
 		_eff_spread_rad = 0.0
 
-	# Effective core stats
 	_eff_damage = float(data.damage) * _mult_damage
 	_eff_knockback = float(data.knockback) * _mult_knockback
 
-	# Fire rate modifies cooldown: higher fire_rate => shorter cooldown
-	var base_cd: float = float(data.fire_cooldown)
-	if _mult_fire_rate <= 0.01:
-		_eff_fire_cooldown = base_cd
-	else:
-		_eff_fire_cooldown = base_cd / _mult_fire_rate
-	if _eff_fire_cooldown < 0.0:
-		_eff_fire_cooldown = 0.0
+	# Fire cooldown (seconds/shot)
+	# Fire rate (shots/sec)
+	var base_fire_rate: float = float(data.fire_rate)
+	var eff_fire_rate: float = base_fire_rate * _mult_fire_rate
+	if eff_fire_rate < 0.0:
+		eff_fire_rate = 0.0
 
-	# Mag regen modifies regen time: higher mag_regen => shorter regen time
+	_eff_fire_rate = eff_fire_rate
+	_eff_fire_cooldown = _rate_to_seconds(eff_fire_rate) # seconds per shot
+
+	# Mag regen time (seconds per stored-mag generated)
 	var base_regen: float = float(data.mag_regen_time)
 	if _mult_mag_regen <= 0.01:
 		_eff_mag_regen_time = base_regen
@@ -193,6 +192,11 @@ func _recompute_effective_stats(is_initial: bool) -> void:
 	_eff_max_stored_mags = int(data.max_stored_mags) + _addon_mag_count
 	if _eff_max_stored_mags < 0:
 		_eff_max_stored_mags = 0
+
+	# ---- NEW: derive 1/second rates from second-based timers ----
+	_eff_fire_rate = _seconds_to_rate(_eff_fire_cooldown)        # shots/sec
+	_eff_mag_regen_rate = _seconds_to_rate(_eff_mag_regen_time)  # mags/sec
+	_eff_reload_rate = _seconds_to_rate(_eff_reload_time)        # reloads/sec
 
 	# Adjust current ammo if caps changed (only after init)
 	if is_initial == false:
@@ -221,6 +225,13 @@ func _recompute_effective_stats(is_initial: bool) -> void:
 	_emit_ammo()
 
 
+func _seconds_to_rate(seconds: float) -> float:
+	# Converts seconds-per-event -> events-per-second
+	if seconds <= 0.0001:
+		return 0.0
+	return 1.0 / seconds
+
+
 func _safe_stat_mult(stat_id: StringName) -> float:
 	var v: float = 1.0
 	if PlayerVariables != null:
@@ -238,7 +249,6 @@ func _safe_stat_add_int(stat_id: StringName) -> int:
 
 
 func _weapon_is_pistol() -> bool:
-	# Requires WeaponData.id; if you don't have it, add it.
 	if data == null:
 		return false
 	return data.id == &"pistol"
@@ -270,20 +280,21 @@ func _has_property(obj: Object, prop: StringName) -> bool:
 # Public getters (use these in weapon variants)
 # ------------------------------------------------------------
 
+# Seconds-based (timers)
 func get_effective_damage() -> float:
 	return _eff_damage
 
-func get_effective_fire_cooldown() -> float:
+func get_effective_fire_cooldown() -> float: # sec/shot
 	return _eff_fire_cooldown
+
+func get_effective_reload_time() -> float: # sec
+	return _eff_reload_time
+
+func get_effective_mag_regen_time() -> float: # sec
+	return _eff_mag_regen_time
 
 func get_effective_knockback() -> float:
 	return _eff_knockback
-
-func get_effective_mag_regen_time() -> float:
-	return _eff_mag_regen_time
-
-func get_effective_reload_time() -> float:
-	return _eff_reload_time
 
 func get_effective_max_magazine() -> int:
 	return _eff_max_magazine
@@ -294,9 +305,29 @@ func get_effective_max_stored_mags() -> int:
 func get_effective_spread_rad() -> float:
 	return _eff_spread_rad
 
+# Rate-based (1/sec) for UI/readability
+func get_effective_fire_rate() -> float: # shots/sec
+	return _eff_fire_rate
+
+func get_effective_mag_regen_rate() -> float: # mags/sec
+	return _eff_mag_regen_rate
+
+func get_effective_reload_rate() -> float: # reloads/sec
+	return _eff_reload_rate
+
+# Optional: expose remaining seconds for UI if you want
+func get_cooldown_remaining_sec() -> float:
+	return _cooldown
+
+func get_reload_remaining_sec() -> float:
+	return _reload_time_remaining
+
+func get_regen_remaining_sec() -> float:
+	return _regen_time_remaining
+
 
 # ------------------------------------------------------------
-# Ticking
+# Ticking (all seconds)
 # ------------------------------------------------------------
 
 func _tick_cooldown(delta: float) -> void:
@@ -450,7 +481,6 @@ func try_fire(dir: Vector2) -> void:
 		aim_dir = aim_dir.normalized()
 	_aim_dir = aim_dir
 
-	# Handle empty-mag logic
 	if _current_mag <= 0:
 		if data.ammo_model == WeaponData.AmmoModel.INFINITE_WITH_RELOAD:
 			_waiting_for_mag = false
@@ -470,7 +500,6 @@ func try_fire(dir: Vector2) -> void:
 
 		return
 
-	# Apply spread from accuracy
 	var spread: float = _eff_spread_rad
 	if spread > 0.0:
 		var angle_offset: float = randf_range(-spread, spread)
@@ -480,7 +509,7 @@ func try_fire(dir: Vector2) -> void:
 	if _current_mag < 0:
 		_current_mag = 0
 
-	_cooldown = _eff_fire_cooldown
+	_cooldown = _eff_fire_cooldown # seconds
 	_fire_projectile(aim_dir)
 	_emit_ammo()
 
@@ -489,7 +518,7 @@ func _start_reload() -> void:
 	if _is_reloading:
 		return
 	_is_reloading = true
-	_reload_time_remaining = _eff_reload_time
+	_reload_time_remaining = _eff_reload_time # seconds
 	_emit_ammo()
 
 
@@ -508,7 +537,7 @@ func _consume_stored_and_start_reload() -> bool:
 		_stored_mags = 0
 
 	_is_reloading = true
-	_reload_time_remaining = _eff_reload_time
+	_reload_time_remaining = _eff_reload_time # seconds
 	_emit_ammo()
 	return true
 
@@ -551,6 +580,11 @@ func _emit_ammo() -> void:
 		reload_progress,
 		regen_progress
 	)
+
+func _rate_to_seconds(rate: float) -> float:
+	if rate <= 0.0001:
+		return 0.0
+	return 1.0 / rate
 
 
 # Override in weapon variants
