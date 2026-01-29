@@ -139,6 +139,8 @@ func _advance_async_deferred(next_id: String, session: int) -> void:
 	await _present_line(session)
 
 
+# Replace your _present_line function with this fixed version:
+
 func _present_line(session: int) -> void:
 	if session != _session_id:
 		return
@@ -158,7 +160,7 @@ func _present_line(session: int) -> void:
 	var raw_text: String = _dialogue_line.text
 	var stripped_text: String = raw_text.strip_edges()
 
-	# mutation-only: empty + no responses => auto-advance
+	# mutation-only: empty + no responses => auto-advance (NO BUBBLE)
 	if stripped_text.is_empty() and _dialogue_line.responses.size() == 0:
 		await get_tree().process_frame
 		if session != _session_id:
@@ -166,6 +168,7 @@ func _present_line(session: int) -> void:
 		_advance_async(_dialogue_line.next_id, session)
 		return
 
+	# NOW spawn bubble only if we have actual content
 	var speaker: String = _get_line_speaker(_dialogue_line)
 	var is_you: bool = _is_you_speaker(speaker)
 
@@ -459,8 +462,6 @@ func _spawn_player_choice_bubble(text_bbcode: String) -> void:
 func _get_line_speaker(line: DialogueLine) -> String:
 	if line.character != "":
 		return line.character
-	if line.speaker != "":
-		return line.speaker
 	return ""
 
 

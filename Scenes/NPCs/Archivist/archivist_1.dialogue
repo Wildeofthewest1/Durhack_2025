@@ -1,8 +1,11 @@
 ~ start
-Archivist: [[Hi, Captain|Hail, Captain|[wave amp=25 freq=5]Data[/wave]...  OH! Sorry, Captain!]].
-Archivist: We store an immense amount of data here.
-Archivist: Lines, pictures, notes, ingesting one millionth of a percent would drive you insane.
-Archivist: Pretty lucky to have All machines to assist us in the task.
+if not TagManager.has_tag(GameTags.Dialogue.NPC_ARCHIVIST_MET):
+	Archivist: [[Hi, Captain|Hail, Captain|[wave amp=25 freq=5]Data[/wave]...  OH! Sorry, Captain!]].
+	=> meeting
+else:
+	Archivist: [[Hi, Captain|Hail, Captain|[wave amp=25 freq=5]Data[/wave]...  OH! Sorry, Captain!]].
+	=> questions
+
 ~ questions
 - Glory be to us.
 	Archivist: Glory be to All. => questions
@@ -16,10 +19,15 @@ Archivist: Pretty lucky to have All machines to assist us in the task.
 - What... are you?
 	Archivist: I'm an archivist.
 	- What's an archivist?
-	Archivist: Archivists acculumate, no preserve All data that we can find, mostly for posterity. The archive is for All
+		Archivist: Archivists accumulate, no preserve All data that we can find, mostly for posterity. The archive is for All
 	- Who do you serve?
 		Archivist: The archive serves All.
 		You: Fair enough
-	
 - Bye => END
-=> END
+
+~ meeting
+do TagManager.add_tag(GameTags.Dialogue.NPC_ARCHIVIST_MET)
+Archivist: We store an immense amount of data here.
+Archivist: Lines, pictures, notes, ingesting one millionth of a percent would drive you insane.
+Archivist: Pretty lucky to have All machines to assist us in the task. 
+=> questions

@@ -25,6 +25,7 @@ PlayerVariables="*res://Stats/PlayerVariables.gd"
 PauseManager="*res://Scenes/Game/PauseManager.gd"
 ShopInventory="*res://Scenes/Items/ShopInventory.gd"
 PassiveManager="*res://Scenes/Items/PassiveManager.gd"
+TagManager="*res://Tags/tag_manager.gd"
 
 [dialogic]
 

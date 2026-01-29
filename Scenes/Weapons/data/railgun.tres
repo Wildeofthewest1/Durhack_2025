@@ -12,7 +12,6 @@ display_name = "Rail"
 icon = ExtResource("2_22ib8")
 weapon_scene = ExtResource("3_yl3n1")
 bullet_scene = ExtResource("1_22ib8")
-fire_cooldown = 0.1
 spread_deg = 0.0
 damage = 500.0
 max_magazine = 1

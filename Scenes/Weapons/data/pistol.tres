@@ -13,7 +13,6 @@ icon = ExtResource("3_nprgb")
 weapon_scene = ExtResource("3_m54r8")
 bullet_scene = ExtResource("1_3isoy")
 flash_scene = ExtResource("2_m54r8")
-fire_cooldown = 0.5
 muzzle_velocity = 500.0
 knockback = 1000.0
 max_magazine = 5
