@@ -177,4 +177,4 @@ func _recenter_container() -> void:
 	if pixel_snap_position:
 		pos = pos.round()
 
-	container.position = pos
+	#container.position = pos

@@ -65,32 +65,36 @@ material = SubResource("CanvasItemMaterial_yyavk")
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="."]
 material = SubResource("CanvasItemMaterial_xqoiw")
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 642.0
+offset_bottom = 362.0
 scale = Vector2(3, 3)
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer2"]
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(640, 360)
+size = Vector2i(642, 362)
 render_target_update_mode = 4
 
 [node name="Background" parent="SubViewportContainer2/SubViewport" instance=ExtResource("1_xqoiw")]
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." node_paths=PackedStringArray("viewport", "container")]
+texture_filter = 1
 material = SubResource("ShaderMaterial_bo1nx")
-offset_right = 642.0
-offset_bottom = 362.0
-scale = Vector2(3, 3)
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 638.0
+offset_bottom = 358.0
+scale = Vector2(2.25, 2.25)
 script = ExtResource("2_cwscw")
 viewport = NodePath("SubViewport")
 container = NodePath(".")
+base_size = Vector2i(642, 362)
 zoom_scales = Array[int]([1, 2, 3])
 auto_zoom_enabled = true
-speed_for_zoom_in = 200.0
-speed_for_zoom_out = 400.0
+speed_for_zoom_in = 100.0
+speed_for_zoom_out = 300.0
 auto_min_scale = 1.0
-auto_max_scale = 3.0
+auto_max_scale = 2.25
 auto_zoom_lerp_speed = 0.1
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" groups=["GameViewport"]]

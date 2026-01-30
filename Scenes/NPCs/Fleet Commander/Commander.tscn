@@ -1,16 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://b48kj3f1ysx00"]
+[gd_scene load_steps=10 format=3 uid="uid://b48kj3f1ysx00"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_efa7v"]
 [ext_resource type="Resource" uid="uid://cnrc64sortms1" path="res://Scenes/NPCs/Fleet Commander/dialogue_fleet_commander.tres" id="2_x4cxa"]
 [ext_resource type="Material" uid="uid://coy5kyae7r1x7" path="res://Shaders/satellite.tres" id="3_jmqa4"]
+[ext_resource type="PackedScene" uid="uid://cdngesqtjucwo" path="res://Scenes/UI/Interaction/InteractionBubble.tscn" id="3_x4cxa"]
 [ext_resource type="Texture2D" uid="uid://gonc1utpupqy" path="res://Assets/ArtStyle Concept.png" id="4_pialw"]
 [ext_resource type="Script" uid="uid://xw0iyjubk7un" path="res://Scenes/NPCs/Satellite/satellite2_rotate.gd" id="5_13405"]
 [ext_resource type="Texture2D" uid="uid://c0irrhg6s42tf" path="res://Assets/sattelites.png" id="6_tvumt"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="7_5tapf"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o0rdh"]
-radius = 43.0
-height = 206.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_x4cxa"]
+radius = 198.64542
 
 [node name="Satellite_1" type="CharacterBody2D"]
 texture_filter = 1
@@ -18,13 +18,18 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_efa7v")
 dialogue_data = ExtResource("2_x4cxa")
+interact_indicator_path = NodePath("InteractBubble")
+
+[node name="InteractBubble" parent="." instance=ExtResource("3_x4cxa")]
+show_time = 0.5
+hide_time = 0.5
 
 [node name="TalkArea" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
-shape = SubResource("CapsuleShape2D_o0rdh")
+shape = SubResource("CircleShape2D_x4cxa")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1

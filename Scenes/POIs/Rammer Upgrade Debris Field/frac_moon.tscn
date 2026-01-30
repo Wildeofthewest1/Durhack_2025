@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvdrb1lbp504"]
+
+[ext_resource type="Texture2D" uid="uid://ess45fje40ks" path="res://Assets/frac_moon_1.png" id="1_gurun"]
+[ext_resource type="Texture2D" uid="uid://b636y14x7wxcs" path="res://Assets/frac_moon_2.png" id="2_f55wi"]
+[ext_resource type="Texture2D" uid="uid://cnmrxl7t8www7" path="res://Assets/frac_moon_3.png" id="3_xv4qk"]
+[ext_resource type="Texture2D" uid="uid://kju1drudws64" path="res://Assets/frac_moon_4.png" id="4_f55wi"]
+[ext_resource type="Texture2D" uid="uid://bpnqlbv6x3t2o" path="res://Assets/moon_pieces.png" id="5_xv4qk"]
+
+[node name="FracMoon" type="Node2D"]
+
+[node name="FracMoon1" type="Sprite2D" parent="."]
+position = Vector2(1774, 442)
+rotation = -0.85279953
+texture = ExtResource("1_gurun")
+
+[node name="FracMoon2" type="Sprite2D" parent="."]
+position = Vector2(475.00006, -265)
+rotation = -0.08751896
+texture = ExtResource("2_f55wi")
+
+[node name="FracMoon3" type="Sprite2D" parent="."]
+position = Vector2(394.99997, 144.00005)
+rotation = -0.5405154
+texture = ExtResource("3_xv4qk")
+
+[node name="FracMoon4" type="Sprite2D" parent="."]
+position = Vector2(1024, 1254)
+rotation = -0.9321301
+texture = ExtResource("4_f55wi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-233, 1377)
+texture = ExtResource("5_xv4qk")
+region_enabled = true
+region_rect = Rect2(132, 114, 395, 279)

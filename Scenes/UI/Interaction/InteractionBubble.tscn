@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdngesqtjucwo"]
+
+[ext_resource type="Texture2D" uid="uid://bg7x6ve1deoyw" path="res://Assets/circle-512.png" id="1_jqcfl"]
+[ext_resource type="Script" uid="uid://cfnyfsq7dptvq" path="res://Scenes/UI/Interaction/interaction_bubble.gd" id="1_w44w8"]
+[ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="3_7ehy7"]
+[ext_resource type="FontFile" uid="uid://btrqx1dyumfkn" path="res://Assets/ari-w9500-display.ttf" id="4_kf5m8"]
+[ext_resource type="Texture2D" uid="uid://xgy11ykl0k0u" path="res://Assets/rectangles/rectangle_4_512.png" id="5_ugwfe"]
+
+[node name="InteractBubble" type="Node2D"]
+script = ExtResource("1_w44w8")
+
+[node name="Circle512" type="Sprite2D" parent="."]
+modulate = Color(0.33999997, 0.77999985, 1, 0.019607844)
+texture = ExtResource("1_jqcfl")
+
+[node name="Circle515" type="Sprite2D" parent="."]
+modulate = Color(0.33999997, 0.38399994, 1, 0.078431375)
+position = Vector2(4, -1)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_jqcfl")
+
+[node name="Circle514" type="Sprite2D" parent="."]
+modulate = Color(0.33999997, 0.33999997, 1, 0.078431375)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("1_jqcfl")
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+offset_left = -523.0
+offset_top = -191.0
+offset_right = -200.0
+offset_bottom = -61.0
+theme = ExtResource("3_7ehy7")
+theme_override_fonts/bold_font = ExtResource("4_kf5m8")
+theme_override_font_sizes/normal_font_size = 33
+theme_override_font_sizes/bold_font_size = 33
+bbcode_enabled = true
+text = "[[b]E[/b]]"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -469.0
+offset_top = -191.0
+offset_right = -146.0
+offset_bottom = -61.0
+theme = ExtResource("3_7ehy7")
+theme_override_fonts/bold_font = ExtResource("4_kf5m8")
+theme_override_font_sizes/normal_font_size = 33
+theme_override_font_sizes/bold_font_size = 33
+bbcode_enabled = true
+text = "[b]Interact[/b]"
+
+[node name="Node2D" type="Node2D" parent="."]
+modulate = Color(0.25882354, 0.49019608, 1, 0.4392157)
+
+[node name="Rectangle4513" type="Sprite2D" parent="Node2D"]
+position = Vector2(-340, -158)
+rotation = 1.5725436
+scale = Vector2(0.99999994, 0.498)
+texture = ExtResource("5_ugwfe")
+
+[node name="Rectangle4512" type="Sprite2D" parent="Node2D"]
+position = Vector2(-169, -124)
+rotation = -0.93737817
+scale = Vector2(1, 0.22)
+texture = ExtResource("5_ugwfe")

@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://dtv38ssfx2lja"]
+
+[ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_y818i"]
+[ext_resource type="Texture2D" uid="uid://c4d832qkrun64" path="res://Assets/drone_factory.png" id="2_s3mlu"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="2_twjnu"]
+[ext_resource type="Script" uid="uid://dyweiipnmdgl7" path="res://Scenes/NPCs/Satellite/oscillate_rotation.gd" id="3_imht2"]
+[ext_resource type="PackedScene" uid="uid://cdngesqtjucwo" path="res://Scenes/UI/Interaction/InteractionBubble.tscn" id="4_s3mlu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_imht2"]
+radius = 163.89
+
+[node name="DroneFactory" type="Node2D"]
+script = ExtResource("1_y818i")
+
+[node name="InteractBubble" parent="." instance=ExtResource("4_s3mlu")]
+scale = Vector2(0.775, 0.775)
+show_time = 0.5
+hide_time = 0.5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_s3mlu")
+region_enabled = true
+region_rect = Rect2(14, 46, 297, 125)
+script = ExtResource("3_imht2")
+amplitude_deg = 10.0
+frequency_hz = 0.05
+
+[node name="TalkArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
+rotation = -1.5707964
+shape = SubResource("CircleShape2D_imht2")
+
+[node name="MinimapTracker" type="Node2D" parent="."]
+script = ExtResource("2_twjnu")
+dot_shape = 1
+dot_size = 5.0
+dot_color = Color(0.4117647, 0.75686276, 0.81960785, 1)

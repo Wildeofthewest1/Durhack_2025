@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4jf4jjcudwxj"]
+[gd_scene load_steps=10 format=3 uid="uid://d4jf4jjcudwxj"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_a0mby"]
 [ext_resource type="Resource" uid="uid://b1fddra0v0fi5" path="res://Scenes/NPCs/PassengerAccelerator/PassengerAccelerator.tres" id="2_klu5g"]
@@ -6,20 +6,25 @@
 [ext_resource type="Script" path="res://Data/ShopData.gd" id="3_klu5g"]
 [ext_resource type="Script" uid="uid://dyweiipnmdgl7" path="res://Scenes/NPCs/Satellite/oscillate_rotation.gd" id="4_qmkbt"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="5_m6iax"]
+[ext_resource type="PackedScene" uid="uid://cdngesqtjucwo" path="res://Scenes/UI/Interaction/InteractionBubble.tscn" id="7_qmkbt"]
 
 [sub_resource type="Resource" id="Resource_qmkbt"]
 script = ExtResource("3_klu5g")
 metadata/_custom_type_script = "uid://bsrtutykre48g"
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_klu5g"]
-radius = 105.0
-height = 376.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_b0li2"]
+radius = 190.0
 
 [node name="PassengerAccelerator" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_a0mby")
 dialogue_data = ExtResource("2_klu5g")
 shop_data = SubResource("Resource_qmkbt")
+
+[node name="InteractBubble" parent="." instance=ExtResource("7_qmkbt")]
+scale = Vector2(0.9200008, 0.9200008)
+show_time = 0.5
+hide_time = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_m6iax")
@@ -88,9 +93,8 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TalkArea"]
-position = Vector2(13, 1)
 rotation = -1.5707964
-shape = SubResource("CapsuleShape2D_klu5g")
+shape = SubResource("CircleShape2D_b0li2")
 
 [node name="MinimapTracker" type="Node2D" parent="."]
 script = ExtResource("5_m6iax")

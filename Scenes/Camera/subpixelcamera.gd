@@ -1,7 +1,7 @@
 extends Camera2D
 class_name GameCamera
 
-@export var lerp_speed: float = 5.0
+@export var lerp_speed: float = 3.0
 
 # Screenshake settings
 @export var shake_decay: float = 1.5
@@ -13,7 +13,7 @@ var actual_cam_pos: Vector2 = Vector2.ZERO
 
 var _trauma: float = 0.0
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-
+var target_pos: Vector2 = Vector2(0.0,0.0)
 
 func _ready() -> void:
 	_rng.randomize()
@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	# --- follow player smoothly ---
-	var target_pos: Vector2 = player.global_position
+	target_pos = lerp(player.global_position,(15*get_global_mouse_position()+1*player.global_position)/16,delta*10)
 	actual_cam_pos = actual_cam_pos.lerp(target_pos, delta * lerp_speed)
 
 	# Subpixel offset for your shader correction
@@ -45,9 +45,6 @@ func _physics_process(delta: float) -> void:
 
 		_trauma = max(_trauma - shake_decay * delta, 0.0)
 
-	# --- apply position + shake (pixel snap) ---
-	global_position = actual_cam_pos.round() + shake_offset
-	rotation = shake_rot
 
 	# --- push cam_offset to your shader owner (same logic you had) ---
 	var root: Node = get_parent()
@@ -59,6 +56,10 @@ func _physics_process(delta: float) -> void:
 				mat.set_shader_parameter("cam_offset", cam_subpixel_offset)
 				# If you want shake to affect the shader too, use:
 				# mat.set_shader_parameter("cam_offset", cam_subpixel_offset + shake_offset)
+				
+	# --- apply position + shake (pixel snap) ---
+	global_position = actual_cam_pos.round() + shake_offset
+	rotation = shake_rot
 
 
 func add_trauma(amount: float) -> void:
