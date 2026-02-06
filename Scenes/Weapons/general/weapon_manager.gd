@@ -214,9 +214,17 @@ func _equip_slot(index: int) -> void:
 	_equipped_instance.rotation = 0.0
 	_equipped_instance.set_equipped(true)
 
+	# Force reload on weapon switch to prevent weapon spamming
+	if _equipped_instance.data != null:
+		if _equipped_instance.data.ammo_model == WeaponData.AmmoModel.INFINITE_WITH_RELOAD:
+			_equipped_instance._start_reload()
+		elif _equipped_instance.data.ammo_model == WeaponData.AmmoModel.STANDARD:
+			if _equipped_instance._stored_mags > 0:
+				_equipped_instance._consume_stored_and_start_reload()
+
 	emit_signal("weapon_equipped", _equipped_instance)
 	emit_signal("active_slot_changed", _equipped_index)
-
+	
 func _cycle(dir: int) -> void:
 	if _instances.size() <= 0:
 		return

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://cj1xfb3v5ofeb"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_pnkv3"]
+
+[resource]
+script = ExtResource("1_pnkv3")
+id = &"drone_fire_rate"
+default_value = 1.0
+metadata/_custom_type_script = "uid://17pvuq76srq4"

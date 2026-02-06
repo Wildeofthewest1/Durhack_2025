@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://lyol4qhr8xkl"]
 
-[ext_resource type="Script" uid="uid://b0c14765wnqhs" path="res://Scenes/Fleet/FleetModel.gd" id="1_qlk4x"]
-[ext_resource type="Texture2D" uid="uid://0v6ehb2vbp27" path="res://Assets/Drones.png" id="2_ggydx"]
-[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="3_ggydx"]
+[ext_resource type="Script" uid="uid://q8au1xrjxj8v" path="res://Scenes/Fleet/Drones/Defender/Defender.gd" id="1_a8867"]
+[ext_resource type="Texture2D" uid="uid://0v6ehb2vbp27" path="res://Assets/Drones.png" id="1_f5hbj"]
+[ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="2_a8867"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ggydx"]
 size = Vector2(20, 6)
@@ -10,19 +10,19 @@ size = Vector2(20, 6)
 [node name="Fleet_1" type="CharacterBody2D" groups=["Fleet"]]
 collision_layer = 8
 collision_mask = 0
-script = ExtResource("1_qlk4x")
+script = ExtResource("1_a8867")
+orbit_radius = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.5882353)
 texture_filter = 1
-rotation = 3.1415927
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_ggydx")
+scale = Vector2(0.3, 0.25)
+texture = ExtResource("1_f5hbj")
 region_enabled = true
 region_rect = Rect2(32, 0, 128, 32)
 
 [node name="MinimapTracker" type="Node2D" parent="." node_paths=PackedStringArray("target_node")]
-script = ExtResource("3_ggydx")
+script = ExtResource("2_a8867")
 target_node = NodePath("..")
 dot_shape = 1
 dot_color = Color(0.2376, 0.72, 0.34212002, 1)

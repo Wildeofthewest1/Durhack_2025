@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dtv38ssfx2lja"]
+[gd_scene load_steps=8 format=3 uid="uid://dtv38ssfx2lja"]
 
 [ext_resource type="Script" uid="uid://dy65xjpu8w0to" path="res://Scenes/Player/npc.gd" id="1_y818i"]
+[ext_resource type="Resource" uid="uid://bbgl7forcfuw1" path="res://Scenes/NPCs/DroneFactory/DroneFactory.tres" id="2_fy8ef"]
 [ext_resource type="Texture2D" uid="uid://c4d832qkrun64" path="res://Assets/drone_factory.png" id="2_s3mlu"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="2_twjnu"]
 [ext_resource type="Script" uid="uid://dyweiipnmdgl7" path="res://Scenes/NPCs/Satellite/oscillate_rotation.gd" id="3_imht2"]
@@ -11,6 +12,7 @@ radius = 163.89
 
 [node name="DroneFactory" type="Node2D"]
 script = ExtResource("1_y818i")
+dialogue_data = ExtResource("2_fy8ef")
 
 [node name="InteractBubble" parent="." instance=ExtResource("4_s3mlu")]
 scale = Vector2(0.775, 0.775)

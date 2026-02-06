@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DialogueData" load_steps=4 format=3 uid="uid://bbgl7forcfuw1"]
+
+[ext_resource type="Script" uid="uid://droqswt3u80yn" path="res://Data/DialogueData.gd" id="1_n2un1"]
+[ext_resource type="Resource" uid="uid://bpbh5niip43fw" path="res://Scenes/NPCs/DroneFactory/DroneFactory_1.dialogue" id="1_u5mse"]
+[ext_resource type="Script" path="res://Scenes/Items/ShopOffer.gd" id="2_u5mse"]
+
+[resource]
+script = ExtResource("1_n2un1")
+display_name = "Drone Factory"
+dialogue_resource = ExtResource("1_u5mse")
+metadata/_custom_type_script = "uid://droqswt3u80yn"

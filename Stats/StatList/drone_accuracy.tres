@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="StatDefinition" load_steps=2 format=3 uid="uid://bgele6enk178f"]
+
+[ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_xe2s8"]
+
+[resource]
+script = ExtResource("1_xe2s8")
+id = &"drone_accuracy"
+default_value = 1.0
+metadata/_custom_type_script = "uid://17pvuq76srq4"

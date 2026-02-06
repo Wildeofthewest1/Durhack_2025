@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DroneResource" load_steps=2 format=3 uid="uid://dqofqiyrrmnhe"]
+
+[ext_resource type="Script" uid="uid://blu1shvxp2yls" path="res://Scenes/Fleet/Resources/DroneResource.gd" id="1_w3l30"]
+
+[resource]
+script = ExtResource("1_w3l30")
+drone_id = "Defender"
+drone_display_name = "Defender"
+description = "Cheap orbiting shield. Not very durable"
+max_health = 500
+metadata/_custom_type_script = "uid://blu1shvxp2yls"

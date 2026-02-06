@@ -81,7 +81,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="Theme" id="Theme_epk0l"]
 Button/styles/disabled = SubResource("StyleBoxFlat_te2gg")
 
-[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "portrait_panel", "comms_page", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "portrait_controller", "bubble_dialogue_controller", "fleet_controller", "shop_controller", "drag_handle_main", "drag_handle_portrait") groups=["InteractUI"]]
+[node name="InteractionUI" type="Control" node_paths=PackedStringArray("panel", "portrait_panel", "comms_page", "fleet_page", "shop_page", "comms_tab_button", "fleet_tab_button", "shop_tab_button", "portrait_controller", "bubble_dialogue_controller", "comms_controller", "fleet_controller", "shop_controller", "drag_handle_main", "drag_handle_portrait") groups=["InteractUI"]]
 texture_filter = 1
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 3
@@ -94,24 +94,21 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 theme = SubResource("Theme_6rneb")
 script = ExtResource("3_hu01b")
-panel = NodePath("HBoxContainer")
+panel = NodePath("HBoxContainer/Panel")
 portrait_panel = NodePath("PortraitPanel")
-portrait_hide_offset = 1000.0
 comms_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage")
 fleet_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
 shop_page = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
 comms_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/CommsTabButton")
 fleet_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/FleetTabButton")
 shop_tab_button = NodePath("HBoxContainer/Panel/MainVBox/MarginContainer/TopBar/ShopTabButton")
-panel_hide_offset = 1500.0
-tween_time = 0.4
 portrait_controller = NodePath("PortraitPanel")
 bubble_dialogue_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/SpeechPage/SpeechBubble")
+comms_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/CommsPage")
 fleet_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/FleetPage")
 shop_controller = NodePath("HBoxContainer/Panel/MainVBox/ContentMarginContainer/TabContainer/ShopPage")
 drag_handle_main = NodePath("HBoxContainer/Panel/Control/TextureRect")
 drag_handle_portrait = NodePath("PortraitPanel/PortraitFrame")
-drag_range_px_main = 150.0
 drag_range_px_portrait = 300.0
 
 [node name="PortraitPanel" type="Control" parent="." node_paths=PackedStringArray("portrait_panel", "portrait_texture_rect")]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="StatDB" load_steps=12 format=3 uid="uid://b8dfllvp1i5h0"]
+[gd_resource type="Resource" script_class="StatDB" load_steps=13 format=3 uid="uid://b8dfllvp1i5h0"]
 
 [ext_resource type="Script" uid="uid://17pvuq76srq4" path="res://Stats/StatDefinition.gd" id="1_b7lov"]
 [ext_resource type="Resource" uid="uid://bgh3ex0a3vlve" path="res://Stats/StatList/max_hp.tres" id="2_4fuy3"]
@@ -11,8 +11,9 @@
 [ext_resource type="Resource" uid="uid://uu40nhojsnqo" path="res://Stats/StatList/mag_regen.tres" id="8_qar27"]
 [ext_resource type="Resource" uid="uid://b44tc1b1j35wu" path="res://Stats/StatList/pistol_mag_size.tres" id="9_b6lil"]
 [ext_resource type="Resource" uid="uid://t1rjl2h6exno" path="res://Stats/StatList/pistol_mag_count.tres" id="10_gmkx5"]
+[ext_resource type="Resource" uid="uid://dtyj5tfqestp3" path="res://Stats/StatList/drone_damage.tres" id="11_dbadf"]
 
 [resource]
 script = ExtResource("2_rib81")
-definitions = Array[ExtResource("1_b7lov")]([ExtResource("2_4fuy3"), ExtResource("3_4fuy3"), ExtResource("4_olhot"), ExtResource("5_dbadf"), ExtResource("6_wov10"), ExtResource("7_6mn41"), ExtResource("8_qar27"), ExtResource("9_b6lil"), ExtResource("10_gmkx5")])
+definitions = Array[ExtResource("1_b7lov")]([ExtResource("2_4fuy3"), ExtResource("3_4fuy3"), ExtResource("4_olhot"), ExtResource("5_dbadf"), ExtResource("6_wov10"), ExtResource("7_6mn41"), ExtResource("8_qar27"), ExtResource("9_b6lil"), ExtResource("10_gmkx5"), ExtResource("11_dbadf"), null, null, null])
 metadata/_custom_type_script = "uid://dkfmxklrhtd4n"

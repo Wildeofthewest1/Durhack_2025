@@ -30,6 +30,11 @@ class Dialogue:
 	# Add your dialogue state tags here
 	# Example: const NPC_ELDER_MET = "dialogue:npc:elder:met"
 	const NPC_ARCHIVIST_MET = "dialogue:npc:archivist:met"
+	
+	const NPC_DRONEWORKS_MET = "dialogue:npc:droneworks:met"
+	const NPC_DRONEWORKS_TALKED = "dialogue:npc:droneworks:talked"
+	const NPC_DRONEWORKS_LISTENED = "dialogue:npc:droneworks:listened"
+	const NPC_DRONEWORKS_QUEST_ACCEPTED = "dialogue:npc:droneworks:questaccepted"
 	pass
 
 # ============================================================================

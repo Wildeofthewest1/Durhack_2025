@@ -1,0 +1,100 @@
+~ start
+set locals.proceedable = 0
+set locals.fee = 5
+if not TagManager.has_tag(GameTags.Dialogue.NPC_DRONEWORKS_MET):
+	Manager: A million credits.
+	=> meeting
+else:
+	Manager: Hi
+	=> more
+
+~ more
+- So, what are your services?
+	set locals.proceedable = 1
+	Manager: We build ships. Drones. Autonomous defense and offensive crafts.
+	Manager: Our current catalogue includes 3 out of the 50 models that are currently in circulation.
+	=> more
+- How do I know I didn't just fund a terrorist?
+	Manager: Funny.
+	You: No, seriously. Are you a terrorist?
+	Manager: Sure.
+	You: I want my money back.
+	Manager: You should not negotiate with terrorists.
+	=> more
+- What... are you?
+	Manager: No, what are you?
+	You: I captain the generational ship requisitioned to me for the express purpose of defending against the invasion fleet. If necessary, my ship and I will be the last barrier between the invaders and our sun. You... don't know about the generational ship program?
+	Manager: Nah, I'm just messing with you. Glad to be of service, captain. I just had to make sure you were the real deal. No other entity in the galaxy would [wave amp=25 freq=5]willingly[/wave] donate {{locals.fee}} scrap, after all.
+	You: [The simple reveal that you are not dealing with an idiot fills you with relief and renewed determination]
+	=> more
+- When [if locals.proceedable == 1] will you be updating your catalogue?
+	set locals.proceedable = 2
+	Manager: Whenever I get more investment.
+	=> more
+- Can [if locals.proceedable == 2 or locals.proceedable == 3]I invest any more?
+	set locals.fee = 1000
+	set locals.proceedable += 1
+	Manager: Sure, it'll be {{locals.fee}} scraps.
+	You: That's a steep increase.
+	Manager: You asked for it. 
+	=> more
+- So [if locals.proceedable == 2 or locals.proceedable == 3]if I buy all of your drones, and you find all the investment you need, what happens then?
+	set locals.proceedable += 1
+	Manager: The drones ain't cheap, captain, and I feel you're approaching this from a point of extreme privilege.
+	You: It's not like I have caviar for breakfast. [wait=0.5]It's for dinner only.
+	=> more
+
+- Seriously, [if locals.proceedable >= 4]I want more ships in my fleet. What can I do?
+	Manager: 1000 scraps. I've already told you that. 
+	Manager: That's how much seed money I got from my first investor.
+	Manager: [He looks into the distance, as if remembering a bad memory]
+	Manager: Except it wasn't really seed money.
+	You: What do you mean?
+	Manager: A year ago, I found this unmarked credit transport on its way to an inner system shipyard. It had hit a debris field and the engines were offline.
+	Manager: I hauled the wreck to a cutter and came out 1000 scraps richer. It was unmarked, perfectly legal to salvage.
+	Manager: It turns out that I wasn't the only one who had eyes on that ship. I tripped a whole lot of alarms, they were onto me before long.
+	You: And now they're very angry with you.
+	Manager: Oh no. They were very impressed, actually. I just have to pay them back tenfold, or they'll blow the station. They rigged it with a few kilotons for insurance, you see.
+	You: They're holding you hostage with nukes? STAY VERY STILL. I'll call in support from the fleet.
+	Manager: No, no, it's just regular plastic explosives, and it's quite far away from the living quarters. Calm down.
+	Manager: Anyways, you've asked, and now you know. Please don't go spill my secrets elsewhere. I trust you because you're [b]the[/b] captain.
+	- I'll get you 1000 scraps
+		Manager: And I'll upgrade you to a [color="gold"]pro plus max user.[/color]
+	- I'll bring them to justice. Who am I looking for?
+		Manager: Good luck. But I'm not snitching. In my eyes, I've fucked around and found out.
+	- I'm sorry. I can't do anything.
+		Manager: It's fine. I didn't ask for any help in the first place. Go buy another drone or something.
+	Manager: I have to say though, it'll be a while before I upgrade my catalogue. Investment or not, these things take time.
+	
+~ meeting
+You: Huh?
+Manager: A million credits. That's my price.
+set locals.fee = 5
+You: I only have scraps.
+Manager: ...Fine. That'll be {{locals.fee}} scraps.
+=> questions
+
+~ questions
+- That's surprisingly low.
+	set locals.fee += 5
+	Manager: Fine. It's {{locals.fee}} scraps now.
+	=> questions
+- What's that for?
+	Manager: An investment.
+	=> questions
+- Sure [pay {{locals.fee}} scrap]
+	if ResourceManager.spend("scrap", locals.fee)
+		do TagManager.add_tag(GameTags.Dialogue.NPC_DRONEWORKS_MET)
+		Manager: Well appreciated.
+		=> proceed
+	else
+		Manager: What are you, broke? Fine. I'll do a discount.
+		set locals.fee -= 1
+		=> questions
+		
+~ proceed
+You: So what did I just buy?
+Manager: Technically, you bought nothing.
+You: What?
+Manager: Think of it as a pay-as-you-go subscription to access my services.
+=> more

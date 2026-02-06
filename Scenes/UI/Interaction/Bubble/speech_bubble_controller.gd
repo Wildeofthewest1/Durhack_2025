@@ -41,6 +41,14 @@ var _choices_bubble: ChoicesBubble = null
 # Cancellation token for async dialogue flow
 var _session_id: int = 0
 
+# Local variables for dialogue - using a custom class for auto-creation
+var locals: LocalsProxy = null
+
+
+func _ready() -> void:
+	if locals == null:
+		locals = LocalsProxy.new()
+
 
 func setup_for_planet(planet: Node) -> void:
 	# New session cancels any pending awaits from previous run
@@ -55,8 +63,18 @@ func setup_for_planet(planet: Node) -> void:
 	_dialogue_resource = _extract_dialogue_resource_from_planet(_planet)
 	_start_title = _extract_start_title_from_planet(_planet)
 
+	# Reset locals for new conversation
+	if locals == null:
+		locals = LocalsProxy.new()
+	else:
+		locals.clear()
+
 	_extra_game_states.clear()
+	
+	# IMPORTANT: Add locals FIRST so it's prioritized
+	_extra_game_states.append(locals)
 	_extra_game_states.append(self)
+	
 	if _planet != null and is_instance_valid(_planet):
 		_extra_game_states.append(_planet)
 
@@ -98,7 +116,7 @@ func handle_input(event: InputEvent) -> void:
 		# keyboard continue only when there are no responses
 		if _dialogue_line == null:
 			return
-		if _dialogue_line.responses.size() > 0:
+		if _current_responses.size() > 0:
 			return
 
 		_on_continue()
@@ -139,8 +157,6 @@ func _advance_async_deferred(next_id: String, session: int) -> void:
 	await _present_line(session)
 
 
-# Replace your _present_line function with this fixed version:
-
 func _present_line(session: int) -> void:
 	if session != _session_id:
 		return
@@ -178,10 +194,31 @@ func _present_line(session: int) -> void:
 		if session != _session_id:
 			return
 
-	# Responses -> spawn a choices bubble (RIGHT, same side as YOU)
+	# Responses -> filter only allowed responses
 	if _dialogue_line.responses.size() > 0:
-		_current_responses = _dialogue_line.responses
-		_spawn_choices_bubble(_current_responses)
+		# Filter only allowed responses
+		var allowed_responses: Array[DialogueResponse] = []
+		for response in _dialogue_line.responses:
+			if response.is_allowed:
+				allowed_responses.append(response)
+		
+		# DEBUG: Uncomment to see what's happening
+		# print("=== RESPONSES DEBUG ===")
+		# print("Total responses: ", _dialogue_line.responses.size())
+		# print("Allowed responses: ", allowed_responses.size())
+		# print("locals data: ", locals.get_data())
+		# print("======================")
+		
+		# If no valid choices, auto-continue
+		if allowed_responses.size() == 0:
+			await get_tree().process_frame
+			if session != _session_id:
+				return
+			_advance_async(_dialogue_line.next_id, session)
+			return
+		
+		_current_responses = allowed_responses
+		_spawn_choices_bubble(allowed_responses)
 		_is_waiting_for_input = true
 		return
 
@@ -553,3 +590,31 @@ func _extract_start_title_from_planet(planet: Node) -> String:
 func _clear_replies() -> void:
 	# kept for compatibility (unused)
 	pass
+
+
+# -----------------------
+# LocalsProxy - Auto-creates variables on first access
+# -----------------------
+
+class LocalsProxy extends RefCounted:
+	var _data: Dictionary = {}
+	
+	func _get(property: StringName) -> Variant:
+		var key: String = str(property)
+		if not _data.has(key):
+			_data[key] = null
+		return _data[key]
+	
+	func _set(property: StringName, value: Variant) -> bool:
+		var key: String = str(property)
+		_data[key] = value
+		return true
+	
+	func clear() -> void:
+		_data.clear()
+	
+	func has(key: String) -> bool:
+		return _data.has(key)
+	
+	func get_data() -> Dictionary:
+		return _data
