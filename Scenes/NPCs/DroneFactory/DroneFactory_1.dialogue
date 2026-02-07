@@ -5,7 +5,7 @@ if not TagManager.has_tag(GameTags.Dialogue.NPC_DRONEWORKS_MET):
 	Manager: A million credits.
 	=> meeting
 else:
-	Manager: Hi
+	Manager: Buying, renting or investing?
 	=> more
 
 ~ more
@@ -65,6 +65,7 @@ else:
 	- I'm sorry. I can't do anything.
 		Manager: It's fine. I didn't ask for any help in the first place. Go buy another drone or something.
 	Manager: I have to say though, it'll be a while before I upgrade my catalogue. Investment or not, these things take time.
+	=> more
 	
 ~ meeting
 You: Huh?

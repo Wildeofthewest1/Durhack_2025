@@ -8,8 +8,8 @@
 [ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/general/bullet_trail.gd" id="4_vvvpi"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ehpbk"]
-radius = 3.0
-height = 10.0
+radius = 4.0
+height = 16.0
 
 [sub_resource type="Gradient" id="Gradient_26nlb"]
 colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)

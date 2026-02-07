@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dlcc7agfykc82"]
+
+[ext_resource type="Script" uid="uid://egsckqvekdvr" path="res://Scenes/Weapons/rifle/rifle.gd" id="1_fwhtr"]
+[ext_resource type="AudioStream" uid="uid://dhfu4qxjayp62" path="res://Scenes/Weapons/pistol/laserShoot.wav" id="2_dxduv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fvspu"]
+
+[node name="Rifle" type="Node2D"]
+script = ExtResource("1_fwhtr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+material = SubResource("ShaderMaterial_fvspu")
+position = Vector2(7, 0)
+scale = Vector2(0.5, 0.1)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(10, 0)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_dxduv")

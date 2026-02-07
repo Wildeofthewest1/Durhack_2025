@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bdgd8byi47npg" path="res://Assets/explosion_effect.png" id="1_28j87"]
 [ext_resource type="Script" uid="uid://cdnh4rvcgobn0" path="res://Scenes/particles/destroy_timer.gd" id="2_hy6wt"]
 [ext_resource type="PackedScene" uid="uid://crnuew8g2u1hs" path="res://Scenes/particles/dust_explosion.tscn" id="3_uu8d2"]
-[ext_resource type="Script" uid="uid://cr4eg010om2tg" path="res://Scenes/particles/copy_emit_parrent.gd" id="4_jpl4r"]
+[ext_resource type="Script" path="res://Scenes/particles/copy_emit_parrent.gd" id="4_jpl4r"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_htcqd"]
 particles_animation = true

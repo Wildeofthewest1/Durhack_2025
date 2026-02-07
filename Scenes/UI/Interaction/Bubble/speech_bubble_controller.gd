@@ -41,14 +41,50 @@ var _choices_bubble: ChoicesBubble = null
 # Cancellation token for async dialogue flow
 var _session_id: int = 0
 
-# Local variables for dialogue - using a custom class for auto-creation
-var locals: LocalsProxy = null
+# Local variables storage - exposed as 'locals' property
+var _locals_data: Dictionary = {}
+
+# Make 'locals' accessible as a property that returns this controller
+# This way locals.proceedable becomes self.proceedable via _get/_set
+var locals: BubbleDialogueController:
+	get:
+		return self
+
+
+# Override _get and _set to intercept locals.* property access
+func _get(property: StringName) -> Variant:
+	var prop_str: String = str(property)
+	
+	# Check our locals data dictionary
+	if _locals_data.has(prop_str):
+		return _locals_data[prop_str]
+	
+	# Return null for undefined properties (auto-creates on first access)
+	return null
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	var prop_str: String = str(property)
+	
+	# Ignore some special properties
+	if prop_str == "locals":
+		return false
+	
+	# Check if this is an actual exported/script property first
+	var props: Array = get_property_list()
+	for p in props:
+		var d: Dictionary = p as Dictionary
+		if d.has("name") and d["name"] == prop_str:
+			# This is a real property, let default behavior handle it
+			return false
+	
+	# Otherwise, store in locals data
+	_locals_data[prop_str] = value
+	return true
 
 
 func _ready() -> void:
-	if locals == null:
-		locals = LocalsProxy.new()
-
+	pass
 
 func setup_for_planet(planet: Node) -> void:
 	# New session cancels any pending awaits from previous run
@@ -64,15 +100,18 @@ func setup_for_planet(planet: Node) -> void:
 	_start_title = _extract_start_title_from_planet(_planet)
 
 	# Reset locals for new conversation
-	if locals == null:
-		locals = LocalsProxy.new()
-	else:
-		locals.clear()
+	if has_node("/root/locals"):
+		var locals_autoload: Node = get_node("/root/locals")
+		if locals_autoload.has_method("clear"):
+			locals_autoload.call("clear")
+		
+		# Load initial locals from planet if available
+		if _planet != null and is_instance_valid(_planet):
+			var initial_locals: Variant = _safe_get(_planet, &"locals_initial")
+			if initial_locals is Dictionary and locals_autoload.has_method("set_initial"):
+				locals_autoload.call("set_initial", initial_locals)
 
 	_extra_game_states.clear()
-	
-	# IMPORTANT: Add locals FIRST so it's prioritized
-	_extra_game_states.append(locals)
 	_extra_game_states.append(self)
 	
 	if _planet != null and is_instance_valid(_planet):
@@ -87,8 +126,7 @@ func setup_for_planet(planet: Node) -> void:
 		return
 
 	_start_async(_session_id)
-
-
+	
 func stop() -> void:
 	# Cancels any pending awaits immediately
 	_session_id += 1
@@ -203,11 +241,11 @@ func _present_line(session: int) -> void:
 				allowed_responses.append(response)
 		
 		# DEBUG: Uncomment to see what's happening
-		# print("=== RESPONSES DEBUG ===")
-		# print("Total responses: ", _dialogue_line.responses.size())
-		# print("Allowed responses: ", allowed_responses.size())
-		# print("locals data: ", locals.get_data())
-		# print("======================")
+		print("=== RESPONSES DEBUG ===")
+		print("Total responses: ", _dialogue_line.responses.size())
+		print("Allowed responses: ", allowed_responses.size())
+		print("locals data: ", _locals_data)
+		print("======================")
 		
 		# If no valid choices, auto-continue
 		if allowed_responses.size() == 0:
@@ -590,31 +628,3 @@ func _extract_start_title_from_planet(planet: Node) -> String:
 func _clear_replies() -> void:
 	# kept for compatibility (unused)
 	pass
-
-
-# -----------------------
-# LocalsProxy - Auto-creates variables on first access
-# -----------------------
-
-class LocalsProxy extends RefCounted:
-	var _data: Dictionary = {}
-	
-	func _get(property: StringName) -> Variant:
-		var key: String = str(property)
-		if not _data.has(key):
-			_data[key] = null
-		return _data[key]
-	
-	func _set(property: StringName, value: Variant) -> bool:
-		var key: String = str(property)
-		_data[key] = value
-		return true
-	
-	func clear() -> void:
-		_data.clear()
-	
-	func has(key: String) -> bool:
-		return _data.has(key)
-	
-	func get_data() -> Dictionary:
-		return _data

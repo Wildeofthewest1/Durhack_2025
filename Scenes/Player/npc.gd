@@ -3,8 +3,11 @@ class_name PlanetNPC
 
 @export var dialogue_data: DialogueData
 @export var shop_data: DialogueData
-
 @export var interact_indicator_path: NodePath = NodePath("InteractBubble")
+
+# Initial values for dialogue locals - will be copied to dialogue controller
+@export var locals_initial: Dictionary = {}
+
 var _interact_indicator: InteractIndicator = null
 
 func _ready() -> void:

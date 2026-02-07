@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=27 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -21,6 +21,7 @@
 [ext_resource type="Resource" uid="uid://3u27m1s87iao" path="res://Scenes/Weapons/data/railgun.tres" id="16_hnuln"]
 [ext_resource type="Resource" uid="uid://kvnomkpy0kkg" path="res://Scenes/Weapons/data/missile_launcher.tres" id="17_aqm4k"]
 [ext_resource type="PackedScene" uid="uid://dmyda5fmc7jw8" path="res://Scenes/particles/hit_effect.tscn" id="18_rcvs5"]
+[ext_resource type="Resource" uid="uid://bevdb1wbmvqr1" path="res://Scenes/Weapons/data/rifle.tres" id="19_eksi1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
@@ -133,8 +134,8 @@ color = Color(1, 1, 1, 1)
 
 [node name="WeaponManager" type="Node2D" parent="." groups=["weapon_manager"]]
 script = ExtResource("5_fkybt")
-weapon_library = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd"), ExtResource("16_hnuln"), ExtResource("17_aqm4k")])
-starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("16_hnuln"), ExtResource("14_r5xpd"), ExtResource("13_dey5f"), ExtResource("17_aqm4k")])
+weapon_library = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd"), ExtResource("16_hnuln"), ExtResource("17_aqm4k"), ExtResource("19_eksi1")])
+starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("19_eksi1")])
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
 

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=6 format=3 uid="uid://bevdb1wbmvqr1"]
+
+[ext_resource type="PackedScene" uid="uid://cq7la70wsyhak" path="res://Scenes/Weapons/rifle/rifle_bullet.tscn" id="1_7fc7y"]
+[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="1_60nja"]
+[ext_resource type="PackedScene" uid="uid://jlpnlqjk6hqt" path="res://Scenes/particles/muzzle_flash_1.tscn" id="1_n7myb"]
+[ext_resource type="Texture2D" uid="uid://b3dpvxetdageb" path="res://Assets/background/pistol_icon.png" id="2_7fc7y"]
+[ext_resource type="PackedScene" uid="uid://dlcc7agfykc82" path="res://Scenes/Weapons/rifle/rifle.tscn" id="4_xcic7"]
+
+[resource]
+script = ExtResource("1_60nja")
+id = &"rifle"
+display_name = "Rifle"
+icon = ExtResource("2_7fc7y")
+weapon_scene = ExtResource("4_xcic7")
+bullet_scene = ExtResource("1_7fc7y")
+flash_scene = ExtResource("1_n7myb")
+damage = 50.0
+muzzle_velocity = 1200.0
+knockback = 200.0
+max_magazine = 1
+reload_time = 0.5
+mag_regen_time = 3.0
+metadata/_custom_type_script = "uid://brwtwnigrt0y7"

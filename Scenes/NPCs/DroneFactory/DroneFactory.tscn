@@ -13,6 +13,9 @@ radius = 163.89
 [node name="DroneFactory" type="Node2D"]
 script = ExtResource("1_y818i")
 dialogue_data = ExtResource("2_fy8ef")
+locals_initial = {
+"proceedable": 0
+}
 
 [node name="InteractBubble" parent="." instance=ExtResource("4_s3mlu")]
 scale = Vector2(0.775, 0.775)

@@ -27,6 +27,7 @@ ShopInventory="*res://Scenes/Items/ShopInventory.gd"
 PassiveManager="*res://Scenes/Items/PassiveManager.gd"
 TagManager="*res://Tags/tag_manager.gd"
 DroneManager="*res://Scenes/Fleet/DroneManager.gd"
+locals="*res://Scenes/UI/Interaction/Bubble/DialogueLocals.gd"
 
 [dialogic]
 
