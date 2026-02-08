@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://btrdmogpntkxv"]
+[gd_scene load_steps=3 format=3 uid="uid://btrdmogpntkxv"]
 
 [ext_resource type="Script" uid="uid://6nsfmc4uipa7" path="res://Scenes/UI/thrust/thrust_ui.gd" id="1_gfky1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4uw55"]
 
 [node name="ThrustUI" type="Control" node_paths=PackedStringArray("thrust_bar_front", "thrust_bar_back")]
 layout_mode = 3
@@ -17,8 +19,10 @@ player_group_name = "player"
 thrust_bar_front = NodePath("fillbar")
 thrust_bar_back = NodePath("transparentbar")
 front_smooth_speed = 20.0
-back_refill_speed = 20.0
-back_steps = 25
+back_delay = 0.1
+back_drop_speed = 15.0
+back_color_start = Color(0.8392157, 0.6156863, 0.2784314, 1)
+back_color_held = Color(0.84, 0.11759999, 0.11759999, 1)
 
 [node name="ThrustBarBackgroun" type="ColorRect" parent="."]
 layout_mode = 1
@@ -30,6 +34,7 @@ grow_vertical = 2
 color = Color(1, 1, 1, 0.003921569)
 
 [node name="transparentbar" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4uw55")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

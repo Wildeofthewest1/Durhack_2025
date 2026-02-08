@@ -120,7 +120,6 @@ func _relayout(snap: bool) -> void:
 		return
 	var order: Array[int] = _compute_revolver_order()
 	_apply_layout_bottom_up(order, snap)
-
 func _compute_revolver_order() -> Array[int]:
 	# Filled slots in normal index order...
 	var filled: Array[int] = []
@@ -136,6 +135,34 @@ func _compute_revolver_order() -> Array[int]:
 	if filled.size() <= 0:
 		return []
 
+	# Special case: if exactly 2 weapons, no rotation needed
+	# Active at bottom, inactive at top (no ghost wrapping)
+	if filled.size() == 2:
+		if _active_slot < 0:
+			return filled
+		
+		# Find active weapon and put it at the end (bottom position)
+		var active_pos: int = -1
+		var j: int = 0
+		while j < filled.size():
+			if filled[j] == _active_slot:
+				active_pos = j
+				break
+			j += 1
+		
+		if active_pos < 0:
+			return filled
+		
+		# Simple swap: active at bottom, other at top
+		var result: Array[int] = []
+		if active_pos == 0:
+			result.append(filled[1])  # inactive on top
+			result.append(filled[0])  # active on bottom
+		else:
+			result.append(filled[0])  # inactive on top
+			result.append(filled[1])  # active on bottom
+		return result
+
 	if _active_slot < 0:
 		return filled
 
@@ -150,7 +177,7 @@ func _compute_revolver_order() -> Array[int]:
 	if active_pos < 0:
 		return filled
 
-	# Keep your existing "revolver" behavior
+	# Keep your existing "revolver" behavior for 3+ weapons
 	var rotated: Array[int] = []
 
 	j = active_pos + 1
@@ -164,7 +191,6 @@ func _compute_revolver_order() -> Array[int]:
 		j += 1
 
 	return rotated
-
 func _apply_layout_bottom_up(order: Array[int], snap: bool) -> void:
 	if _tween != null:
 		_tween.kill()
@@ -174,10 +200,10 @@ func _apply_layout_bottom_up(order: Array[int], snap: bool) -> void:
 	if count <= 0:
 		return
 
-	# --- "ghost wrap": move the top item to the bottom (forced inactive + extra faded) ---
+	# --- "ghost wrap": only apply for 3+ weapons ---
 	var display_order: Array[int] = order.duplicate()
 	var ghost_slot: int = -1
-	var has_ghost: bool = (display_order.size() > 1)
+	var has_ghost: bool = (display_order.size() > 2)  # Changed from > 1 to > 2
 	if has_ghost:
 		ghost_slot = display_order[0]
 		display_order.remove_at(0)
@@ -259,7 +285,6 @@ func _apply_layout_bottom_up(order: Array[int], snap: bool) -> void:
 
 		y += (target_h * s) + gap
 		k += 1
-
 func _place_rows_bottom_up(order: Array[int], start_y: float, ghost_slot: int, has_ghost: bool) -> void:
 	var y: float = start_y
 	var k: int = 0

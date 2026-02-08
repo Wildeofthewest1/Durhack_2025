@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dwju5ceubg651"]
+[gd_scene load_steps=26 format=3 uid="uid://dwju5ceubg651"]
 
 [ext_resource type="Shader" uid="uid://y0v7jiddm837" path="res://Shaders/subpixel.gdshader" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://b2is01dn5d4fu" path="res://Scenes/Camera/background.tscn" id="1_xqoiw"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://rkbfb8dcwrpl" path="res://Scenes/Game/spawn_enemy_wave_button.gd" id="9_yyavk"]
 [ext_resource type="Shader" uid="uid://op0uhga5faoc" path="res://Shaders/crater.gdshader" id="11_5fdju"]
 [ext_resource type="Script" uid="uid://bhdxekukr2r8h" path="res://Scenes/Bodies/asteroid_belt/asteroid_belt.gd" id="12_sw6w7"]
+[ext_resource type="PackedScene" uid="uid://dlsqgjvik5do" path="res://Scenes/UI/Minimap/Danger Indicator/danger_indicator_manager.tscn" id="14_1hyuf"]
 [ext_resource type="PackedScene" uid="uid://taj55vxgq3ib" path="res://Scenes/UI/Weapons/weapon_hud.tscn" id="15_wipx2"]
 [ext_resource type="PackedScene" uid="uid://bv5g8xwkuhyhe" path="res://Scenes/UI/Resource Display/resource_row.tscn" id="17_nq4jv"]
 
@@ -184,7 +185,6 @@ anchor_left = 0.35
 anchor_right = 0.65
 offset_top = -55.0
 offset_bottom = -30.0
-back_steps = 20
 
 [node name="HealthUI" parent="CanvasLayer" instance=ExtResource("7_6bp64")]
 anchors_preset = -1
@@ -205,6 +205,8 @@ layout_mode = 1
 minimap_size = Vector2(200, 200)
 background_color = Color(0.1, 0.1, 0.15, 0.9)
 border_color = Color(0.3, 0.3, 0.4, 1)
+
+[node name="DangerIndicatorManager" parent="CanvasLayer" instance=ExtResource("14_1hyuf")]
 
 [node name="WeaponHUD" parent="CanvasLayer" instance=ExtResource("15_wipx2")]
 anchors_preset = -1

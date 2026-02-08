@@ -29,6 +29,8 @@ signal weapon_ammo_changed(
 @export var input_cycle_next: StringName = &"weapon_next"
 @export var input_cycle_prev: StringName = &"weapon_prev"
 
+@export var weapon_switch_cooldown: float = 0.3
+
 var _socket: Node2D = null
 var _slots: Array[WeaponData] = []
 var _instances: Array[WeaponBase] = []
@@ -41,6 +43,8 @@ var _cached_stored_mags: Dictionary = {}     # int -> int
 var _cached_is_reloading: Dictionary = {}    # int -> bool
 var _cached_is_regenerating: Dictionary = {} # int -> bool
 var _cached_ammo_model: Dictionary = {}      # int -> int (WeaponData.AmmoModel)
+
+var _switch_cooldown: float = 0.0
 
 func _ready() -> void:
 	_socket = get_node(socket_path) as Node2D
@@ -60,8 +64,15 @@ func _ready() -> void:
 			push_error("WeaponData missing id: " + w.display_name)
 
 func _physics_process(delta: float) -> void:
+	# Tick down switch cooldown
+	if _switch_cooldown > 0.0:
+		_switch_cooldown -= delta
+		if _switch_cooldown < 0.0:
+			_switch_cooldown = 0.0
+	
 	if _equipped_instance != null:
-		if Input.is_action_pressed("fire"):
+		# Only allow firing if switch cooldown has expired
+		if Input.is_action_pressed("fire") and _switch_cooldown <= 0.0:
 			_equipped_instance.request_fire()
 		else:
 			if _equipped_instance.has_method("release_fire"):
@@ -214,8 +225,8 @@ func _equip_slot(index: int) -> void:
 	_equipped_instance.rotation = 0.0
 	_equipped_instance.set_equipped(true)
 
-	# Force reload animation/cooldown on weapon switch to prevent weapon spamming
-	_equipped_instance._start_reload()
+	# Apply switch cooldown to prevent weapon spamming
+	_switch_cooldown = weapon_switch_cooldown
 
 	emit_signal("weapon_equipped", _equipped_instance)
 	emit_signal("active_slot_changed", _equipped_index)

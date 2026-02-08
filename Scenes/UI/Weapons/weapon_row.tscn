@@ -39,8 +39,22 @@ icon_rect = NodePath("Content/Icon")
 name_label = NodePath("Name")
 ammo_bar = NodePath("Content/Info/AmmoBar")
 regen_bar = NodePath("TextureProgressBar")
-stored_label = NodePath("TextureProgressBar/StoredLabel")
+stored_label = NodePath("StoredLabel")
 fill_up_speed = 100.0
+
+[node name="StoredLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -85.0
+offset_bottom = 64.0
+grow_horizontal = 0
+theme = ExtResource("2_apva6")
+theme_override_font_sizes/font_size = 44
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 custom_minimum_size = Vector2(204, 0)
@@ -53,20 +67,6 @@ grow_vertical = 2
 size_flags_horizontal = 2
 nine_patch_stretch = true
 texture_progress = SubResource("GradientTexture1D_araxr")
-
-[node name="StoredLabel" type="Label" parent="TextureProgressBar"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -85.0
-offset_bottom = 84.0
-grow_horizontal = 0
-theme = ExtResource("2_apva6")
-theme_override_font_sizes/font_size = 48
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 2
 
 [node name="Name" type="Label" parent="."]
 layout_mode = 1

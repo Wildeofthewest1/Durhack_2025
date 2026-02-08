@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsjnqthcr2amd"]
+
+[ext_resource type="Script" uid="uid://ck6q0y21231sd" path="res://Scenes/UI/Minimap/Danger Indicator/DangerIndicator.gd" id="1_x33dp"]
+[ext_resource type="Theme" uid="uid://bhnp6ubcx5nci" path="res://Fonts/default.theme" id="2_kehuj"]
+
+[node name="DangerIndicator" type="Node2D" node_paths=PackedStringArray("visual_node", "label")]
+script = ExtResource("1_x33dp")
+visual_node = NodePath("Sprite2D")
+label = NodePath("Label")
+
+[node name="Sprite2D" type="Polygon2D" parent="."]
+scale = Vector2(10, 10)
+polygon = PackedVector2Array(3, 0, -1, 2, -1, -2)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -196.0
+offset_top = -12.0
+offset_right = 110.364716
+offset_bottom = 11.0
+rotation = 1.5707964
+pivot_offset = Vector2(153, 11.5)
+size_flags_horizontal = 3
+theme = ExtResource("2_kehuj")
+text = "10m"
+horizontal_alignment = 1
+vertical_alignment = 1

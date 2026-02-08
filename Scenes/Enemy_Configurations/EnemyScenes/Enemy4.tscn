@@ -50,6 +50,7 @@ target_node = NodePath("..")
 dot_shape = 2
 dot_size = 5.0
 dot_color = Color(0.9823325, 0, 0.04619918, 1)
+indicator_enabled = true
 
 [node name="VisionCone" type="Area2D" parent="."]
 collision_layer = 0
