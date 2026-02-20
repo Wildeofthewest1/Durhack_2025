@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://68hfmecmdrq1"]
+[gd_scene load_steps=11 format=3 uid="uid://68hfmecmdrq1"]
 
 [ext_resource type="Script" uid="uid://c6rn1pe1oc36y" path="res://Scenes/Enemy_Configurations/Enemy_Behaviour/Enemy_Main.gd" id="1_4ncoq"]
 [ext_resource type="PackedScene" uid="uid://bwno3wq4t8rf4" path="res://Scenes/particles/scrap.tscn" id="2_xthvh"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bxcc3ageity44" path="res://Assets/some_enemies.png" id="3_xthvh"]
 [ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="5_va2mn"]
 [ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="6_cm3qx"]
+[ext_resource type="PackedScene" uid="uid://2cpkjml3o5l" path="res://Scenes/Enemy_Configurations/attachment_example.tscn" id="7_0exrr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_va2mn"]
 radius = 3.5793128
@@ -79,3 +80,9 @@ width = 70.0
 body_path = NodePath(".")
 max_points = 10
 width = 70.0
+
+[node name="Attachment" parent="." instance=ExtResource("7_0exrr")]
+position = Vector2(0, -10)
+rotation = 3.1415927
+LeftPos = Vector2(-30, 0)
+RightPos = Vector2(30, 0)

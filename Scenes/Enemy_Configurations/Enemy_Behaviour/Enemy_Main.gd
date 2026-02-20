@@ -8,14 +8,28 @@ extends CharacterBody2D
 @export var detectionradius: float = 1000.0
 
 # -----------------------------
+# ATTACHMENT SEPARATION TRIGGER
+# -----------------------------
+@export var separate_when_close_to_player: bool = true
+@export var separate_trigger_distance: float = 200.0
+@export var speed_match_distance: float = 300.0  # Start matching speed at this distance
+@export var speed_match_rate: float = 2.0  # How quickly to match player speed (higher = faster)
+@export var separation_slowmo_scale: float = 0.9  # Time scale during separation (0.3 = 30% speed)
+@export var separation_slowmo_duration: float = 0.5  # How long the slow-mo lasts
+
+var _did_separate_attachment: bool = false
+var _is_matching_speed: bool = false
+var _slowmo_timer: float = 0.0
+
+# -----------------------------
 # KNOCKBACK (instant pop + fast non-linear decay; no float-away)
 # -----------------------------
-@export var knockback_max_speed: float = 900.0          # cap so repeated hits can't launch to infinity
-@export var knockback_rate_start: float = 6.0           # decay rate right after hit (slow-ish)
-@export var knockback_rate_end: float = 40.0            # decay rate shortly after (fast)
-@export var knockback_ramp_time: float = 0.12           # how quickly we ramp from start->end
+@export var knockback_max_speed: float = 900.0
+@export var knockback_rate_start: float = 6.0
+@export var knockback_rate_end: float = 40.0
+@export var knockback_ramp_time: float = 0.12
 var _kb_velocity: Vector2 = Vector2.ZERO
-var _kb_age: float = 999.0                              # time since last knockback (seconds)
+var _kb_age: float = 999.0
 
 # -----------------------------
 # DEATH PARTICLES
@@ -36,9 +50,6 @@ const ITEM_CONFIG := {
 	"impulse_side_bias": 0.6
 }
 
-#@export var scrap_value_min: int = 1
-#@export var scrap_value_max: int = 3
-
 @export var lootTablesFile: GDScript = preload("res://Scenes/Enemy_Configurations/EnemyLootTables.gd")
 @export var lootTable: String = ""
 @export var item_db: GDScript = preload("res://Scenes/Items/ItemConfig.gd")
@@ -52,7 +63,6 @@ var player: Node2D
 var spawner: Node
 var escorts: int = 0
 
-# Last hit direction (away from attacker)
 var _last_hit_dir: Vector2 = Vector2.RIGHT
 var _has_last_hit_dir: bool = false
 var _did_die: bool = false
@@ -64,11 +74,6 @@ func _ready() -> void:
 	assign_behaviour()
 	attach_weapons()
 
-# ----------------------------------------------------
-# DAMAGE (direction optional) + knockback
-# - knockback_strength is treated as "push speed" (px/s) for a short impulse
-# - repeated hits do NOT accumulate into space; we cap and take max
-# ----------------------------------------------------
 func take_damage(amount: int, hit_from_world: Variant = null, knockback_strength: Variant = null) -> void:
 	health -= amount
 
@@ -76,7 +81,7 @@ func take_damage(amount: int, hit_from_world: Variant = null, knockback_strength
 
 	if hit_from_world is Vector2:
 		var from_pos: Vector2 = hit_from_world as Vector2
-		var dir: Vector2 =  from_pos
+		var dir: Vector2 = from_pos
 		if dir.length_squared() > 0.0001:
 			hit_dir = dir.normalized()
 			_last_hit_dir = hit_dir
@@ -93,14 +98,9 @@ func take_damage(amount: int, hit_from_world: Variant = null, knockback_strength
 
 		if kb != 0.0:
 			var desired: Vector2 = hit_dir * kb
-
-			# restart decay curve so it "pops" on fresh hits
 			_kb_age = 0.0
-
-			# ✅ STACKING:
 			_kb_velocity += desired
 
-			# hard cap (prevents infinite float-away)
 			var len: float = _kb_velocity.length()
 			if len > knockback_max_speed and len > 0.0001:
 				_kb_velocity = _kb_velocity / len * knockback_max_speed
@@ -116,13 +116,12 @@ func _flash_red(sprite: Sprite2D) -> void:
 	tween.tween_property(sprite, "modulate", Color(1.0, 0.0, 0.0), 0.05)
 	tween.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0), 0.1)
 
-# ----------------------------------------------------
-# DEATH
-# ----------------------------------------------------
 func die() -> void:
 	if _did_die:
 		return
 	_did_die = true
+
+	_try_separate_attachment()
 
 	var push_dir: Vector2 = _get_death_dir()
 
@@ -142,9 +141,6 @@ func _get_death_dir() -> Vector2:
 
 	return Vector2.RIGHT
 
-# ----------------------------------------------------
-# DEATH PARTICLES (DIRECTION ONLY)
-# ----------------------------------------------------
 func _spawn_death_particles(push_dir: Vector2) -> void:
 	if death_particles_scene == null:
 		return
@@ -175,9 +171,6 @@ func _spawn_death_particles(push_dir: Vector2) -> void:
 	elif p is CPUParticles2D:
 		(p as CPUParticles2D).emitting = true
 
-# ----------------------------------------------------
-# ITEM DROP (SINGLE IMPULSE SOURCE)
-# ----------------------------------------------------
 func _drop_items(push_dir: Vector2) -> void:
 	if lootTablesFile == null or lootTable == "" or item_db == null:
 		return
@@ -188,16 +181,16 @@ func _drop_items(push_dir: Vector2) -> void:
 	if parent_node == null:
 		parent_node = get_tree().root
 
-	var dir := push_dir.normalized()
+	var dir: Vector2 = push_dir.normalized()
 	if dir == Vector2.ZERO:
 		dir = Vector2.RIGHT
-	var perp := Vector2(-dir.y, dir.x)
+	var perp: Vector2 = Vector2(-dir.y, dir.x)
 
 	for item_key in lootTablesFile.LOOT[lootTable].keys():
 		if not item_db.ITEMS.has(item_key):
 			continue
 
-		var count = lootTablesFile.roll_item_amount(lootTable, item_key)
+		var count: int = lootTablesFile.roll_item_amount(lootTable, item_key)
 		if count <= 0:
 			continue
 
@@ -209,45 +202,42 @@ func _drop_items(push_dir: Vector2) -> void:
 		print("📦 Item:", item_key, "x", count)
 
 		for i in range(count):
-			var pickup := scene.instantiate() as Node2D
+			var pickup: Node2D = scene.instantiate() as Node2D
 			parent_node.call_deferred("add_child", pickup)
 
-			var u := randf()
-			var theta := randf_range(0.0, TAU)
-			var r := sqrt(u) * ITEM_CONFIG.spawn_radius
-			var radial_offset := Vector2(cos(theta), sin(theta)) * r
+			var u: float = randf()
+			var theta: float = randf_range(0.0, TAU)
+			var r: float = sqrt(u) * ITEM_CONFIG.spawn_radius
+			var radial_offset: Vector2 = Vector2(cos(theta), sin(theta)) * r
 
-			var forward := ITEM_CONFIG.push_distance + randf_range(
+			var forward: float = ITEM_CONFIG.push_distance + randf_range(
 				-ITEM_CONFIG.push_jitter,
 				ITEM_CONFIG.push_jitter
 			)
-			var side := randf_range(
+			var side: float = randf_range(
 				-ITEM_CONFIG.side_spread,
 				ITEM_CONFIG.side_spread
 			)
-			var directional_offset := dir * forward + perp * side
+			var directional_offset: Vector2 = dir * forward + perp * side
 
 			pickup.global_position = global_position + radial_offset + directional_offset
 
 			if pickup is ItemPickup:
-				var item := pickup as ItemPickup
+				var item: ItemPickup = pickup as ItemPickup
 				item.item_id = item_key
 				item.item_amount = value_per_pickup
 
 			if pickup.has_method("apply_impulse"):
-				var impulse_dir := dir + perp * randf_range(
+				var impulse_dir: Vector2 = dir + perp * randf_range(
 					-ITEM_CONFIG.impulse_side_bias,
 					ITEM_CONFIG.impulse_side_bias
 				)
-				var impulse_strength := randf_range(
+				var impulse_strength: float = randf_range(
 					ITEM_CONFIG.impulse_min,
 					ITEM_CONFIG.impulse_max
 				)
 				pickup.call("apply_impulse", impulse_dir, impulse_strength)
 
-# ----------------------------------------------------
-# BEHAVIOUR SYSTEM
-# ----------------------------------------------------
 func assign_behaviour() -> void:
 	var behaviour_paths: Dictionary = {
 		"melee": "res://Scenes/Enemy_Configurations/Enemy_Behaviour/melee_behaviour.gd",
@@ -291,34 +281,87 @@ func attach_weapons() -> void:
 		weapon.position = (weapon_slots[i] as Node2D).position
 		$Weapons.add_child(weapon)
 
+func _try_separate_attachment() -> void:
+	if _did_separate_attachment:
+		return
+	_did_separate_attachment = true
+
+	# Start slow-motion effect
+	Engine.time_scale = separation_slowmo_scale
+	_slowmo_timer = separation_slowmo_duration
+
+	_call_separate_recursive(self)
+
+func _call_separate_recursive(n: Node) -> void:
+	for c in n.get_children():
+		var child: Node = c as Node
+		if child == null:
+			continue
+
+		if child.has_method("_seperate"):
+			child.call_deferred("_seperate")
+
+		_call_separate_recursive(child)
+
 func _physics_process(delta: float) -> void:
-	# Let behaviour run first (it sets velocity / movement and your trails probably depend on that).
+	# Update slow-motion timer
+	if _slowmo_timer > 0.0:
+		_slowmo_timer -= delta
+		if _slowmo_timer <= 0.0:
+			Engine.time_scale = 1.0
+			_slowmo_timer = 0.0
+
+	# Let behaviour run first
 	if behaviour != null:
 		behaviour.update(delta)
 
-	# Face based on behaviour velocity ONLY (knockback doesn't touch `velocity`).
+	# Check distance to player for speed matching and separation
+	if player != null:
+		var dist_sq: float = global_position.distance_squared_to(player.global_position)
+		var speed_match_sq: float = speed_match_distance * speed_match_distance
+		var separate_sq: float = separate_trigger_distance * separate_trigger_distance
+
+		# Start matching player speed when within speed_match_distance
+		if dist_sq <= speed_match_sq:
+			_is_matching_speed = true
+
+			# Get player velocity
+			var player_vel: Vector2 = Vector2.ZERO
+			if "velocity" in player:
+				player_vel = player.velocity
+
+			# Gradually match player's speed
+			var current_speed: float = velocity.length()
+			var target_speed: float = player_vel.length()
+			
+			if current_speed > 0.1:
+				var speed_blend: float = clamp(speed_match_rate * delta, 0.0, 1.0)
+				var new_speed: float = lerp(current_speed, target_speed, speed_blend)
+				velocity = velocity.normalized() * new_speed
+
+		# Trigger separation when close enough
+		if separate_when_close_to_player and (not _did_separate_attachment) and dist_sq <= separate_sq:
+			_try_separate_attachment()
+
+	# Face based on behaviour velocity
 	if player != null and faceplayer and velocity.length_squared() > 1.0:
 		var desired_angle: float = velocity.angle() + deg_to_rad(-90.0)
 		rotation = lerp_angle(rotation, desired_angle, delta * rotation_speed)
 
-	# Knockback decay: slow at start, then rapidly decays.
+	# Knockback decay
 	_kb_age += delta
 	if _kb_velocity.length_squared() > 0.000001:
 		var t: float = 1.0
 		if knockback_ramp_time > 0.0:
 			t = clamp(_kb_age / knockback_ramp_time, 0.0, 1.0)
 
-		# ramp rate from start -> end
 		var rate: float = lerp(knockback_rate_start, knockback_rate_end, t)
-
-		# frame-rate independent exponential decay
 		var alpha: float = 1.0 - exp(-rate * delta)
 		_kb_velocity = _kb_velocity.lerp(Vector2.ZERO, alpha)
 
-		# tiny cutoff
 		if _kb_velocity.length_squared() < 1.0:
 			_kb_velocity = Vector2.ZERO
 
-	# Apply knockback as extra displacement ONLY (no second move_and_slide)
+	# Apply knockback
 	if _kb_velocity != Vector2.ZERO:
 		move_and_collide(_kb_velocity * delta)

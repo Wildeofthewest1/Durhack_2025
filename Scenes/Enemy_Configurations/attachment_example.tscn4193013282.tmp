@@ -1,0 +1,134 @@
+[gd_scene load_steps=12 format=3 uid="uid://2cpkjml3o5l"]
+
+[ext_resource type="Texture2D" uid="uid://d1eckrytiphr4" path="res://Assets/attachment_left.png" id="1_f7b66"]
+[ext_resource type="Script" uid="uid://ctk4arsksvo2n" path="res://Scenes/Enemy_Configurations/attachment_example.gd" id="1_oqbsa"]
+[ext_resource type="Texture2D" uid="uid://4t18smx4coiu" path="res://Assets/attachment_right.png" id="2_wcxfb"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="3_oqbsa"]
+[ext_resource type="Texture2D" uid="uid://bda1dqa487wft" path="res://Assets/dust_particles.png" id="3_wcxfb"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iskys"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 2
+particles_anim_loop = true
+
+[sub_resource type="Curve" id="Curve_iskys"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8tpex"]
+curve = SubResource("Curve_iskys")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oqbsa"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3(0, 1, 0)
+spread = 15.0
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+color = Color(0.73, 0.9955001, 1, 1)
+alpha_curve = SubResource("CurveTexture_8tpex")
+hue_variation_min = -0.100000024
+hue_variation_max = 0.09999997
+anim_offset_max = 1.0
+
+[sub_resource type="Shader" id="Shader_8jqhn"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 base_color : source_color = vec4(1.0, 0.9, 0.5, 1.0);
+uniform float intensity : hint_range(0.0, 5.0) = 1.5;
+uniform float spread    : hint_range(0.1, 2.0) = 1.0;
+uniform float pulse_speed : hint_range(0.0, 10.0) = 1.0;
+
+void fragment() {
+    vec4 tex = texture(TEXTURE, UV);
+    vec4 mod_col = COLOR; // per-instance modulate from the node
+
+    // Respect both texture coverage and external opacity modulation
+    float coverage = tex.a * mod_col.a;
+    if (coverage <= 0.0) { discard; }
+
+    // Radial falloff & pulse
+    vec2 centered_uv = UV - vec2(0.5);
+    float dist  = length(centered_uv) * spread;
+    float glow  = max(0.0, 1.0 - dist);
+    glow *= (1.0 + 0.2 * sin(TIME * pulse_speed));
+    glow  = clamp(glow * intensity, 0.0, 1.0);
+
+    // Slight body shaping so it's not flat
+    float body_brightness = 0.6 + 0.4 * glow;
+
+    // Base color (RGB ignores modulate so your script sets opacity only)
+    vec4 out_col = vec4(base_color.rgb * body_brightness,
+                        coverage * base_color.a);
+
+    // Add glow to RGB only; alpha stays solid by coverage
+    out_col.rgb += base_color.rgb * glow * 0.3;
+
+    COLOR = out_col;
+
+    // If you also want modulate to tint the color, uncomment this line:
+    // COLOR.rgb *= mod_col.rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iskys"]
+shader = SubResource("Shader_8jqhn")
+shader_parameter/base_color = Color(0.64, 0.96400005, 1, 0.11764706)
+shader_parameter/intensity = 1.5
+shader_parameter/spread = 1.0
+shader_parameter/pulse_speed = 5.0000002375
+
+[node name="Attachment" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_oqbsa")
+move_time = 5.0
+fade_time = 5.0
+
+[node name="left" type="Marker2D" parent="."]
+position = Vector2(-26, 0)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="left"]
+material = SubResource("CanvasItemMaterial_iskys")
+position = Vector2(-2, 27)
+amount = 25
+texture = ExtResource("3_wcxfb")
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_oqbsa")
+
+[node name="left" type="Sprite2D" parent="left"]
+position = Vector2(-27, 0)
+texture = ExtResource("1_f7b66")
+
+[node name="Trail" parent="left" instance=ExtResource("3_oqbsa")]
+material = SubResource("ShaderMaterial_iskys")
+position = Vector2(-29, 1)
+points = PackedVector2Array(-1, 0)
+width = 5.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+body_path = NodePath("../nozzle")
+max_points = 20
+width = 5.0
+
+[node name="nozzle" type="Marker2D" parent="left"]
+position = Vector2(-2, 22)
+
+[node name="right" type="Marker2D" parent="."]
+position = Vector2(26, 0)
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="right"]
+material = SubResource("CanvasItemMaterial_iskys")
+position = Vector2(3, 27)
+amount = 10
+texture = ExtResource("3_wcxfb")
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_oqbsa")
+
+[node name="right" type="Sprite2D" parent="right"]
+position = Vector2(27, 0)
+texture = ExtResource("2_wcxfb")
