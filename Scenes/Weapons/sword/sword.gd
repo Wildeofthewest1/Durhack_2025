@@ -11,7 +11,7 @@ class_name WeaponSword
 @export var blade_speed: float = 1
 @export var blade_knockback: float = 100.0
 
-@onready var _audio := $AudioStreamPlayer
+@onready var _audio_template := $AudioStreamPlayer # use as template; do NOT play this directly
 var _muzzle: Node2D
 
 func _ready() -> void:
@@ -33,6 +33,32 @@ func _update_aim() -> void:
 func request_fire() -> void:
 	try_fire(_aim_dir)
 
+func _play_swing_sound() -> void:
+	if _audio_template == null:
+		return
+	if _audio_template.stream == null:
+		return
+
+	# Duplicate the template so multiple instances can overlap
+	var sfx := _audio_template.duplicate() as AudioStreamPlayer
+	if sfx == null:
+		return
+
+	# Ensure it doesn't keep template connections / state
+	sfx.autoplay = false
+
+	# Keep it in the same place in the scene so 2D positioning works (if applicable)
+	add_child(sfx)
+
+	# Per-swing random pitch
+	sfx.pitch_scale = 1.0 + randf_range(-0.25, 0.25)
+
+	# Free itself when done
+	if not sfx.finished.is_connected(sfx.queue_free):
+		sfx.finished.connect(sfx.queue_free)
+
+	sfx.play()
+
 func _fire_projectile(dir: Vector2) -> void:
 	if data == null:
 		return
@@ -46,10 +72,8 @@ func _fire_projectile(dir: Vector2) -> void:
 	if _muzzle != null:
 		spawn_origin = _muzzle.global_position
 
-	# audio like pistol
-	if _audio:
-		_audio.pitch_scale = 0.15 + randf_range(-0.1, 0.1)
-		_audio.play()
+	# NEW: overlapping audio
+	_play_swing_sound()
 
 	var proj: Node2D = blade_scene.instantiate() as Node2D
 	if proj == null:

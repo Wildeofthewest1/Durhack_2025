@@ -3,10 +3,12 @@ class_name SwordBlade
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-@export var life_time: float = 0.25
+@export var life_time: float = 0.3
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 @export var trail_particles: PackedScene = preload("res://Scenes/particles/trail_particles.tscn")
 @export var trail_enabled: bool = true
+
+@onready var _hitbox: Area2D = $Hitbox
 
 @export var visual_rotation_offset_deg: float = 0.0
 @export var face_aim_instead_of_velocity: bool = true
@@ -22,7 +24,8 @@ var _knockback: float = 100.0
 
 func _ready() -> void:
 	_life_timer = life_time
-
+	if _hitbox != null:
+		_hitbox.body_entered.connect(_on_hitbox_body_entered)
 	if _trail_line != null:
 		_trail_line.visible = trail_enabled
 
@@ -34,6 +37,24 @@ func _ready() -> void:
 	# Optional: safety
 	if _sprite != null:
 		_sprite.visible = true
+
+func _on_hitbox_body_entered(body: Node) -> void:
+	if body == null:
+		return
+
+	var is_enemy := false
+
+	if body.is_in_group("Enemy"):
+		is_enemy = true
+	elif "team" in body:
+		if String(body.team) == "Enemy":
+			is_enemy = true
+
+	if not is_enemy:
+		return
+
+	if body.has_method("take_damage"):
+		body.take_damage(_damage, _aim_dir, _knockback)
 
 func initialize_projectile(dir: Vector2, speed: float, dmg: float, carrier_vel: Vector2, knockback: float) -> void:
 	_aim_dir = dir.normalized()
@@ -63,19 +84,7 @@ func _update_facing() -> void:
 func _physics_process(delta: float) -> void:
 	var collision: KinematicCollision2D = move_and_collide(_velocity_vec * delta)
 
-	if collision != null:
-		var target: Object = collision.get_collider()
-		if target != null:
-			if target.is_in_group("Enemy"):
-				if target.has_method("take_damage"):
-					target.take_damage(_damage, Vector2.RIGHT.rotated(global_rotation), _knockback)
-			elif "team" in target:
-				if String(target.team) == "Enemy" and target.has_method("take_damage"):
-					target.take_damage(_damage, Vector2.RIGHT.rotated(global_rotation), _knockback)
-
-		_spawn_explosion()
-		#queue_free()
-		#return
+	move_and_collide(_velocity_vec * delta)
 
 	_update_facing()
 
