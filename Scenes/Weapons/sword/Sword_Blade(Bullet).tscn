@@ -61,7 +61,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 12.0
+"speed": 24.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_21453"]
@@ -78,10 +78,12 @@ script = ExtResource("1_ecslq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-position = Vector2(8.705, 8.135)
+position = Vector2(27.665, 13.72)
 rotation = 1.5707964
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_8chb0")
 autoplay = "default"
+frame_progress = 0.3857863
 
 [node name="Glow" type="Sprite2D" parent="."]
 modulate = Color(0.95, 0.95, 0.95, 0.39215687)
@@ -95,9 +97,9 @@ script = ExtResource("4_r5357")
 gravity_multiplier = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(6.87, 3.9)
+position = Vector2(27.01, 3.9)
 rotation = 1.5707964
-scale = Vector2(1.545, 1.545)
+scale = Vector2(2.33, 2.33)
 shape = SubResource("CircleShape2D_21453")
 
 [node name="Trail" type="Line2D" parent="."]

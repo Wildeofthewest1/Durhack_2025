@@ -3,13 +3,13 @@ class_name SwordBlade
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-@export var life_time: float = 0.5
+@export var life_time: float = 0.25
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 @export var trail_particles: PackedScene = preload("res://Scenes/particles/trail_particles.tscn")
 @export var trail_enabled: bool = true
 
 @export var visual_rotation_offset_deg: float = 0.0
-@export var face_aim_instead_of_velocity: bool = false
+@export var face_aim_instead_of_velocity: bool = true
 
 var _velocity_vec: Vector2 = Vector2.ZERO
 var _damage: float = 0.0
@@ -74,8 +74,8 @@ func _physics_process(delta: float) -> void:
 					target.take_damage(_damage, Vector2.RIGHT.rotated(global_rotation), _knockback)
 
 		_spawn_explosion()
-		queue_free()
-		return
+		#queue_free()
+		#return
 
 	_update_facing()
 
