@@ -72,9 +72,6 @@ func _physics_process(delta: float) -> void:
 			elif "team" in target:
 				if String(target.team) == "Enemy" and target.has_method("take_damage"):
 					target.take_damage(_damage, Vector2.RIGHT.rotated(global_rotation), _knockback)
-
-		_spawn_explosion()
-		queue_free()
 		return
 
 	_update_facing()

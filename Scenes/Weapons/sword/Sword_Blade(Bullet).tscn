@@ -82,6 +82,7 @@ position = Vector2(8.705, 8.135)
 rotation = 1.5707964
 sprite_frames = SubResource("SpriteFrames_8chb0")
 autoplay = "default"
+frame_progress = 0.26110744
 
 [node name="Glow" type="Sprite2D" parent="."]
 modulate = Color(0.95, 0.95, 0.95, 0.39215687)

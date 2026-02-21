@@ -13,3 +13,4 @@ icon = ExtResource("1_yqwbt")
 weapon_scene = ExtResource("4_3ne16")
 bullet_scene = ExtResource("1_3ne16")
 damage = 1000.0
+max_magazine = 1
