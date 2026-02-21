@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://waclf5ms0huj"]
+
+[ext_resource type="Script" uid="uid://q2tksvyn873g" path="res://Scenes/Weapons/sword/sword.gd" id="1_50wqc"]
+[ext_resource type="PackedScene" uid="uid://b0npkkbivrtjc" path="res://Scenes/Weapons/sword/Sword_Blade(Bullet).tscn" id="2_ouwdo"]
+[ext_resource type="AudioStream" uid="uid://bvo38fkhl6ct" path="res://Scenes/Items/PickupSounds/money_pickup.mp3" id="3_ouwdo"]
+
+[node name="Sword" type="Node2D"]
+script = ExtResource("1_50wqc")
+blade_scene = ExtResource("2_ouwdo")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ouwdo")
+pitch_scale = 0.13
+
+[node name="Muzzle" type="Marker2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

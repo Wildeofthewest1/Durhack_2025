@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bie6a5n0b6swa"]
+
+[ext_resource type="Script" uid="uid://bmw618c77jl1l" path="res://railgun_beam.gd" id="1_2ruwl"]
+[ext_resource type="PackedScene" uid="uid://bof0oiwkrcb6o" path="res://Scenes/particles/explosion_2.tscn" id="2_eoml4"]
+
+[node name="RailgunBeam" type="Node2D"]
+script = ExtResource("1_2ruwl")
+lifetime = 0.5
+width = 2.0
+jitter_amplitude = 4.0
+min_segments = 12
+jumble_fraction = 0.2
+explosion_scene = ExtResource("2_eoml4")
+
+[node name="Line2D" type="Line2D" parent="."]

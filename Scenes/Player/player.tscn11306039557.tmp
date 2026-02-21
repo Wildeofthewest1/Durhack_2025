@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=26 format=3 uid="uid://dcbvpreahnt2f"]
 
 [ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://cr4xhgffbxb0j" path="res://Scenes/Player/PlayerInteraction.gd" id="7_3smsa"]
 [ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="7_ks1b7"]
 [ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
-[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="9_tx1dd"]
 [ext_resource type="Resource" uid="uid://bi01ro1j5gj7h" path="res://Scenes/Weapons/data/pistol.tres" id="10_gymyn"]
 [ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="11_h8ma5"]
 [ext_resource type="Script" uid="uid://ohf7hfsapmlu" path="res://Scenes/particles/hit_effect.gd" id="12_pu2lt"]
@@ -21,7 +20,6 @@
 [ext_resource type="Resource" uid="uid://3u27m1s87iao" path="res://Scenes/Weapons/data/railgun.tres" id="16_hnuln"]
 [ext_resource type="Resource" uid="uid://kvnomkpy0kkg" path="res://Scenes/Weapons/data/missile_launcher.tres" id="17_aqm4k"]
 [ext_resource type="PackedScene" uid="uid://dmyda5fmc7jw8" path="res://Scenes/particles/hit_effect.tscn" id="18_rcvs5"]
-[ext_resource type="Resource" uid="uid://csd53dc0kuimg" path="res://Scenes/Weapons/data/sword.tres" id="19_eksi1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
@@ -32,6 +30,50 @@ shader_parameter/base_color = Color(0.64, 0.4096, 0.58239996, 0.11764706)
 shader_parameter/intensity = 1.5
 shader_parameter/spread = 1.0
 shader_parameter/pulse_speed = 5.0000002375
+
+[sub_resource type="GDScript" id="GDScript_2ckgq"]
+script/source = "# WeaponData.gd
+extends Resource
+class_name WeaponData
+
+enum AmmoModel {
+	STANDARD = 0,             # banks mags in background
+	INFINITE_WITH_RELOAD = 1  # pistol option B
+}
+
+@export_category(\"UI\")
+@export var display_name: String = \"Pistol\"
+@export var icon: Texture2D
+
+@export_category(\"Scenes\")
+@export var weapon_scene: PackedScene
+@export var bullet_scene: PackedScene
+@export var flash_scene: PackedScene
+
+@export_category(\"Firing\")
+@export var fire_cooldown: float = 0.25
+@export var automatic: bool = true
+@export var bullets_per_shot: int = 1
+@export var spread_deg: float = 4.0
+
+@export_category(\"Damage\")
+@export var damage: float = 100.0
+@export var muzzle_velocity: float = 800.0
+
+@export_category(\"Reload\")
+@export var max_magazine: int = 12
+@export var reload_time: float = 1.2
+
+@export_category(\"Passive Mag Regen (STANDARD only)\")
+@export var mag_regen_time: float = 2.5
+@export var max_stored_mags: int = 3
+@export var use_stored_for_instant_reload: bool = true
+
+@export_category(\"Meta\")
+@export var slot_hint: int = 0
+@export var weapon_type: String = \"ballistic\"
+@export var ammo_model: AmmoModel = AmmoModel.STANDARD
+"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f1ek2"]
 radius = 4.0
@@ -66,6 +108,8 @@ speed_limit_decay_rate = 1.0
 
 [node name="Health" type="Node2D" parent="." node_paths=PackedStringArray("body_sprite", "trail_line", "hit_effect_sprite")]
 script = ExtResource("3_7dp3o")
+max_health = 50
+max_shield = 50
 shield_regen_delay = 15.0
 hit_pause_duration = 0.02
 hit_effect_duration = 0.3
@@ -134,8 +178,7 @@ color = Color(1, 1, 1, 1)
 
 [node name="WeaponManager" type="Node2D" parent="." groups=["weapon_manager"]]
 script = ExtResource("5_fkybt")
-weapon_library = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd"), ExtResource("16_hnuln"), ExtResource("17_aqm4k")])
-starting_loadout = Array[ExtResource("9_tx1dd")]([ExtResource("10_gymyn"), ExtResource("16_hnuln"), ExtResource("14_r5xpd"), ExtResource("13_dey5f"), ExtResource("17_aqm4k"), ExtResource("19_eksi1")])
+starting_loadout = Array[SubResource("GDScript_2ckgq")]([ExtResource("10_gymyn"), ExtResource("13_dey5f"), ExtResource("14_r5xpd"), ExtResource("16_hnuln"), ExtResource("17_aqm4k"), null])
 
 [node name="WeaponSocket" type="Marker2D" parent="WeaponManager"]
 
