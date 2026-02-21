@@ -85,6 +85,7 @@ shader_parameter/pulse_speed = 5.0000002375
 [node name="Attachment" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_oqbsa")
+separate_distance = 100.0
 move_time = 5.0
 fade_time = 5.0
 min_spin_deg_per_sec = -20.0
