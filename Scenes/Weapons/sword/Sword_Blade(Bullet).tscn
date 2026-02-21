@@ -1,11 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://b0npkkbivrtjc"]
+[gd_scene load_steps=16 format=3 uid="uid://b0npkkbivrtjc"]
 
 [ext_resource type="Script" uid="uid://cd00uap4m7qo7" path="res://Scenes/Weapons/sword/Sword_Blade(Bullet).gd" id="1_ecslq"]
 [ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="2_4ekxi"]
 [ext_resource type="Script" uid="uid://8coal7sjp1pi" path="res://Scenes/Weapons/general/glow_variance.gd" id="3_uhanl"]
-[ext_resource type="Script" uid="uid://bmx050jubjr86" path="res://Scenes/Weapons/general/readonly_gravity.gd" id="4_r5357"]
 [ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/general/bullet_trail.gd" id="6_7mlr2"]
 [ext_resource type="Texture2D" uid="uid://csbkdyjkdg0g7" path="res://Assets/BlueswordAnimated.png" id="6_ecslq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21453"]
+radius = 38.013157
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ya8fl"]
 atlas = ExtResource("6_ecslq")
@@ -61,20 +63,34 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 24.0
+"speed": 21.0
 }]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_21453"]
-radius = 38.013157
 
 [sub_resource type="Gradient" id="Gradient_26nlb"]
 colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
 
 [node name="Sword_Blade" type="CharacterBody2D" groups=["Enemy"]]
-collision_layer = 16
-collision_mask = 6
+collision_layer = 0
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_ecslq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(27.01, 3.9)
+rotation = 1.5707964
+scale = Vector2(2.33, 2.33)
+shape = SubResource("CircleShape2D_21453")
+
+[node name="Hitbox" type="Area2D" parent="."]
+position = Vector2(-1.9073486e-06, -2.3841858e-07)
+collision_layer = 16
+collision_mask = 38
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(27.010002, 3.9000003)
+rotation = 1.5707964
+scale = Vector2(2.33, 2.33)
+shape = SubResource("CircleShape2D_21453")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -83,7 +99,7 @@ rotation = 1.5707964
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_8chb0")
 autoplay = "default"
-frame_progress = 0.3857863
+frame_progress = 0.6112593
 
 [node name="Glow" type="Sprite2D" parent="."]
 modulate = Color(0.95, 0.95, 0.95, 0.39215687)
@@ -91,16 +107,6 @@ position = Vector2(4.999999, 0)
 scale = Vector2(0.144, 0.12)
 texture = ExtResource("2_4ekxi")
 script = ExtResource("3_uhanl")
-
-[node name="ReadonlyGravity" type="Node2D" parent="."]
-script = ExtResource("4_r5357")
-gravity_multiplier = 10.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(27.01, 3.9)
-rotation = 1.5707964
-scale = Vector2(2.33, 2.33)
-shape = SubResource("CircleShape2D_21453")
 
 [node name="Trail" type="Line2D" parent="."]
 top_level = true

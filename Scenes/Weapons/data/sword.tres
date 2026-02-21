@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3 uid="uid://csd53dc0kuimg"]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=5 format=3 uid="uid://csd53dc0kuimg"]
 
 [ext_resource type="PackedScene" uid="uid://b0npkkbivrtjc" path="res://Scenes/Weapons/sword/Sword_Blade(Bullet).tscn" id="1_3ne16"]
+[ext_resource type="Texture2D" uid="uid://bg6ut4wgihqdt" path="res://Assets/Bluesword.png" id="1_yqwbt"]
 [ext_resource type="PackedScene" uid="uid://waclf5ms0huj" path="res://Scenes/Weapons/sword/sword.tscn" id="4_3ne16"]
 [ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="4_c3xmi"]
 
@@ -8,7 +9,7 @@
 script = ExtResource("4_c3xmi")
 id = &"sword"
 display_name = "Sword"
+icon = ExtResource("1_yqwbt")
 weapon_scene = ExtResource("4_3ne16")
 bullet_scene = ExtResource("1_3ne16")
-damage = 1000.0
-max_magazine = 1
+damage = 1.0
