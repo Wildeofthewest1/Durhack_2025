@@ -1,0 +1,109 @@
+[gd_scene load_steps=17 format=3 uid="uid://b0npkkbivrtjc"]
+
+[ext_resource type="Script" uid="uid://cd00uap4m7qo7" path="res://Scenes/Weapons/sword/Sword_Blade(Bullet).gd" id="1_ecslq"]
+[ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="2_4ekxi"]
+[ext_resource type="Script" uid="uid://8coal7sjp1pi" path="res://Scenes/Weapons/general/glow_variance.gd" id="3_uhanl"]
+[ext_resource type="Script" uid="uid://bmx050jubjr86" path="res://Scenes/Weapons/general/readonly_gravity.gd" id="4_r5357"]
+[ext_resource type="Script" uid="uid://dje2hi27f2sid" path="res://Scenes/Weapons/general/bullet_trail.gd" id="6_7mlr2"]
+[ext_resource type="Texture2D" uid="uid://csbkdyjkdg0g7" path="res://Assets/BlueswordAnimated.png" id="6_ecslq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ya8fl"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bsruy"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j224l"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ue8vc"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2lyjv"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5627b"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpvb4"]
+atlas = ExtResource("6_ecslq")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8chb0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ya8fl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bsruy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j224l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ue8vc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2lyjv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5627b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kpvb4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21453"]
+radius = 38.013157
+
+[sub_resource type="Gradient" id="Gradient_26nlb"]
+colors = PackedColorArray(1, 1, 1, 0.60784316, 1, 1, 1, 0)
+
+[node name="Sword_Blade" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 16
+collision_mask = 6
+motion_mode = 1
+script = ExtResource("1_ecslq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(8.705, 8.135)
+rotation = 1.5707964
+sprite_frames = SubResource("SpriteFrames_8chb0")
+autoplay = "default"
+
+[node name="Glow" type="Sprite2D" parent="."]
+modulate = Color(0.95, 0.95, 0.95, 0.39215687)
+position = Vector2(4.999999, 0)
+scale = Vector2(0.144, 0.12)
+texture = ExtResource("2_4ekxi")
+script = ExtResource("3_uhanl")
+
+[node name="ReadonlyGravity" type="Node2D" parent="."]
+script = ExtResource("4_r5357")
+gravity_multiplier = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6.87, 3.9)
+rotation = 1.5707964
+scale = Vector2(1.545, 1.545)
+shape = SubResource("CircleShape2D_21453")
+
+[node name="Trail" type="Line2D" parent="."]
+top_level = true
+width = 2.0
+gradient = SubResource("Gradient_26nlb")
+script = ExtResource("6_7mlr2")
+max_points = 10
+min_step_distance = 1.0

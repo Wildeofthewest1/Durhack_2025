@@ -88,6 +88,8 @@ func _physics_process(delta: float) -> void:
 		_equip_slot(3)
 	if Input.is_action_just_pressed("weapon_5"):
 		_equip_slot(4)
+	if Input.is_action_just_pressed("weapon_6"):
+		_equip_slot(5)
 
 	if Input.is_action_just_pressed(input_cycle_next):
 		_cycle(+1)
