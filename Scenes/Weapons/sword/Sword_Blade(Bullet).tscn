@@ -77,10 +77,11 @@ motion_mode = 1
 script = ExtResource("1_ecslq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 position = Vector2(8.705, 8.135)
 rotation = 1.5707964
 sprite_frames = SubResource("SpriteFrames_8chb0")
-frame_progress = 0.88093567
+autoplay = "default"
 
 [node name="Glow" type="Sprite2D" parent="."]
 modulate = Color(0.95, 0.95, 0.95, 0.39215687)

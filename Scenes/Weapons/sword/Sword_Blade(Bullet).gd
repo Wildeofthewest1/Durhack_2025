@@ -1,10 +1,9 @@
 extends CharacterBody2D
 class_name SwordBlade
 
-@export var swing_anim_name: StringName = &"swing"
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-@export var life_time: float = 2.0
+@export var life_time: float = 0.5
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 @export var trail_particles: PackedScene = preload("res://Scenes/particles/trail_particles.tscn")
 @export var trail_enabled: bool = true
@@ -48,19 +47,6 @@ func initialize_projectile(dir: Vector2, speed: float, dmg: float, carrier_vel: 
 		_trail.call("reset_to_world_pos", global_position)
 
 	_update_facing()
-
-	# Play swing animation reliably (force-set animation, reset frame, then play)
-	if _sprite != null and _sprite.sprite_frames != null:
-		var anim := String(swing_anim_name)
-		if _sprite.sprite_frames.has_animation(anim):
-			_sprite.stop()
-			_sprite.animation = anim
-			_sprite.frame = 0
-			_sprite.play()
-		else:
-			push_warning("SwordBlade: Missing animation '%s' on AnimatedSprite2D" % anim)
-	else:
-		push_warning("SwordBlade: AnimatedSprite2D or SpriteFrames missing")
 
 func _update_facing() -> void:
 	var offset_rad: float = deg_to_rad(visual_rotation_offset_deg)
