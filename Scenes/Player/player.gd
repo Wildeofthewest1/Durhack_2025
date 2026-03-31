@@ -6,11 +6,14 @@ class_name Player
 @onready var movement_component: PlayerMovement = $Movement
 @onready var health_component: PlayerHealth = $Health
 
+@onready var _listener: AudioListener2D = $AudioListener2D
+
 func _ready() -> void:
 	print("[Player] ready")
 	velocity = initial_velocity
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	up_direction = Vector2.RIGHT
+	_listener.make_current()
 
 
 func take_damage(amount: int) -> void:
