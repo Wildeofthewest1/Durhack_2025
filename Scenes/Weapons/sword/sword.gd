@@ -3,12 +3,12 @@ extends WeaponBase
 class_name WeaponSword
 
 @export var muzzle_path: NodePath = NodePath("Muzzle") # optional but recommended
-@export var spawn_offset_px: float = 20.0
+@export var spawn_offset_px: float = 0
 
 @export var blade_scene: PackedScene # assign your SwordBlade scene here
 
 # Projectile stats for the sword blade
-@export var blade_speed: float = 1
+@export var blade_speed: float = 0
 @export var blade_knockback: float = 100.0
 
 @onready var _audio_template := $AudioStreamPlayer # use as template; do NOT play this directly
