@@ -29,7 +29,7 @@ class_name SwordBlade
 
 @export var play_spawn_sound: bool = true
 @export var play_impact_sound: bool = true
-@export var play_crackle_sound: bool = false
+@export var play_crackle_sound: bool = true
 @export var crackle_on_spawn: bool = true
 
 var _velocity_vec: Vector2 = Vector2.ZERO
@@ -111,7 +111,7 @@ func _on_hitbox_body_entered(body: Node) -> void:
 		body.take_damage(_damage, _aim_dir, _knockback)
 
 	if play_impact_sound:
-		_play_sound_2d(_impact_sound, 0.06)
+		_play_sound_2d(_impact_sound, 0.1,-3,0,1)
 
 	_spawn_explosion()
 
@@ -131,10 +131,10 @@ func initialize_projectile(dir: Vector2, speed: float, dmg: float, carrier_vel: 
 		_play_spawn_pulse()
 
 	if play_spawn_sound:
-		_play_sound_2d(_slash_sound, 0.08)
+		_play_sound_2d(_slash_sound, 0.1, 0, 0, 1)
 
 	if play_crackle_sound and crackle_on_spawn:
-		_play_sound_2d(_crackle_sound, 0.05, -3.0)
+		_play_sound_2d(_crackle_sound, 0.1, 0, 0, 1)
 
 func _update_facing() -> void:
 	var offset_rad: float = deg_to_rad(visual_rotation_offset_deg)
@@ -179,7 +179,9 @@ func _play_spawn_pulse() -> void:
 func _play_sound_2d(
 	template: AudioStreamPlayer2D,
 	pitch_random_amount: float = 0.0,
-	volume_db_offset: float = 0.0
+	volume_db_offset: float = 0.0,
+	start_time: float = 0.0,
+	duration: float = -1.0
 ) -> void:
 	if template == null or template.stream == null:
 		return
@@ -193,11 +195,19 @@ func _play_sound_2d(
 	sfx.attenuation = template.attenuation
 	sfx.area_mask = template.area_mask
 
-	# Add to the scene tree root so it survives this node being freed
 	get_tree().current_scene.add_child(sfx)
 	sfx.global_position = global_position
-	sfx.finished.connect(sfx.queue_free)
-	sfx.play()
+	sfx.play(start_time)
+
+	if duration > 0.0:
+		var stop_timer := get_tree().create_timer(duration)
+		stop_timer.timeout.connect(func():
+			if is_instance_valid(sfx):
+				sfx.stop()
+				sfx.queue_free()
+		)
+	else:
+		sfx.finished.connect(sfx.queue_free)
 
 func _spawn_explosion() -> void:
 	if explosion == null:

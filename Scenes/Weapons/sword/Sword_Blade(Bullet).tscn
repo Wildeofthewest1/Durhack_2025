@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://csbkdyjkdg0g7" path="res://Assets/BlueswordAnimated.png" id="6_ecslq"]
 [ext_resource type="AudioStream" uid="uid://uepdqepsnolv" path="res://Assets/mixkit-dagger-woosh-1487_pcm.wav" id="6_ya8fl"]
 [ext_resource type="AudioStream" uid="uid://dxneysya32sad" path="res://Assets/sword-slash-and-swing-185432.mp3" id="7_bsruy"]
-[ext_resource type="AudioStream" uid="uid://bvo38fkhl6ct" path="res://Scenes/Items/PickupSounds/money_pickup.mp3" id="8_j224l"]
+[ext_resource type="AudioStream" uid="uid://beecirmtgfcvd" path="res://Assets/633234__patrick_corra__random-sci-fi-sounds.ogg" id="8_bsruy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_21453"]
 radius = 38.013157
@@ -137,9 +137,14 @@ min_step_distance = 1.0
 
 [node name="SlashSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_ya8fl")
+volume_db = -12.478
+pitch_scale = 0.36
 
 [node name="ImpactSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("7_bsruy")
+stream = ExtResource("8_bsruy")
+pitch_scale = 1.11
 
 [node name="CrackleSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_j224l")
+stream = ExtResource("7_bsruy")
+volume_db = -4.124
+pitch_scale = 0.75
