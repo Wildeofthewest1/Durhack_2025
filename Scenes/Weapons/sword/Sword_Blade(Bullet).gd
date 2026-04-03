@@ -11,7 +11,7 @@ class_name SwordBlade
 @onready var _impact_sound: AudioStreamPlayer2D = $ImpactSound
 @onready var _crackle_sound: AudioStreamPlayer2D = $CrackleSound
 
-@export var life_time: float = 0.28
+@export var life_time: float = 0.39
 @export var explosion: PackedScene = preload("res://Scenes/particles/explosion.tscn")
 @export var trail_particles: PackedScene = preload("res://Scenes/particles/trail_particles.tscn")
 @export var trail_enabled: bool = true
@@ -181,12 +181,7 @@ func _play_sound_2d(
 	pitch_random_amount: float = 0.0,
 	volume_db_offset: float = 0.0
 ) -> void:
-	if template == null:
-		push_warning("SwordBlade: audio template is null")
-		return
-
-	if template.stream == null:
-		push_warning("SwordBlade: no stream assigned on " + template.name)
+	if template == null or template.stream == null:
 		return
 
 	var sfx := AudioStreamPlayer2D.new()
@@ -194,23 +189,15 @@ func _play_sound_2d(
 	sfx.bus = template.bus
 	sfx.volume_db = template.volume_db + volume_db_offset
 	sfx.pitch_scale = template.pitch_scale + randf_range(-pitch_random_amount, pitch_random_amount)
-
-	# Make it easy to hear while testing
 	sfx.max_distance = max(template.max_distance, 4000.0)
 	sfx.attenuation = template.attenuation
 	sfx.area_mask = template.area_mask
 
-	var parent_node := get_parent()
-	if parent_node != null:
-		parent_node.add_child(sfx)
-	else:
-		add_child(sfx)
-
+	# Add to the scene tree root so it survives this node being freed
+	get_tree().current_scene.add_child(sfx)
 	sfx.global_position = global_position
 	sfx.finished.connect(sfx.queue_free)
 	sfx.play()
-
-	print("Played ", template.name, " stream=", template.stream, " pos=", sfx.global_position)
 
 func _spawn_explosion() -> void:
 	if explosion == null:
