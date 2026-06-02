@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b3cyurdfvwhub"
-path="res://.godot/imported/circle_telegraph-Sheet.png-7b71a15b420c0e36653968a262aaa779.ctex"
+path="res://.godot/imported/circle_telegraph-Sheet.png-678d76676b18c2ed166972b569be0508.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/background/circle_telegraph-Sheet.png"
-dest_files=["res://.godot/imported/circle_telegraph-Sheet.png-7b71a15b420c0e36653968a262aaa779.ctex"]
+source_file="res://Assets/Background/circle_telegraph-Sheet.png"
+dest_files=["res://.godot/imported/circle_telegraph-Sheet.png-678d76676b18c2ed166972b569be0508.ctex"]
 
 [params]
 

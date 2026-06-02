@@ -1,27 +1,28 @@
-[gd_scene load_steps=27 format=3 uid="uid://dcbvpreahnt2f"]
+[gd_scene load_steps=28 format=3 uid="uid://dcbvpreahnt2f"]
 
-[ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
+[ext_resource type="Script" uid="uid://bsykg4j3q21dw" path="res://Scenes/Player/Player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://b4r0vjwt5v1pe" path="res://Scenes/UI/Minimap/minimap_tracked_object.gd" id="1_v0iea"]
 [ext_resource type="Texture2D" uid="uid://bkdflhjhco4e5" path="res://Assets/player_and_others.png" id="2_cvnsp"]
 [ext_resource type="Script" uid="uid://dhm0acbe0tced" path="res://Scenes/Player/player_movement.gd" id="2_ukyrk"]
 [ext_resource type="Script" uid="uid://dcr8jjiv8yg4s" path="res://Scenes/Player/player_health.gd" id="3_7dp3o"]
 [ext_resource type="Material" uid="uid://cynyba7yprm84" path="res://Shaders/player.tres" id="3_f1ek2"]
-[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/particles/trail.tscn" id="4_vgqql"]
-[ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scenes/Weapons/general/weapon_manager.gd" id="5_fkybt"]
+[ext_resource type="PackedScene" uid="uid://iow6shlx8o0w" path="res://Scenes/Particles/trail.tscn" id="4_vgqql"]
+[ext_resource type="Script" uid="uid://cqkya5fecy8pk" path="res://Scenes/Weapons/General/weapon_manager.gd" id="5_fkybt"]
 [ext_resource type="Script" uid="uid://cr4xhgffbxb0j" path="res://Scenes/Player/PlayerInteraction.gd" id="7_3smsa"]
 [ext_resource type="Texture2D" uid="uid://ppksnb42mug5" path="res://Assets/Gaussian.png" id="7_ks1b7"]
-[ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/particles/thrust.tscn" id="8_f1ek2"]
-[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/data/WeaponData.gd" id="9_tx1dd"]
-[ext_resource type="Resource" uid="uid://bi01ro1j5gj7h" path="res://Scenes/Weapons/data/pistol.tres" id="10_gymyn"]
+[ext_resource type="PackedScene" uid="uid://86i1caic40vk" path="res://Scenes/Particles/thrust.tscn" id="8_f1ek2"]
+[ext_resource type="Script" uid="uid://brwtwnigrt0y7" path="res://Scenes/Weapons/Data/WeaponData.gd" id="9_tx1dd"]
+[ext_resource type="Resource" uid="uid://bi01ro1j5gj7h" path="res://Scenes/Weapons/Data/pistol.tres" id="10_gymyn"]
 [ext_resource type="Shader" uid="uid://q3716tb5iqah" path="res://Shaders/playerGlow.gdshader" id="11_h8ma5"]
-[ext_resource type="Script" uid="uid://ohf7hfsapmlu" path="res://Scenes/particles/hit_effect.gd" id="12_pu2lt"]
+[ext_resource type="Script" uid="uid://ohf7hfsapmlu" path="res://Scenes/Particles/hit_effect.gd" id="12_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://crr37cm1dgssb" path="res://Assets/hit_4.png" id="13_7dp3o"]
-[ext_resource type="Resource" uid="uid://ulqehd0g6ycf" path="res://Scenes/Weapons/data/twin.tres" id="13_dey5f"]
-[ext_resource type="Resource" uid="uid://cjwnh1iq63xf8" path="res://Scenes/Weapons/data/shotgun.tres" id="14_r5xpd"]
-[ext_resource type="Resource" uid="uid://3u27m1s87iao" path="res://Scenes/Weapons/data/railgun.tres" id="16_hnuln"]
-[ext_resource type="Resource" uid="uid://kvnomkpy0kkg" path="res://Scenes/Weapons/data/missile_launcher.tres" id="17_aqm4k"]
-[ext_resource type="PackedScene" uid="uid://dmyda5fmc7jw8" path="res://Scenes/particles/hit_effect.tscn" id="18_rcvs5"]
-[ext_resource type="Resource" uid="uid://csd53dc0kuimg" path="res://Scenes/Weapons/data/sword.tres" id="19_eksi1"]
+[ext_resource type="Resource" uid="uid://ulqehd0g6ycf" path="res://Scenes/Weapons/Data/twin.tres" id="13_dey5f"]
+[ext_resource type="Resource" uid="uid://cjwnh1iq63xf8" path="res://Scenes/Weapons/Data/shotgun.tres" id="14_r5xpd"]
+[ext_resource type="Resource" uid="uid://3u27m1s87iao" path="res://Scenes/Weapons/Data/railgun.tres" id="16_hnuln"]
+[ext_resource type="Resource" uid="uid://kvnomkpy0kkg" path="res://Scenes/Weapons/Data/missile_launcher.tres" id="17_aqm4k"]
+[ext_resource type="PackedScene" uid="uid://dmyda5fmc7jw8" path="res://Scenes/Particles/hit_effect.tscn" id="18_rcvs5"]
+[ext_resource type="Resource" uid="uid://csd53dc0kuimg" path="res://Scenes/Weapons/Data/sword.tres" id="19_eksi1"]
+[ext_resource type="AudioStream" uid="uid://bpvgv4d7tw0lk" path="res://Sounds/freesound_community-space-explosion-with-reverb-101449.mp3" id="23_jincj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 100.0
@@ -72,6 +73,9 @@ hit_effect_duration = 0.3
 body_sprite = NodePath("../Sprite")
 trail_line = NodePath("../Trail")
 hit_effect_sprite = NodePath("../hit_effect")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Health"]
+stream = ExtResource("23_jincj")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0

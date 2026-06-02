@@ -186,7 +186,7 @@ weapon_6={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://Scenes/Dialogue/test.dialogue", "res://Scenes/NPCs/Archivist/archivist_1.dialogue", "res://Scenes/NPCs/PassengerAccelerator/PassengerAccel.dialogue", "res://Scenes/NPCs/Fleet Commander/FleetCommander.dialogue", "res://Scenes/NPCs/DroneFactory/DroneFactory_1.dialogue")
+locale/translations_pot_files=PackedStringArray("res://Scenes/NPCs/Archivist/archivist_1.dialogue", "res://Scenes/NPCs/PassengerAccelerator/PassengerAccel.dialogue", "res://Scenes/NPCs/Fleet Commander/FleetCommander.dialogue", "res://Scenes/NPCs/DroneFactory/DroneFactory_1.dialogue", "res://Scenes/Dialogue/Test.dialogue")
 
 [rendering]
 

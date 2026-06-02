@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="PassiveShopItemData" load_steps=5 format=3 uid="uid://dwlbxvqfqfiox"]
 
 [ext_resource type="Script" uid="uid://kxmsd5t3ktyw" path="res://Scenes/Items/PassiveShopItemData.gd" id="1_6qqrl"]
-[ext_resource type="Texture2D" uid="uid://b3dpvxetdageb" path="res://Assets/background/pistol_icon.png" id="1_oj8u0"]
+[ext_resource type="Texture2D" uid="uid://b3dpvxetdageb" path="res://Assets/Background/pistol_icon.png" id="1_oj8u0"]
 [ext_resource type="Script" uid="uid://xt3ie0p0lkwm" path="res://Stats/StatModifier.gd" id="2_4oaul"]
 
 [sub_resource type="Resource" id="Resource_4oaul"]

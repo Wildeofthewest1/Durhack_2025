@@ -1,12 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://l7t5l70jepnw"]
+[gd_scene load_steps=5 format=3 uid="uid://l7t5l70jepnw"]
 
-[ext_resource type="Script" uid="uid://ceyinrly14k5j" path="res://Scenes/Weapons/pistol/pistol.gd" id="1_aq3ds"]
-[ext_resource type="AudioStream" uid="uid://dhfu4qxjayp62" path="res://Scenes/Weapons/pistol/laserShoot.wav" id="2_buxis"]
+[ext_resource type="Script" uid="uid://ceyinrly14k5j" path="res://Scenes/Weapons/Pistol/Pistol.gd" id="1_aq3ds"]
+[ext_resource type="AudioStream" uid="uid://6pjus21lnqit" path="res://Sounds/dragon-studio-gunshot-511311.mp3" id="2_1fxyp"]
+[ext_resource type="AudioStream" uid="uid://c58wd0jgg6v8y" path="res://Sounds/shotgun-cocking-sound-38640.mp3" id="2_g3527"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_njh1v"]
 
 [node name="pistol" type="Node2D"]
 script = ExtResource("1_aq3ds")
+reload_complete_sound = ExtResource("2_g3527")
+reload_complete_volume_db = 0.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
@@ -19,4 +22,5 @@ scale = Vector2(0.5, 0.1)
 position = Vector2(10, 0)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_buxis")
+stream = ExtResource("2_1fxyp")
+volume_db = -16.221

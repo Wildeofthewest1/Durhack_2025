@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://co8xie2qofhi1"]
 
-[ext_resource type="Script" uid="uid://dijh4gqj03yg6" path="res://Scenes/Weapons/railgun/railgun.gd" id="1_xoofw"]
-[ext_resource type="AudioStream" uid="uid://dhfu4qxjayp62" path="res://Scenes/Weapons/pistol/laserShoot.wav" id="2_ahd7f"]
-[ext_resource type="PackedScene" uid="uid://cq5ifh1apay3t" path="res://Scenes/particles/charge_particles.tscn" id="3_ajdr7"]
+[ext_resource type="Script" uid="uid://dijh4gqj03yg6" path="res://Scenes/Weapons/Railgun/Railgun.gd" id="1_xoofw"]
+[ext_resource type="AudioStream" uid="uid://dpowpbepm14y0" path="res://Sounds/daviddumaisaudio-sci-fi-explosion-09-190268.mp3" id="2_4414p"]
+[ext_resource type="PackedScene" uid="uid://cq5ifh1apay3t" path="res://Scenes/Particles/charge_particles.tscn" id="3_ajdr7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ajdr7"]
 
@@ -26,7 +26,9 @@ scale = Vector2(0.5, 0.1)
 position = Vector2(10, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_ahd7f")
+stream = ExtResource("2_4414p")
+volume_db = -5.0
+pitch_scale = 1.02
 
 [node name="ChargeParticles" parent="." instance=ExtResource("3_ajdr7")]
 position = Vector2(10, 0)

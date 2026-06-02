@@ -54,8 +54,12 @@ func _fire_projectile(dir: Vector2) -> void:
 		_spawn_from_muzzle(muzzle, fire_dir)
 		_next_left = not _next_left
 
-	_audio.pitch_scale = 1.0 + randf_range(-0.01, 0.01)
-	_audio.play()
+	var clone = _audio.duplicate()
+	self.add_child(clone)
+	clone.pitch_scale = 1.0 + randf_range(-0.3, 0.3)
+	clone.play()
+	# Delete the clone when playback finishes
+	clone.finished.connect(clone.queue_free)
 
 func _spawn_from_muzzle(muzzle: Node2D, fire_dir: Vector2) -> void:
 	if muzzle == null:

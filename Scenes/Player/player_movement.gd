@@ -45,7 +45,16 @@ func _ready() -> void:
 	fuel = fuel_max
 	current_speed_limit = max_speed
 
+var dead := false
+
 func _physics_process(delta: float) -> void:
+	if dead:
+		player.velocity = Vector2.ZERO
+
+		if thrust_particles != null:
+			thrust_particles.emitting = false
+
+		return
 	if player == null:
 		return
 

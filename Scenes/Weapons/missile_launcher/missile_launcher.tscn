@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b13iefanvdw4l"]
 
 [ext_resource type="Script" uid="uid://dcdfxlpbsyquq" path="res://Scenes/Weapons/missile_launcher/missile_launcher.gd" id="1_ry5vl"]
-[ext_resource type="AudioStream" uid="uid://ckbyvulsiri2u" path="res://Scenes/Weapons/twin/laserShoot.wav" id="2_p17ou"]
+[ext_resource type="AudioStream" uid="uid://cmklxgbpi2ls7" path="res://Sounds/freesound_community-missile-blast-2-95177.mp3" id="2_ry5vl"]
 
 [node name="missile_launcher" type="Node2D"]
 z_index = 1
@@ -35,4 +35,6 @@ position = Vector2(-1.7059374, 0)
 scale = Vector2(0.1433789, 0.125)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_p17ou")
+stream = ExtResource("2_ry5vl")
+volume_db = -13.091
+pitch_scale = 1.23

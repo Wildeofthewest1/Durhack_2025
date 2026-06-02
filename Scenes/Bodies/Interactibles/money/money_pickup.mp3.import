@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://d2sm4ke64ryv0"
-path="res://.godot/imported/money_pickup.mp3-ac5e365a82fbffe9d078c19a56df9c25.mp3str"
+path="res://.godot/imported/money_pickup.mp3-c19860ed3faca2c8e8fb788d1e6021a4.mp3str"
 
 [deps]
 
-source_file="res://Scenes/Bodies/Interactibles/money/money_pickup.mp3"
-dest_files=["res://.godot/imported/money_pickup.mp3-ac5e365a82fbffe9d078c19a56df9c25.mp3str"]
+source_file="res://Scenes/Bodies/Interactibles/Money/money_pickup.mp3"
+dest_files=["res://.godot/imported/money_pickup.mp3-c19860ed3faca2c8e8fb788d1e6021a4.mp3str"]
 
 [params]
 

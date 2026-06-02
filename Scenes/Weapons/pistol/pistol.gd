@@ -36,9 +36,13 @@ func _fire_projectile(dir: Vector2) -> void:
 	if data.bullet_scene == null:
 		push_error("WeaponPistol: bullet_scene not set in WeaponData")
 		return
-
-	_audio.pitch_scale = 1.0 + randf_range(-0.1, 0.1)
-	_audio.play()
+	
+	var clone = _audio.duplicate()
+	self.add_child(clone)
+	clone.pitch_scale = 1.0 + randf_range(-0.1, 0.1)
+	clone.play()
+	# Delete the clone when playback finishes
+	clone.finished.connect(clone.queue_free)
 
 	var proj: Node2D = data.bullet_scene.instantiate() as Node2D
 	var world_root: Node = get_parent().get_parent().get_parent().get_parent()

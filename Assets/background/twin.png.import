@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://doqdbc5c0dxr4"
-path="res://.godot/imported/twin.png-0f61667c0cf06b058c0b77fa7bb5a9fe.ctex"
+path="res://.godot/imported/twin.png-ff076244a5026e5c08b53fcd7c74346f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/background/twin.png"
-dest_files=["res://.godot/imported/twin.png-0f61667c0cf06b058c0b77fa7bb5a9fe.ctex"]
+source_file="res://Assets/Background/twin.png"
+dest_files=["res://.godot/imported/twin.png-ff076244a5026e5c08b53fcd7c74346f.ctex"]
 
 [params]
 

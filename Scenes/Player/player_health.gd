@@ -17,6 +17,8 @@ signal died()
 @export var trail_line: Line2D
 @export var hit_effect_sprite: GPUParticles2D
 
+@onready var deathAudio: AudioStreamPlayer = $AudioStreamPlayer
+
 var player: CharacterBody2D = null
 
 var max_health: float = 0.0
@@ -202,11 +204,27 @@ func _die() -> void:
 	print(str(player.name) + " has died")
 	died.emit()
 
+	# Play death sound
+	var death_sound = deathAudio.duplicate()
+	self.add_child(death_sound)
+	death_sound.pitch_scale = 1.0 + randf_range(-0.1, 0.1)
+	death_sound.play()
+	# Delete the clone when playback finishes
+	death_sound.finished.connect(death_sound.queue_free)
+	
 	if body_sprite != null:
 		body_sprite.visible = false
+
+	if trail_line != null:
+		trail_line.visible = false
+
+	# Stop player movement completely	
+	var movement := player.get_node("Movement") # adjust path if needed
+	if movement:
+		movement.set_physics_process(false)
+
 	player.velocity = Vector2.ZERO
-	player.set_physics_process(false)
-	player.velocity = Vector2.ZERO
+
 	Screenshake.shake(2)
 
 	await get_tree().create_timer(1.0).timeout
@@ -226,13 +244,18 @@ func _die() -> void:
 
 	if body_sprite != null:
 		body_sprite.visible = true
+
 	if trail_line != null:
 		trail_line.visible = true
 
-	player.set_physics_process(true)
-
+	player.set_process(true)
+	#player.set_physics_process(true)
+	
+	if movement:
+		movement.set_physics_process(true)
+	
 	if player != null:
-		# Restore fuel safely (no has_variable in Godot 4)
+		# Restore fuel safely
 		if player.get_child_count() > 0:
 			var child0: Node = player.get_child(0)
 			if child0 != null and is_instance_valid(child0):
@@ -244,10 +267,10 @@ func _die() -> void:
 		player.velocity = Vector2(0.0, 200.0)
 
 		if trail_line != null:
-			# Clear points safely
 			var pts_v: Variant = _safe_get(trail_line, &"_pts")
 			if pts_v != null:
 				_safe_set(trail_line, &"_pts", [])
+
 			trail_line.clear_points()
 
 
