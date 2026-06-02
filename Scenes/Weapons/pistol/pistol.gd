@@ -1,5 +1,5 @@
 extends WeaponBase
-class_name WeaponPistol
+class_name Pistol
 
 @export var muzzle_path: NodePath = NodePath("Muzzle")
 @export var spawn_offset_px: float = 20.0
